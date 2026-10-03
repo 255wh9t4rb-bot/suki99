@@ -1,8 +1,32 @@
-/* ==================================================
-   写真・名前の登録場所
-================================================== */
+const startButton = document.getElementById("start-button");
+const startScreen = document.getElementById("start-screen");
+const selectionScreen = document.getElementById("selection-screen");
+const finalistsScreen = document.getElementById("finalists-screen");
+const rankingScreen = document.getElementById("ranking-screen");
+const resultScreen = document.getElementById("result-screen");
+
+const backButton = document.getElementById("back-button");
+const nextButton = document.getElementById("next-button");
+const rankingStartButton = document.getElementById("ranking-start-button");
+const resultButton = document.getElementById("result-button");
+const againButton = document.getElementById("again-button");
+
+const personContainer = document.getElementById("person-container");
+const finalistsContainer = document.getElementById("finalists-container");
+const rankingContainer = document.getElementById("ranking-container");
+const resultContainer = document.getElementById("result-container");
+
+const progress = document.getElementById("progress");
+const firstSelectedName = document.getElementById("first-selected-name");
+const secondSelectedName = document.getElementById("second-selected-name");
+
+
+// =========================
+// 写真一覧
+// =========================
+
 const people = [
-{ name: "n.top kanghyon",image: "n.top kanghyun.jpg" },
+  { name: "n.top kanghyon",image: "n.top kanghyun.jpg" },
  { name: "n.top minseo", image: "n.top minseo.jpg" },
  { name: "n.top takuto", image: "n.top takuto.jpg" },
 　{ name: "n.top heewoo", image: "n.top heewoo.jpg" },
@@ -198,1041 +222,398 @@ const people = [
    
 
 ];
+];
 
 
-/* ==================================================
-   HTML
-================================================== */
-
-const startScreen =
-  document.getElementById("start-screen");
-
-const selectionScreen =
-  document.getElementById("selection-screen");
-
-const finalistsScreen =
-  document.getElementById("finalists-screen");
-
-const rankingScreen =
-  document.getElementById("ranking-screen");
-
-const resultScreen =
-  document.getElementById("result-screen");
-
-
-const startButton =
-  document.getElementById("start-button");
-
-const backButton =
-  document.getElementById("back-button");
-
-const nextButton =
-  document.getElementById("next-button");
-
-const rankingStartButton =
-  document.getElementById("ranking-start-button");
-
-const resultButton =
-  document.getElementById("result-button");
-
-const againButton =
-  document.getElementById("again-button");
-
-
-const personContainer =
-  document.getElementById("person-container");
-
-const finalistsContainer =
-  document.getElementById("finalists-container");
-
-const rankingContainer =
-  document.getElementById("ranking-container");
-
-const resultContainer =
-  document.getElementById("result-container");
-
-const progress =
-  document.getElementById("progress");
-
-const firstSelectedName =
-  document.getElementById("first-selected-name");
-
-const secondSelectedName =
-  document.getElementById("second-selected-name");
-
-
-/* ==================================================
-   ゲームデータ
-================================================== */
+// =========================
+// ゲーム用データ
+// =========================
 
 let candidates = [];
-
 let currentGroup = [];
+let selectedPeople = [];
+let questionNumber = 0;
 
-let currentSelected = [];
-
-let groups = [];
-
-let questionIndex = 0;
-
-
-/*
-   「誰が誰より上だったか」を保存
-
-   A > B
-   AがBより上
-*/
 let comparisonResults = [];
 
-
-/*
-   最終9人
-*/
 let finalists = [];
+let finalRanking = [];
 
 
-/*
-   頂上決戦中かどうか
-*/
-let summitMode = false;
-
-
-/*
-   頂上決戦で比較する4人
-*/
-let summitCandidates = [];
-
-
-/* ==================================================
-   画面切り替え
-================================================== */
+// =========================
+// 画面切り替え
+// =========================
 
 function showScreen(screen) {
+  document.querySelectorAll(".screen").forEach((s) => {
+    s.classList.remove("active");
+  });
 
-  document
-    .querySelectorAll(".screen")
-    .forEach(item => {
-      item.classList.remove("active");
-    });
-
-  screen.classList.add("active");
-
-  window.scrollTo(0, 0);
+  if (screen) {
+    screen.classList.add("active");
+  }
 }
 
 
-/* ==================================================
-   配列シャッフル
-================================================== */
+// =========================
+// シャッフル
+// =========================
 
 function shuffle(array) {
+  const arr = [...array];
 
-  const result = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
 
-  for (
-    let i = result.length - 1;
-    i > 0;
-    i--
-  ) {
-
-    const j =
-      Math.floor(Math.random() * (i + 1));
-
-    [
-      result[i],
-      result[j]
-    ] = [
-      result[j],
-      result[i]
-    ];
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
 
-  return result;
+  return arr;
 }
 
 
-/* ==================================================
-   比較結果を保存
-================================================== */
+// =========================
+// 開始ボタン
+// =========================
 
-function saveComparison(winner, loser) {
+startButton.addEventListener("click", () => {
+  candidates = shuffle(people);
+  selectedPeople = [];
+  comparisonResults = [];
+  finalists = [];
+  finalRanking = [];
+  questionNumber = 0;
 
-  comparisonResults.push({
-    winner: winner.name,
-    loser: loser.name
-  });
+  showScreen(selectionScreen);
 
-}
+  startQuestion();
+});
 
 
-/* ==================================================
-   今回の選択を記録
-================================================== */
+// =========================
+// 4人表示
+// =========================
 
-function saveCurrentSelection() {
-
-  /*
-    1人しか選ばなかった
-    → その人が勝ち
-  */
-
-  if (currentSelected.length === 1) {
-
-    const winner =
-      currentSelected[0];
-
-    currentGroup
-      .filter(person =>
-        person !== winner
-      )
-      .forEach(loser => {
-
-        saveComparison(
-          winner,
-          loser
-        );
-
-      });
-
+function startQuestion() {
+  if (candidates.length <= 9) {
+    finalists = [...candidates];
+    showFinalists();
     return;
   }
 
+  const group = candidates.slice(0, 4);
 
-  /*
-    2人選んだ
-    → 選ばれた2人は残す
-    → 選ばれなかった人より上
-  */
+  candidates = candidates.slice(4);
 
-  if (currentSelected.length === 2) {
+  currentGroup = group;
+  selectedPeople = [];
 
-    const losers =
-      currentGroup.filter(
-        person =>
-          !currentSelected.includes(person)
-      );
+  questionNumber++;
 
-
-    currentSelected.forEach(winner => {
-
-      losers.forEach(loser => {
-
-        saveComparison(
-          winner,
-          loser
-        );
-
-      });
-
-    });
-
-
-    /*
-      2人とも選ばれたので
-      この時点では
-      winner同士の順位は決めない
-    */
-
-    return;
-  }
-
-
-  /*
-    0人選択の場合
-
-    この質問では
-    順位を作らない
-  */
-
+  renderPeople();
 }
 
 
-/* ==================================================
-   4人グループ作成
-================================================== */
+// =========================
+// 4人を表示
+// =========================
 
-function makeGroups(list) {
-
-  const shuffled =
-    shuffle(list);
-
-  const result = [];
-
-
-  for (
-    let i = 0;
-    i < shuffled.length;
-    i += 4
-  ) {
-
-    const group =
-      shuffled.slice(
-        i,
-        i + 4
-      );
-
-
-    if (
-      group.length === 4
-    ) {
-
-      result.push(group);
-
-    }
-
-  }
-
-
-  return result;
-}
-
-
-/* ==================================================
-   質問表示
-================================================== */
-
-function renderQuestion() {
-
-  currentSelected = [];
-
-  currentGroup =
-    groups[questionIndex];
-
-  progress.textContent =
-    `${questionIndex + 1} / ${groups.length}`;
-
+function renderPeople() {
   personContainer.innerHTML = "";
 
+  firstSelectedName.textContent = "まだ選択されていません";
+  secondSelectedName.textContent = "まだ選択されていません";
 
-  currentGroup.forEach(person => {
+  nextButton.disabled = true;
 
-    const card =
-      document.createElement("div");
+  progress.textContent =
+    `${questionNumber}回目`;
 
-    card.className =
-      "person-card";
+  currentGroup.forEach((person) => {
+    const card = document.createElement("button");
 
+    card.type = "button";
+    card.className = "person-card";
 
     card.innerHTML = `
-
-      <img
-        src="${person.image}"
-        alt="${person.name}"
-      >
-
-      <div class="person-name">
-        ${person.name}
-      </div>
-
+      <img src="${person.image}" alt="${person.name}">
+      <div class="person-name">${person.name}</div>
     `;
 
-
-    card.addEventListener(
-      "click",
-      () => {
-
-        togglePerson(
-          person,
-          card
-        );
-
-      }
-    );
-
+    card.addEventListener("click", () => {
+      togglePerson(person, card);
+    });
 
     personContainer.appendChild(card);
-
   });
-
-
-  nextButton.disabled = false;
-
-
-  updateSelectedNames();
-
 }
 
 
-/* ==================================================
-   選択
-================================================== */
+// =========================
+// 選択
+// 0〜2人まで
+// =========================
 
-function togglePerson(
-  person,
-  card
-) {
-
-  const index =
-    currentSelected.indexOf(person);
-
-
-  /*
-    解除
-  */
+function togglePerson(person, card) {
+  const index = selectedPeople.findIndex(
+    (p) => p.name === person.name
+  );
 
   if (index !== -1) {
+    selectedPeople.splice(index, 1);
+    card.classList.remove("selected");
+  } else {
+    if (selectedPeople.length >= 2) {
+      return;
+    }
 
-    currentSelected.splice(
-      index,
-      1
-    );
-
-    updateCards();
-
-    updateSelectedNames();
-
-    return;
+    selectedPeople.push(person);
+    card.classList.add("selected");
   }
-
-
-  /*
-    最大2人
-  */
-
-  if (
-    currentSelected.length >= 2
-  ) {
-
-    return;
-  }
-
-
-  currentSelected.push(person);
-
-
-  updateCards();
 
   updateSelectedNames();
 
+  // 0人でも次へ進める
+  nextButton.disabled = false;
 }
 
 
-/* ==================================================
-   カード表示
-================================================== */
-
-function updateCards() {
-
-  const cards =
-    document.querySelectorAll(
-      ".person-card"
-    );
-
-
-  cards.forEach(card => {
-
-    card.classList.remove(
-      "first-selected"
-    );
-
-    card.classList.remove(
-      "second-selected"
-    );
-
-
-    const name =
-      card.querySelector(
-        ".person-name"
-      ).textContent.trim();
-
-
-    if (
-      currentSelected[0] &&
-      currentSelected[0].name === name
-    ) {
-
-      card.classList.add(
-        "first-selected"
-      );
-
-    }
-
-
-    if (
-      currentSelected[1] &&
-      currentSelected[1].name === name
-    ) {
-
-      card.classList.add(
-        "second-selected"
-      );
-
-    }
-
-  });
-
-}
-
-
-/* ==================================================
-   選択欄
-================================================== */
+// =========================
+// 選択中の名前
+// =========================
 
 function updateSelectedNames() {
+  firstSelectedName.textContent =
+    selectedPeople[0]?.name || "まだ選択されていません";
 
-  if (firstSelectedName) {
-
-    firstSelectedName.textContent =
-      currentSelected[0]
-        ? currentSelected[0].name
-        : "まだ選択されていません";
-
-  }
-
-
-  if (secondSelectedName) {
-
-    secondSelectedName.textContent =
-      currentSelected[1]
-        ? currentSelected[1].name
-        : "まだ選択されていません";
-
-  }
-
+  secondSelectedName.textContent =
+    selectedPeople[1]?.name || "まだ選択されていません";
 }
 
 
-/* ==================================================
-   候補者を絞る
-================================================== */
+// =========================
+// 次へ
+// =========================
 
-function narrowCandidates() {
+nextButton.addEventListener("click", () => {
+  saveComparison();
 
-  /*
-    今までの比較結果を利用して
-    勝ち数を計算
-  */
-
-  const scores =
-    new Map();
+  startQuestion();
+});
 
 
-  candidates.forEach(person => {
+// =========================
+// 比較結果を保存
+// =========================
 
-    scores.set(
-      person,
-      0
-    );
+function saveComparison() {
+  const selected = selectedPeople;
 
-  });
+  const unselected = currentGroup.filter(
+    (person) =>
+      !selected.some(
+        (p) => p.name === person.name
+      )
+  );
 
+  // 1人選んだ場合
+  // → 選んだ人が他3人より上
+  if (selected.length === 1) {
+    const winner = selected[0];
 
-  comparisonResults.forEach(result => {
-
-    const winner =
-      candidates.find(
-        person =>
-          person.name === result.winner
-      );
-
-
-    if (winner) {
-
-      scores.set(
-        winner,
-        (scores.get(winner) || 0) + 1
-      );
-
-    }
-
-  });
-
-
-  /*
-    勝ち数の多い順
-  */
-
-  const sorted =
-    [...candidates].sort(
-      (a, b) => {
-
-        return (
-          (scores.get(b) || 0) -
-          (scores.get(a) || 0)
-        );
-
-      }
-    );
-
-
-  /*
-    9人以上いる場合は
-    上位60%くらいまで残す
-  */
-
-  if (sorted.length > 9) {
-
-    const keep =
-      Math.max(
-        9,
-        Math.ceil(
-          sorted.length * 0.6
-        )
-      );
-
-
-    candidates =
-      sorted.slice(
-        0,
-        keep
-      );
-
+    unselected.forEach((loser) => {
+      comparisonResults.push({
+        winner: winner.name,
+        loser: loser.name
+      });
+    });
   }
 
-
-  /*
-    9人になったら
-    頂上決戦へ
-  */
-
-  if (
-    candidates.length <= 9
-  ) {
-
-    finalists =
-      [...candidates];
-
-    startSummit();
-
-    return;
+  // 2人選んだ場合
+  // → 2人とも選ばれなかった2人より上
+  if (selected.length === 2) {
+    selected.forEach((winner) => {
+      unselected.forEach((loser) => {
+        comparisonResults.push({
+          winner: winner.name,
+          loser: loser.name
+        });
+      });
+    });
   }
 
-
-  /*
-    次の質問
-  */
-
-  groups =
-    makeGroups(candidates);
-
-  questionIndex = 0;
-
-  renderQuestion();
-
+  // 0人なら比較結果なし
 }
 
 
-/* ==================================================
-   頂上決戦開始
-================================================== */
-
-function startSummit() {
-
-  summitMode = true;
-
-  summitCandidates =
-    [...finalists];
-
-
-  showFinalists();
-
-
-}
-
-
-/* ==================================================
-   最終9人表示
-================================================== */
+// =========================
+// 9人まで絞る
+// =========================
 
 function showFinalists() {
+  // まだ候補が多い場合は比較結果から上位を残す
+  const scores = {};
+
+  people.forEach((person) => {
+    scores[person.name] = 0;
+  });
+
+  comparisonResults.forEach((result) => {
+    if (scores[result.winner] !== undefined) {
+      scores[result.winner]++;
+    }
+  });
+
+  const ranked = [...people].sort((a, b) => {
+    return scores[b.name] - scores[a.name];
+  });
+
+  finalists = ranked.slice(0, 9);
+
+  showFinalistsScreen();
+}
+
+
+// =========================
+// 最終9人表示
+// =========================
+
+function showFinalistsScreen() {
+  showScreen(finalistsScreen);
 
   finalistsContainer.innerHTML = "";
 
+  finalists.forEach((person) => {
+    const item = document.createElement("div");
 
-  finalists.forEach(person => {
+    item.className = "finalist-card";
 
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "finalist-card";
-
-
-    card.innerHTML = `
-
-      <img
-        src="${person.image}"
-        alt="${person.name}"
-      >
-
-      <p>
-        ${person.name}
-      </p>
-
+    item.innerHTML = `
+      <img src="${person.image}" alt="${person.name}">
+      <div>${person.name}</div>
     `;
 
-
-    finalistsContainer.appendChild(
-      card
-    );
-
+    finalistsContainer.appendChild(item);
   });
-
-
-  showScreen(
-    finalistsScreen
-  );
-
 }
 
 
-/* ==================================================
-   頂上決戦スタート
-================================================== */
+// =========================
+// 頂上決戦開始
+// =========================
 
-if (rankingStartButton) {
+rankingStartButton.addEventListener("click", () => {
+  startFinalRanking();
+});
 
-  rankingStartButton.addEventListener(
-    "click",
-    () => {
 
-      startSummitQuestions();
+// =========================
+// 最終順位
+// =========================
 
-    }
-  );
+function startFinalRanking() {
+  finalRanking = [...finalists];
 
-}
+  // 比較結果の勝利数を使って並べる
+  const scores = {};
 
-
-/* ==================================================
-   頂上決戦の質問を作る
-================================================== */
-
-function startSummitQuestions() {
-
-  /*
-    9人を4人ずつ比較
-
-    9人
-    ↓
-    4人
-    4人
-    4人
-    ...
-
-    同じ人が複数回登場して
-    全員の比較材料を集める
-  */
-
-  const repeated =
-    [
-      ...summitCandidates,
-      ...summitCandidates
-    ];
-
-
-  groups = [];
-
-
-  for (
-    let i = 0;
-    i < repeated.length;
-    i += 4
-  ) {
-
-    const group =
-      repeated.slice(
-        i,
-        i + 4
-      );
-
-
-    if (
-      group.length === 4
-    ) {
-
-      groups.push(group);
-
-    }
-
-  }
-
-
-  /*
-    最後まで同じ人が偏らないよう
-    並びをシャッフル
-  */
-
-  groups =
-    shuffle(groups);
-
-
-  questionIndex = 0;
-
-  summitMode = true;
-
-
-  /*
-    選択画面へ
-  */
-
-  showScreen(
-    selectionScreen
-  );
-
-
-  renderQuestion();
-
-}
-
-
-/* ==================================================
-   次へ
-================================================== */
-
-nextButton.addEventListener(
-  "click",
-  () => {
-
-    /*
-      通常戦
-    */
-
-    if (!summitMode) {
-
-      saveCurrentSelection();
-
-      questionIndex++;
-
-
-      if (
-        questionIndex <
-        groups.length
-      ) {
-
-        renderQuestion();
-
-        return;
-
-      }
-
-
-      /*
-        1ラウンド終了
-      */
-
-      narrowCandidates();
-
-      return;
-    }
-
-
-    /*
-      頂上決戦
-    */
-
-    saveCurrentSelection();
-
-    questionIndex++;
-
-
-    if (
-      questionIndex <
-      groups.length
-    ) {
-
-      renderQuestion();
-
-      return;
-
-    }
-
-
-    /*
-      頂上決戦終了
-    */
-
-    finishSummit();
-
-  }
-);
-
-
-/* ==================================================
-   頂上決戦終了
-================================================== */
-
-function finishSummit() {
-
-  /*
-    ここで今までの
-    「A > B」
-    「C > D」
-    を全部分析する
-  */
-
-  const scores =
-    new Map();
-
-
-  finalists.forEach(person => {
-
-    scores.set(
-      person.name,
-      0
-    );
-
+  finalRanking.forEach((person) => {
+    scores[person.name] = 0;
   });
 
+  comparisonResults.forEach((result) => {
+    if (scores[result.winner] !== undefined) {
+      scores[result.winner]++;
+    }
 
-  comparisonResults.forEach(result => {
-
-    scores.set(
-      result.winner,
-      (scores.get(result.winner) || 0) + 1
-    );
-
+    if (scores[result.loser] !== undefined) {
+      scores[result.loser]--;
+    }
   });
 
-
-  /*
-    現段階では
-    対戦結果からスコアを作る
-
-    後からここをAI判定に変更する
-  */
-
-  finalRanking =
-    [...finalists].sort(
-      (a, b) => {
-
-        return (
-          (scores.get(b.name) || 0) -
-          (scores.get(a.name) || 0)
-        );
-
-      }
-    );
-
+  finalRanking.sort((a, b) => {
+    return scores[b.name] - scores[a.name];
+  });
 
   renderRanking();
 
-  showScreen(
-    rankingScreen
-  );
-
+  showScreen(rankingScreen);
 }
 
 
-/* ==================================================
-   順位表示
-================================================== */
+// =========================
+// 順位表示
+// =========================
 
 function renderRanking() {
-
   rankingContainer.innerHTML = "";
 
+  finalRanking.forEach((person, index) => {
+    const item = document.createElement("div");
 
-  finalRanking.forEach(
-    (person, index) => {
+    item.className = "ranking-item";
 
-      const item =
-        document.createElement("div");
+    item.innerHTML = `
+      <div class="ranking-number">${index + 1}位</div>
+      <img src="${person.image}" alt="${person.name}">
+      <div class="ranking-name">${person.name}</div>
+    `;
 
-
-      item.className =
-        "ranking-item";
-
-
-      item.innerHTML = `
-
-        <div class="ranking-number">
-          ${index + 1}位
-        </div>
-
-        <img
-          src="${person.image}"
-          alt="${person.name}"
-        >
-
-        <div class="ranking-name">
-          ${person.name}
-        </div>
-
-      `;
-
-
-      rankingContainer.appendChild(
-        item
-      );
-
-    }
-  );
-
+    rankingContainer.appendChild(item);
+  });
 }
 
 
-/* ==================================================
-   結果を見る
-================================================== */
+// =========================
+// 結果を見る
+// =========================
 
-resultButton.addEventListener(
-  "click",
-  () => {
-
-    renderResult();
-
-    showScreen(
-      resultScreen
-    );
-
-  }
-);
+resultButton.addEventListener("click", () => {
+  renderResult();
+  showScreen(resultScreen);
+});
 
 
-/* ==================================================
-   結果表示
-================================================== */
+// =========================
+// 最終結果 3×3
+//
+// 4位  5位  6位
+// 2位  1位  3位
+// 7位  8位  9位
+// =========================
 
 function renderResult() {
-
   resultContainer.innerHTML = "";
 
-  /*
-    最終順位を表の位置に合わせる
-
-    4位 | 5位 | 6位
-    2位 | 1位 | 3位
-    7位 | 8位 | 9位
-  */
-
   const displayOrder = [
-    finalRanking[3], // 4位
-    finalRanking[4], // 5位
-    finalRanking[5], // 6位
+    finalRanking[3],
+    finalRanking[4],
+    finalRanking[5],
 
-    finalRanking[1], // 2位
-    finalRanking[0], // 1位
-    finalRanking[2], // 3位
+    finalRanking[1],
+    finalRanking[0],
+    finalRanking[2],
 
-    finalRanking[6], // 7位
-    finalRanking[7], // 8位
-    finalRanking[8]  // 9位
+    finalRanking[6],
+    finalRanking[7],
+    finalRanking[8]
   ];
 
+  const grid = document.createElement("div");
 
-  const grid =
-    document.createElement("div");
+  grid.className = "final-3x3-grid";
 
-  grid.className =
-    "final-3x3-grid";
-
-
-  displayOrder.forEach(person => {
+  displayOrder.forEach((person) => {
+    if (!person) return;
 
     const rank =
       finalRanking.indexOf(person) + 1;
 
+    const item = document.createElement("div");
 
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "final-3x3-item";
-
+    item.className = "final-3x3-item";
 
     item.innerHTML = `
-
       <div class="final-rank">
         ${rank}位
       </div>
@@ -1245,115 +626,19 @@ function renderResult() {
       <div class="final-name">
         ${person.name}
       </div>
-
     `;
 
-
     grid.appendChild(item);
-
   });
 
-
   resultContainer.appendChild(grid);
-
-}
-    }
-  );
-
 }
 
 
-/* ==================================================
-   スタート
-================================================== */
+// =========================
+// もう一度
+// =========================
 
-startButton.addEventListener(
-  "click",
-  () => {
-
-    if (
-      people.length < 9
-    ) {
-
-      alert(
-        "9人以上の写真を登録してください。"
-      );
-
-      return;
-    }
-
-
-    candidates =
-      [...people];
-
-
-    comparisonResults = [];
-
-    finalists = [];
-
-    finalRanking = [];
-
-    summitMode = false;
-
-    questionIndex = 0;
-
-
-    groups =
-      makeGroups(candidates);
-
-
-    renderQuestion();
-
-
-    showScreen(
-      selectionScreen
-    );
-
-  }
-);
-
-
-/* ==================================================
-   戻る
-================================================== */
-
-backButton.addEventListener(
-  "click",
-  () => {
-
-    const answer =
-      confirm(
-        "最初からやり直しますか？"
-      );
-
-
-    if (answer) {
-
-      summitMode = false;
-
-      showScreen(
-        startScreen
-      );
-
-    }
-
-  }
-);
-
-
-/* ==================================================
-   もう一度やる
-================================================== */
-
-againButton.addEventListener(
-  "click",
-  () => {
-
-    summitMode = false;
-
-    showScreen(
-      startScreen
-    );
-
-  }
-);
+againButton.addEventListener("click", () => {
+  showScreen(startScreen);
+});
