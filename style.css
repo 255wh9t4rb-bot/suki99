@@ -1,14 +1,10 @@
-/* =========================================
-   全体
-========================================= */
-
 * {
   box-sizing: border-box;
 }
 
+
 body {
   margin: 0;
-
   min-height: 100vh;
 
   font-family:
@@ -19,33 +15,32 @@ body {
     sans-serif;
 
   background: #faf8f6;
-
   color: #2c2927;
 }
 
 
-/* =========================================
-   画面
-========================================= */
+/* =========================
+   共通
+========================= */
 
 .screen {
   display: none;
 
   width: 100%;
-
   min-height: 100vh;
 
   padding: 25px 20px 50px;
 }
+
 
 .screen.active {
   display: block;
 }
 
 
-/* =========================================
+/* =========================
    スタート画面
-========================================= */
+========================= */
 
 #start-screen {
   display: none;
@@ -56,24 +51,27 @@ body {
   text-align: center;
 }
 
+
 #start-screen.active {
   display: flex;
 }
+
 
 .start-container {
   width: 100%;
   max-width: 700px;
 }
 
+
 .small-title {
   margin: 0 0 15px;
 
   font-size: 12px;
-
   letter-spacing: 0.25em;
 
   color: #a2948b;
 }
+
 
 h1 {
   margin: 0 0 25px;
@@ -82,6 +80,7 @@ h1 {
 
   letter-spacing: 0.05em;
 }
+
 
 .description {
   line-height: 2;
@@ -92,10 +91,6 @@ h1 {
 }
 
 
-/* =========================================
-   見出し
-========================================= */
-
 h2 {
   margin: 18px 0 8px;
 
@@ -103,6 +98,7 @@ h2 {
 
   font-size: clamp(26px, 5vw, 40px);
 }
+
 
 .instruction {
   margin: 0;
@@ -115,9 +111,9 @@ h2 {
 }
 
 
-/* =========================================
+/* =========================
    ボタン
-========================================= */
+========================= */
 
 .main-button {
   display: block;
@@ -127,15 +123,12 @@ h2 {
   padding: 14px 45px;
 
   border: none;
-
   border-radius: 999px;
 
   background: #292625;
-
   color: white;
 
   font-size: 16px;
-
   font-weight: bold;
 
   cursor: pointer;
@@ -143,11 +136,12 @@ h2 {
   transition: 0.2s;
 }
 
+
 .main-button:hover {
   transform: translateY(-2px);
-
   opacity: 0.9;
 }
+
 
 .main-button:disabled {
   opacity: 0.35;
@@ -158,21 +152,21 @@ h2 {
 }
 
 
-/* =========================================
+/* =========================
    上の部分
-========================================= */
+========================= */
 
 .top-area {
   display: flex;
 
   justify-content: space-between;
-
   align-items: center;
 
   max-width: 1100px;
 
   margin: 0 auto;
 }
+
 
 .back-button {
   border: none;
@@ -186,6 +180,7 @@ h2 {
   font-size: 14px;
 }
 
+
 #progress {
   margin: 0;
 
@@ -195,15 +190,78 @@ h2 {
 }
 
 
-/* =========================================
-   4人のカード
-========================================= */
+/* =========================
+   1位・2位 選択状況
+========================= */
+
+.selected-area {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+
+  width: 100%;
+
+  max-width: 700px;
+
+  margin: 20px auto 10px;
+}
+
+
+.selected-box {
+  padding: 13px 15px;
+
+  border-radius: 15px;
+
+  background: white;
+
+  text-align: center;
+
+  box-shadow:
+    0 4px 18px rgba(0,0,0,0.06);
+}
+
+
+.first-box {
+  border: 2px solid #292625;
+}
+
+
+.second-box {
+  border: 2px solid #b7aaa2;
+}
+
+
+.selected-title {
+  margin-bottom: 5px;
+
+  font-size: 15px;
+
+  font-weight: bold;
+}
+
+
+#first-selected-name,
+#second-selected-name {
+  min-height: 20px;
+
+  font-size: 13px;
+
+  font-weight: bold;
+
+  color: #777;
+}
+
+
+/* =========================
+   4人の写真
+========================= */
 
 .person-container {
   display: grid;
 
-  grid-template-columns:
-    repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 
   gap: 18px;
 
@@ -211,52 +269,44 @@ h2 {
 
   max-width: 1100px;
 
-  margin: 20px auto 0;
+  margin: 15px auto 0;
 }
 
-
-/* =========================================
-   カード
-========================================= */
 
 .person-card {
   position: relative;
 
   padding: 8px;
 
-  border: 2px solid transparent;
+  border: 3px solid transparent;
 
   border-radius: 18px;
 
   background: white;
 
   box-shadow:
-    0 5px 25px rgba(0, 0, 0, 0.06);
+    0 5px 25px rgba(0,0,0,0.06);
 
   cursor: pointer;
 
   transition: 0.2s;
 }
 
+
 .person-card:hover {
   transform: translateY(-3px);
 }
 
 
-/* 選択されたカード */
-
 .person-card.first-selected {
   border-color: #292625;
 }
+
 
 .person-card.second-selected {
   border-color: #a99a91;
 }
 
-
-/* =========================================
-   写真
-========================================= */
 
 .person-card img {
   display: block;
@@ -273,10 +323,6 @@ h2 {
 }
 
 
-/* =========================================
-   名前
-========================================= */
-
 .person-name {
   margin-top: 9px;
 
@@ -290,10 +336,7 @@ h2 {
 }
 
 
-/* =========================================
-   1位・2位の表示
-   → 写真の上に表示
-========================================= */
+/* 写真の上の1位表示 */
 
 .person-card.first-selected::after {
   content: "1位！";
@@ -319,6 +362,8 @@ h2 {
 }
 
 
+/* 写真の上の2位表示 */
+
 .person-card.second-selected::after {
   content: "2位！";
 
@@ -343,24 +388,19 @@ h2 {
 }
 
 
-/* =========================================
-   次へボタン
-========================================= */
-
 .next-button {
   margin-top: 12px;
 }
 
 
-/* =========================================
+/* =========================
    最終9人
-========================================= */
+========================= */
 
 .finalists-container {
   display: grid;
 
-  grid-template-columns:
-    repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 
   gap: 15px;
 
@@ -371,6 +411,7 @@ h2 {
   margin: 25px auto;
 }
 
+
 .finalist-card {
   padding: 8px;
 
@@ -379,8 +420,9 @@ h2 {
   background: white;
 
   box-shadow:
-    0 5px 20px rgba(0, 0, 0, 0.05);
+    0 5px 20px rgba(0,0,0,0.05);
 }
+
 
 .finalist-card img {
   display: block;
@@ -394,6 +436,7 @@ h2 {
   border-radius: 12px;
 }
 
+
 .finalist-card p {
   margin: 9px 0 4px;
 
@@ -405,9 +448,9 @@ h2 {
 }
 
 
-/* =========================================
+/* =========================
    順位
-========================================= */
+========================= */
 
 .ranking-container {
   width: 100%;
@@ -416,6 +459,7 @@ h2 {
 
   margin: 25px auto;
 }
+
 
 .ranking-item {
   display: flex;
@@ -433,20 +477,19 @@ h2 {
   background: white;
 
   box-shadow:
-    0 4px 18px rgba(0, 0, 0, 0.05);
+    0 4px 18px rgba(0,0,0,0.05);
 
   cursor: grab;
 }
+
 
 .ranking-number {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   width: 38px;
-
   height: 38px;
 
   flex-shrink: 0;
@@ -458,9 +501,9 @@ h2 {
   font-weight: bold;
 }
 
+
 .ranking-item img {
   width: 60px;
-
   height: 75px;
 
   object-fit: cover;
@@ -468,14 +511,15 @@ h2 {
   border-radius: 10px;
 }
 
+
 .ranking-name {
   font-weight: bold;
 }
 
 
-/* =========================================
+/* =========================
    結果
-========================================= */
+========================= */
 
 .result-container {
   width: 100%;
@@ -484,6 +528,7 @@ h2 {
 
   margin: 25px auto;
 }
+
 
 .result-item {
   display: flex;
@@ -501,8 +546,9 @@ h2 {
   background: white;
 
   box-shadow:
-    0 5px 20px rgba(0, 0, 0, 0.05);
+    0 5px 20px rgba(0,0,0,0.05);
 }
+
 
 .result-rank {
   width: 40px;
@@ -516,9 +562,9 @@ h2 {
   font-weight: bold;
 }
 
+
 .result-item img {
   width: 70px;
-
   height: 88px;
 
   object-fit: cover;
@@ -526,24 +572,22 @@ h2 {
   border-radius: 12px;
 }
 
+
 .result-name {
   font-weight: bold;
 }
 
 
-/* =========================================
+/* =========================
    スマホ
-========================================= */
+========================= */
 
 @media (max-width: 700px) {
 
   .screen {
-    padding:
-      15px 10px 35px;
+    padding: 15px 10px 35px;
   }
 
-
-  /* 見出し */
 
   h2 {
     margin-top: 15px;
@@ -551,24 +595,49 @@ h2 {
     font-size: 25px;
   }
 
+
   .instruction {
     font-size: 13px;
   }
 
 
-  /* 4人 */
+  /* 1位・2位 */
 
-  .person-container {
-    grid-template-columns:
-      repeat(2, 1fr);
+  .selected-area {
+    gap: 7px;
 
-    gap: 8px;
-
-    margin-top: 14px;
+    margin-top: 15px;
   }
 
 
-  /* カード */
+  .selected-box {
+    padding: 10px 6px;
+
+    border-radius: 12px;
+  }
+
+
+  .selected-title {
+    font-size: 13px;
+  }
+
+
+  #first-selected-name,
+  #second-selected-name {
+    font-size: 11px;
+  }
+
+
+  /* 写真 */
+
+  .person-container {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 8px;
+
+    margin-top: 12px;
+  }
+
 
   .person-card {
     padding: 5px;
@@ -577,16 +646,12 @@ h2 {
   }
 
 
-  /* 写真を少し小さめ */
-
   .person-card img {
     aspect-ratio: 1 / 1.18;
 
     border-radius: 9px;
   }
 
-
-  /* 名前 */
 
   .person-name {
     margin-top: 6px;
@@ -595,13 +660,10 @@ h2 {
   }
 
 
-  /* 1位・2位 */
-
   .person-card.first-selected::after,
   .person-card.second-selected::after {
 
     top: 7px;
-
     left: 7px;
 
     padding: 5px 9px;
@@ -610,26 +672,23 @@ h2 {
   }
 
 
-  /* 次へを画像のすぐ下 */
-
   .next-button {
     margin-top: 9px;
 
-    padding:
-      12px 40px;
+    padding: 12px 40px;
   }
 
 
   /* 最終9人 */
 
   .finalists-container {
-    grid-template-columns:
-      repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
 
     gap: 7px;
 
     margin-top: 20px;
   }
+
 
   .finalist-card {
     padding: 5px;
@@ -637,9 +696,11 @@ h2 {
     border-radius: 12px;
   }
 
+
   .finalist-card img {
     border-radius: 8px;
   }
+
 
   .finalist-card p {
     margin-top: 6px;
@@ -653,21 +714,21 @@ h2 {
   .ranking-item {
     gap: 10px;
 
-    padding:
-      8px 10px;
+    padding: 8px 10px;
   }
+
 
   .ranking-item img {
     width: 50px;
-
     height: 65px;
   }
 
+
   .ranking-number {
     width: 34px;
-
     height: 34px;
   }
+
 
   .ranking-name {
     font-size: 13px;
@@ -679,15 +740,15 @@ h2 {
   .result-item {
     gap: 10px;
 
-    padding:
-      8px 10px;
+    padding: 8px 10px;
   }
+
 
   .result-item img {
     width: 60px;
-
     height: 75px;
   }
+
 
   .result-name {
     font-size: 13px;
