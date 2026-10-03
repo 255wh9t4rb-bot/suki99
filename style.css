@@ -754,4 +754,180 @@ h2 {
     font-size: 13px;
   }
 
+  /* ==========================================
+   最終結果 3×3
+========================================== */
+
+.final-3x3-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-rows: repeat(3, 1fr);
+
+  gap: 12px;
+
+  width: 100%;
+
+  max-width: 900px;
+
+  margin: 30px auto;
+
+}
+
+
+/* ==========================================
+   それぞれのマス
+========================================== */
+
+.final-3x3-item {
+
+  background: white;
+
+  border-radius: 16px;
+
+  padding: 12px;
+
+  text-align: center;
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.08);
+
+}
+
+
+/* ==========================================
+   写真
+========================================== */
+
+.final-3x3-item img {
+
+  width: 100%;
+
+  aspect-ratio: 1 / 1;
+
+  object-fit: cover;
+
+  border-radius: 12px;
+
+  display: block;
+
+}
+
+
+/* ==========================================
+   順位
+========================================== */
+
+.final-rank {
+
+  font-size: 18px;
+
+  font-weight: bold;
+
+  margin-bottom: 8px;
+
+}
+
+
+/* ==========================================
+   名前
+========================================== */
+
+.final-name {
+
+  font-size: 14px;
+
+  font-weight: bold;
+
+  margin-top: 8px;
+
+  word-break: break-word;
+
+}
+
+
+/* ==========================================
+   1位だけ中央で目立たせる
+========================================== */
+
+.final-3x3-item:nth-child(5) {
+
+  transform: scale(1.05);
+
+  border: 3px solid #f1c40f;
+
+  z-index: 2;
+
+}
+
+
+.final-3x3-item:nth-child(5) .final-rank {
+
+  font-size: 23px;
+
+}
+
+
+/* ==========================================
+   2位・3位
+========================================== */
+
+.final-3x3-item:nth-child(4),
+.final-3x3-item:nth-child(6) {
+
+  border: 2px solid #ccc;
+
+}
+
+
+/* ==========================================
+   スマホ
+========================================== */
+
+@media (max-width: 600px) {
+
+  .final-3x3-grid {
+
+    gap: 7px;
+
+  }
+
+
+  .final-3x3-item {
+
+    padding: 6px;
+
+    border-radius: 10px;
+
+  }
+
+
+  .final-rank {
+
+    font-size: 13px;
+
+    margin-bottom: 4px;
+
+  }
+
+
+  .final-name {
+
+    font-size: 11px;
+
+    margin-top: 5px;
+
+  }
+
+
+  .final-3x3-item:nth-child(5) .final-rank {
+
+    font-size: 16px;
+
+  }
+
+}
+
 }
