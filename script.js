@@ -36,7 +36,7 @@ const secondSelectedName =
 
 
 // ========================================
-// 人物
+// 人物データ
 // ========================================
 
 const people = [
@@ -239,34 +239,31 @@ const people = [
 
 
 // ========================================
-// ゲーム変数
+// 予選用データ
 // ========================================
 
-let candidates = [];
-
+let activePeople = [];
+let selectedPeople = [];
 let currentGroup = [];
 
-let selectedPeople = [];
+let selectionScores = {};
+let appearanceCounts = {};
 
-let selectedFinalists = [];
+let selectionRound = 0;
 
-let eliminatedPeople = [];
-
-let questionNumber = 0;
+const MAX_SELECTION_ROUNDS = 15;
 
 
+// ========================================
 // 頂上決戦用
-let battleQueue = [];
+// ========================================
 
-let battleWinner = null;
+let finalists = [];
 
-let battleLoser = null;
+let battlePairs = [];
+let battleIndex = 0;
 
-
-// 順位決定用
-let rankingPeople = [];
-
-let rankingScores = {};
+let battleWins = {};
 
 
 // ========================================
@@ -284,95 +281,111 @@ function showScreen(screen) {
 
 
 // ========================================
-// シャッフル
-// ========================================
-
-function shuffle(array) {
-
-  const copied = [...array];
-
-  for (let i = copied.length - 1; i > 0; i--) {
-
-    const j =
-      Math.floor(Math.random() * (i + 1));
-
-    const temp = copied[i];
-
-    copied[i] = copied[j];
-
-    copied[j] = temp;
-  }
-
-  return copied;
-}
-
-
-// ========================================
 // スタート
 // ========================================
 
 startButton.addEventListener("click", function() {
 
-  candidates = shuffle(people);
-
-  currentGroup = [];
+  activePeople = people.map(function(person) {
+    return {
+      name: person.name,
+      image: person.image
+    };
+  });
 
   selectedPeople = [];
+  currentGroup = [];
 
-  selectedFinalists = [];
+  selectionScores = {};
+  appearanceCounts = {};
 
-  eliminatedPeople = [];
+  selectionRound = 0;
 
-  questionNumber = 0;
-
-  battleQueue = [];
-
-  battleWinner = null;
-
-  battleLoser = null;
-
-  rankingPeople = [];
-
-  rankingScores = {};
+  activePeople.forEach(function(person) {
+    selectionScores[person.name] = 0;
+    appearanceCounts[person.name] = 0;
+  });
 
   showScreen(selectionScreen);
 
-  showNextGroup();
+  startSelectionRound();
 
 });
 
 
 // ========================================
-// 4人ずつ表示
+// 4人を選ぶ予選
 // ========================================
 
-function showNextGroup() {
+function startSelectionRound() {
 
-  // 全員見終わった
-  if (candidates.length === 0) {
-
-    finishPreliminary();
-
-    return;
-  }
-
-
-  currentGroup =
-    candidates.splice(0, 4);
+  selectionRound++;
 
   selectedPeople = [];
 
-  questionNumber++;
+  currentGroup = chooseFourPeople();
 
-  renderGroup();
+  renderSelectionGroup();
+
 }
 
 
 // ========================================
-// 4人を表示
+// 次に出す4人を決める
 // ========================================
 
-function renderGroup() {
+function chooseFourPeople() {
+
+  const sorted = [...activePeople];
+
+  sorted.sort(function(a, b) {
+
+    return (
+      appearanceCounts[a.name] -
+      appearanceCounts[b.name]
+    );
+
+  });
+
+
+  const lowestAppearance =
+    appearanceCounts[sorted[0].name];
+
+
+  const candidates =
+    sorted.filter(function(person) {
+
+      return (
+        appearanceCounts[person.name] <=
+        lowestAppearance + 1
+      );
+
+    });
+
+
+  // 同じくらい登場している人の中から選ぶ
+  candidates.sort(function() {
+    return Math.random() - 0.5;
+  });
+
+
+  const group = candidates.slice(0, 4);
+
+
+  group.forEach(function(person) {
+    appearanceCounts[person.name]++;
+  });
+
+
+  return group;
+}
+
+
+// ========================================
+// 4人を画面に表示
+// ========================================
+
+function renderSelectionGroup() {
 
   personContainer.innerHTML = "";
 
@@ -382,8 +395,9 @@ function renderGroup() {
   secondSelectedName.textContent =
     "まだ選択されていません";
 
+
   progress.textContent =
-    "予選 " + questionNumber + "回目";
+    "第" + selectionRound + "回";
 
 
   currentGroup.forEach(function(person) {
@@ -392,31 +406,24 @@ function renderGroup() {
       document.createElement("button");
 
     card.type = "button";
-
-    card.className =
-      "person-card";
+    card.className = "person-card";
 
 
     const image =
       document.createElement("img");
 
     image.src = person.image;
-
     image.alt = person.name;
 
 
     const name =
       document.createElement("div");
 
-    name.className =
-      "person-name";
-
-    name.textContent =
-      person.name;
+    name.className = "person-name";
+    name.textContent = person.name;
 
 
     card.appendChild(image);
-
     card.appendChild(name);
 
 
@@ -435,7 +442,7 @@ function renderGroup() {
 
 
 // ========================================
-// 選択
+// 人を選択
 // ========================================
 
 function toggleSelection(person, card) {
@@ -448,17 +455,13 @@ function toggleSelection(person, card) {
     });
 
 
-  // すでに選択している
   if (index !== -1) {
 
     selectedPeople.splice(index, 1);
 
     card.classList.remove("selected");
 
-  }
-
-  // 新しく選択
-  else {
+  } else {
 
     if (selectedPeople.length >= 2) {
       return;
@@ -467,6 +470,7 @@ function toggleSelection(person, card) {
     selectedPeople.push(person);
 
     card.classList.add("selected");
+
   }
 
 
@@ -489,6 +493,7 @@ function updateSelectedNames() {
 
     firstSelectedName.textContent =
       "まだ選択されていません";
+
   }
 
 
@@ -501,7 +506,9 @@ function updateSelectedNames() {
 
     secondSelectedName.textContent =
       "まだ選択されていません";
+
   }
+
 }
 
 
@@ -511,139 +518,167 @@ function updateSelectedNames() {
 
 nextButton.addEventListener("click", function() {
 
-  // 選ばれた人を勝ち上がり
-  selectedFinalists.push(
-    ...selectedPeople
-  );
+  selectedPeople.forEach(function(person) {
+
+    selectionScores[person.name]++;
+
+  });
 
 
-  // 次の4人
-  showNextGroup();
+  // 15回までは何度も選ぶ
+
+  if (selectionRound < MAX_SELECTION_ROUNDS) {
+
+    startSelectionRound();
+
+    return;
+
+  }
+
+
+  // 15回終了
+  makeNineFinalists();
 
 });
 
 
 // ========================================
-// 予選終了
+// 9人に絞る
 // ========================================
 
-function finishPreliminary() {
+function makeNineFinalists() {
 
-  // 重複を削除
+  const sorted =
+    [...activePeople].sort(function(a, b) {
 
-  const unique = [];
-
-  selectedFinalists.forEach(function(person) {
-
-    const exists =
-      unique.some(function(item) {
-
-        return item.name === person.name;
-
-      });
-
-
-    if (!exists) {
-
-      unique.push(person);
-
-    }
-
-  });
-
-
-  selectedFinalists = unique;
-
-
-  // 9人ちょうどなら終了
-
-  if (selectedFinalists.length === 9) {
-
-    showFinalists();
-
-    return;
-  }
-
-
-  // 9人より多い
-  if (selectedFinalists.length > 9) {
-
-    startFinalistBattle();
-
-    return;
-  }
-
-
-  // 9人未満の場合
-  // 選ばれなかった人から復活候補を出す
-
-  const remaining =
-    people.filter(function(person) {
-
-      return !selectedFinalists.some(function(selected) {
-
-        return selected.name === person.name;
-
-      });
+      return (
+        selectionScores[b.name] -
+        selectionScores[a.name]
+      );
 
     });
 
 
-  while (
-    selectedFinalists.length < 9 &&
-    remaining.length > 0
-  ) {
-
-    selectedFinalists.push(
-      remaining.shift()
-    );
-
-  }
+  finalists =
+    sorted.slice(0, 9);
 
 
   showFinalists();
+
 }
 
 
 // ========================================
-// 頂上決戦開始
+// 9人表示
 // ========================================
 
-function startFinalistBattle() {
+function showFinalists() {
 
-  battleQueue =
-    [...selectedFinalists];
+  finalistsContainer.innerHTML = "";
 
-  runNextBattle();
+
+  finalists.forEach(function(person) {
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "finalist-card";
+
+
+    const image =
+      document.createElement("img");
+
+    image.src = person.image;
+    image.alt = person.name;
+
+
+    const name =
+      document.createElement("div");
+
+    name.textContent = person.name;
+
+
+    card.appendChild(image);
+    card.appendChild(name);
+
+
+    finalistsContainer.appendChild(card);
+
+  });
+
+
+  showScreen(finalistsScreen);
+
 }
+
+
+// ========================================
+// 頂上決戦スタート
+// ========================================
+
+rankingStartButton.addEventListener(
+  "click",
+  function() {
+
+    battlePairs = [];
+    battleIndex = 0;
+
+    battleWins = {};
+
+
+    finalists.forEach(function(person) {
+
+      battleWins[person.name] = 0;
+
+    });
+
+
+    // 9人全員の組み合わせを作る
+    for (let i = 0; i < finalists.length; i++) {
+
+      for (
+        let j = i + 1;
+        j < finalists.length;
+        j++
+      ) {
+
+        battlePairs.push([
+          finalists[i],
+          finalists[j]
+        ]);
+
+      }
+
+    }
+
+
+    startNextBattle();
+
+  }
+);
 
 
 // ========================================
 // 次の頂上決戦
 // ========================================
 
-function runNextBattle() {
+function startNextBattle() {
 
-  // 9人になった
-  if (battleQueue.length <= 9) {
+  if (battleIndex >= battlePairs.length) {
 
-    selectedFinalists =
-      [...battleQueue];
-
-    showFinalists();
+    finishRanking();
 
     return;
   }
 
 
-  // 2人取り出す
-
-  battleWinner = battleQueue.shift();
-
-  battleLoser = battleQueue.shift();
+  const pair =
+    battlePairs[battleIndex];
 
 
-  renderBattle();
+  renderBattle(pair[0], pair[1]);
+
 }
 
 
@@ -651,38 +686,41 @@ function runNextBattle() {
 // 頂上決戦画面
 // ========================================
 
-function renderBattle() {
+function renderBattle(personA, personB) {
+
+  showScreen(selectionScreen);
+
 
   personContainer.innerHTML = "";
 
 
   progress.textContent =
-    "頂上決戦";
+    "頂上決戦 " +
+    (battleIndex + 1) +
+    " / " +
+    battlePairs.length;
 
 
   firstSelectedName.textContent =
-    battleWinner.name;
-
+    personA.name;
 
   secondSelectedName.textContent =
-    battleLoser.name;
+    personB.name;
 
 
-  const winnerCard =
-    createBattleCard(battleWinner);
+  nextButton.style.display = "none";
 
 
-  const loserCard =
-    createBattleCard(battleLoser);
+  const cardA =
+    createBattleCard(personA);
+
+  const cardB =
+    createBattleCard(personB);
 
 
-  personContainer.appendChild(winnerCard);
+  personContainer.appendChild(cardA);
+  personContainer.appendChild(cardB);
 
-  personContainer.appendChild(loserCard);
-
-
-  nextButton.style.display =
-    "none";
 }
 
 
@@ -696,31 +734,24 @@ function createBattleCard(person) {
     document.createElement("button");
 
   card.type = "button";
-
-  card.className =
-    "person-card";
+  card.className = "person-card";
 
 
   const image =
     document.createElement("img");
 
   image.src = person.image;
-
   image.alt = person.name;
 
 
   const name =
     document.createElement("div");
 
-  name.className =
-    "person-name";
-
-  name.textContent =
-    person.name;
+  name.className = "person-name";
+  name.textContent = person.name;
 
 
   card.appendChild(image);
-
   card.appendChild(name);
 
 
@@ -736,474 +767,37 @@ function createBattleCard(person) {
 
 
 // ========================================
-// 頂上決戦で勝者を選ぶ
+// 頂上決戦の勝者
 // ========================================
 
 function chooseBattleWinner(person) {
 
-  let winner;
-
-  let loser;
+  battleWins[person.name]++;
 
 
-  if (person.name === battleWinner.name) {
-
-    winner = battleWinner;
-
-    loser = battleLoser;
-
-  } else {
-
-    winner = battleLoser;
-
-    loser = battleWinner;
-
-  }
+  battleIndex++;
 
 
-  // 勝者は残す
+  startNextBattle();
 
-  battleQueue.push(winner);
-
-
-  // 敗者は脱落
-
-  eliminatedPeople.push(loser);
-
-
-  // 次の対戦
-
-  runNextBattle();
 }
 
 
 // ========================================
-// 9人決定
+// 順位決定
 // ========================================
 
-function showFinalists() {
-
-  // 9人にする
-
-  selectedFinalists =
-    selectedFinalists.slice(0, 9);
-
-
-  finalistsContainer.innerHTML = "";
-
-
-  selectedFinalists.forEach(function(person) {
-
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "finalist-card";
-
-
-    const image =
-      document.createElement("img");
-
-    image.src = person.image;
-
-    image.alt = person.name;
-
-
-    const name =
-      document.createElement("div");
-
-    name.textContent =
-      person.name;
-
-
-    card.appendChild(image);
-
-    card.appendChild(name);
-
-
-    finalistsContainer.appendChild(card);
-
-  });
-
-
-  nextButton.style.display =
-    "";
-
-
-  showScreen(finalistsScreen);
-}
-
-
-// ========================================
-// 順位決定スタート
-// ========================================
-
-rankingStartButton.addEventListener(
-  "click",
-  function() {
-
-    rankingPeople =
-      [...selectedFinalists];
-
-
-    rankingScores = {};
-
-
-    rankingPeople.forEach(function(person) {
-
-      rankingScores[person.name] = 0;
-
-    });
-
-
-    startRankingBattle();
-
-  }
-);
-
-
-// ========================================
-// 9人の順位決定
-// ========================================
-
-function startRankingBattle() {
-
-  if (rankingPeople.length <= 1) {
-
-    showRankingResult();
-
-    return;
-  }
-
-
-  battleWinner =
-    rankingPeople[0];
-
-  battleLoser =
-    rankingPeople[1];
-
-
-  renderRankingBattle();
-}
-
-
-// ========================================
-// 順位決定の対戦画面
-// ========================================
-
-function renderRankingBattle() {
-
-  personContainer.innerHTML = "";
-
-
-  progress.textContent =
-    "順位決定戦";
-
-
-  firstSelectedName.textContent =
-    battleWinner.name;
-
-
-  secondSelectedName.textContent =
-    battleLoser.name;
-
-
-  const first =
-    createRankingCard(battleWinner);
-
-
-  const second =
-    createRankingCard(battleLoser);
-
-
-  personContainer.appendChild(first);
-
-  personContainer.appendChild(second);
-
-
-  nextButton.style.display =
-    "none";
-
-
-  showScreen(selectionScreen);
-}
-
-
-// ========================================
-// 順位決定カード
-// ========================================
-
-function createRankingCard(person) {
-
-  const card =
-    document.createElement("button");
-
-  card.type = "button";
-
-  card.className =
-    "person-card";
-
-
-  const image =
-    document.createElement("img");
-
-  image.src = person.image;
-
-  image.alt = person.name;
-
-
-  const name =
-    document.createElement("div");
-
-  name.className =
-    "person-name";
-
-  name.textContent =
-    person.name;
-
-
-  card.appendChild(image);
-
-  card.appendChild(name);
-
-
-  card.addEventListener("click", function() {
-
-    chooseRankingWinner(person);
-
-  });
-
-
-  return card;
-}
-
-
-// ========================================
-// 順位決定で勝者
-// ========================================
-
-function chooseRankingWinner(person) {
-
-  let winner;
-
-  let loser;
-
-
-  if (person.name === battleWinner.name) {
-
-    winner = battleWinner;
-
-    loser = battleLoser;
-
-  } else {
-
-    winner = battleLoser;
-
-    loser = battleWinner;
-
-  }
-
-
-  // 勝った人に1ポイント
-
-  rankingScores[winner.name] += 1;
-
-
-  // この2人の比較が終わったら
-  // 次の組み合わせへ
-
-  moveToNextRankingBattle(
-    winner,
-    loser
-  );
-}
-
-
-// ========================================
-// 次の順位決定戦
-// ========================================
-
-function moveToNextRankingBattle(
-  winner,
-  loser
-) {
-
-  const remaining =
-    rankingPeople.filter(function(person) {
-
-      return (
-        person.name !== winner.name &&
-        person.name !== loser.name
-      );
-
-    });
-
-
-  if (remaining.length === 0) {
-
-    rankingPeople =
-      [...rankingPeople];
-
-    showRankingBattleNext();
-
-    return;
-  }
-
-
-  // 勝者を次の相手へ
-
-  battleWinner =
-    winner;
-
-  battleLoser =
-    remaining[0];
-
-
-  renderRankingBattle();
-}
-
-
-// ========================================
-// 順位決定戦を続ける
-// ========================================
-
-function showRankingBattleNext() {
-
-  // まだ比較していない組み合わせを探す
-
-  let found = false;
-
-
-  for (let i = 0; i < rankingPeople.length; i++) {
-
-    for (
-      let j = i + 1;
-      j < rankingPeople.length;
-      j++
-    ) {
-
-      const a =
-        rankingPeople[i];
-
-      const b =
-        rankingPeople[j];
-
-
-      if (
-        !hasCompared(a, b)
-      ) {
-
-        battleWinner = a;
-
-        battleLoser = b;
-
-        found = true;
-
-        break;
-      }
-    }
-
-
-    if (found) {
-      break;
-    }
-  }
-
-
-  if (found) {
-
-    saveCurrentComparison();
-
-    renderRankingBattle();
-
-    return;
-  }
-
-
-  showRankingResult();
-}
-
-
-// ========================================
-// 比較記録
-// ========================================
-
-const comparisonHistory = [];
-
-
-function saveCurrentComparison() {
-
-  const exists =
-    comparisonHistory.some(function(pair) {
-
-      return (
-        (
-          pair[0] === battleWinner.name &&
-          pair[1] === battleLoser.name
-        )
-        ||
-        (
-          pair[0] === battleLoser.name &&
-          pair[1] === battleWinner.name
-        )
-      );
-
-    });
-
-
-  if (!exists) {
-
-    comparisonHistory.push([
-      battleWinner.name,
-      battleLoser.name
-    ]);
-
-  }
-}
-
-
-// ========================================
-// 比較済みか
-// ========================================
-
-function hasCompared(a, b) {
-
-  return comparisonHistory.some(function(pair) {
-
-    return (
-      (
-        pair[0] === a.name &&
-        pair[1] === b.name
-      )
-      ||
-      (
-        pair[0] === b.name &&
-        pair[1] === a.name
-      )
-    );
-
-  });
-}
-
-
-// ========================================
-// 順位を決定
-// ========================================
-
-function showRankingResult() {
+function finishRanking() {
 
   const ranking =
-    [...rankingPeople];
+    [...finalists].sort(function(a, b) {
 
+      return (
+        battleWins[b.name] -
+        battleWins[a.name]
+      );
 
-  ranking.sort(function(a, b) {
-
-    return (
-      rankingScores[b.name] -
-      rankingScores[a.name]
-    );
-
-  });
+    });
 
 
   rankingContainer.innerHTML = "";
@@ -1231,11 +825,8 @@ function showRankingResult() {
     const image =
       document.createElement("img");
 
-    image.src =
-      person.image;
-
-    image.alt =
-      person.name;
+    image.src = person.image;
+    image.alt = person.name;
 
 
     const name =
@@ -1249,9 +840,7 @@ function showRankingResult() {
 
 
     item.appendChild(number);
-
     item.appendChild(image);
-
     item.appendChild(name);
 
 
@@ -1261,6 +850,7 @@ function showRankingResult() {
 
 
   showScreen(rankingScreen);
+
 }
 
 
@@ -1292,11 +882,9 @@ resultButton.addEventListener(
 
       ranking.push({
 
-        name:
-          name.textContent.trim(),
+        name: name.textContent.trim(),
 
-        image:
-          image.src
+        image: image.src
 
       });
 
@@ -1312,7 +900,7 @@ resultButton.addEventListener(
 
 
 // ========================================
-// 最終結果
+// 最終3×3
 // ========================================
 
 function renderResult(ranking) {
@@ -1351,44 +939,20 @@ function renderResult(ranking) {
     }
 
 
-    let rank = 0;
+    let rank;
 
 
-    if (index === 0) {
-      rank = 4;
-    }
+    if (index === 0) rank = 4;
+    if (index === 1) rank = 5;
+    if (index === 2) rank = 6;
 
-    if (index === 1) {
-      rank = 5;
-    }
+    if (index === 3) rank = 2;
+    if (index === 4) rank = 1;
+    if (index === 5) rank = 3;
 
-    if (index === 2) {
-      rank = 6;
-    }
-
-    if (index === 3) {
-      rank = 2;
-    }
-
-    if (index === 4) {
-      rank = 1;
-    }
-
-    if (index === 5) {
-      rank = 3;
-    }
-
-    if (index === 6) {
-      rank = 7;
-    }
-
-    if (index === 7) {
-      rank = 8;
-    }
-
-    if (index === 8) {
-      rank = 9;
-    }
+    if (index === 6) rank = 7;
+    if (index === 7) rank = 8;
+    if (index === 8) rank = 9;
 
 
     const item =
@@ -1411,11 +975,8 @@ function renderResult(ranking) {
     const image =
       document.createElement("img");
 
-    image.src =
-      person.image;
-
-    image.alt =
-      person.name;
+    image.src = person.image;
+    image.alt = person.name;
 
 
     const name =
@@ -1429,9 +990,7 @@ function renderResult(ranking) {
 
 
     item.appendChild(rankText);
-
     item.appendChild(image);
-
     item.appendChild(name);
 
 
@@ -1441,6 +1000,7 @@ function renderResult(ranking) {
 
 
   resultContainer.appendChild(grid);
+
 }
 
 
@@ -1452,7 +1012,7 @@ againButton.addEventListener(
   "click",
   function() {
 
-    comparisonHistory.length = 0;
+    nextButton.style.display = "";
 
     showScreen(startScreen);
 
@@ -1467,6 +1027,8 @@ againButton.addEventListener(
 backButton.addEventListener(
   "click",
   function() {
+
+    nextButton.style.display = "";
 
     showScreen(startScreen);
 
