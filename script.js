@@ -2,7 +2,6 @@
    写真・名前の登録場所
 ================================================== */
 const people = [
-
 { name: "n.top kanghyon",image: "n.top kanghyun.jpg" },
  { name: "n.top minseo", image: "n.top minseo.jpg" },
  { name: "n.top takuto", image: "n.top takuto.jpg" },
