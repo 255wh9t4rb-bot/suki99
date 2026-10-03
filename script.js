@@ -4,7 +4,7 @@
 
 
 // ----------------------------
-// HTMLの要素を取得
+// HTMLの要素
 // ----------------------------
 
 const startButton = document.getElementById("start-button");
@@ -40,8 +40,7 @@ const secondSelectedName =
 // ----------------------------
 
 const people = [
-
-{ name: "n.top kanghyon",image: "n.top kanghyun.jpg" },
+ { name: "n.top kanghyon",image: "n.top kanghyun.jpg" },
  { name: "n.top minseo", image: "n.top minseo.jpg" },
  { name: "n.top takuto", image: "n.top takuto.jpg" },
 　{ name: "n.top heewoo", image: "n.top heewoo.jpg" },
@@ -233,22 +232,19 @@ const people = [
    { name: "SAEINT BEOMSOO", image: "ST Beomsoo.jpg" },
     { name: "SAEINT SEOGYUM", image: "ST Seogyum.jpg" },
     { name: "SAEINT YOONSANG", image: "ST Yoonsang.jpg" },
-    { name: "SAEINT DONGGYU", image: "ST Donggyu.jpg" }
+    { name: "SAEINT DONGGYU", image: "ST Donggyu.jpg" },   
+
 ];
 
 
 // ----------------------------
-// ゲーム用の変数
+// ゲーム用変数
 // ----------------------------
 
 let candidates = [];
-
 let currentGroup = [];
-
 let selectedPeople = [];
-
 let selectedFinalists = [];
-
 let questionNumber = 0;
 
 
@@ -257,50 +253,30 @@ let questionNumber = 0;
 // ----------------------------
 
 function showScreen(screen) {
-
-  document
-    .querySelectorAll(".screen")
-    .forEach((item) => {
-
-      item.classList.remove("active");
-
-    });
+  document.querySelectorAll(".screen").forEach(function(item) {
+    item.classList.remove("active");
+  });
 
   screen.classList.add("active");
-
 }
 
 
 // ----------------------------
-// 配列をシャッフル
+// シャッフル
 // ----------------------------
 
 function shuffle(array) {
-
   const copied = [...array];
 
-  for (
-    let i = copied.length - 1;
-    i > 0;
-    i--
-  ) {
+  for (let i = copied.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
 
-    const j =
-      Math.floor(Math.random() * (i + 1));
-
-    [
-      copied[i],
-      copied[j]
-    ] =
-    [
-      copied[j],
-      copied[i]
-    ];
-
+    const temp = copied[i];
+    copied[i] = copied[j];
+    copied[j] = temp;
   }
 
   return copied;
-
 }
 
 
@@ -308,54 +284,43 @@ function shuffle(array) {
 // スタート
 // ----------------------------
 
-startButton.addEventListener("click", () => {
-
+startButton.addEventListener("click", function() {
   candidates = shuffle(people);
 
   selectedFinalists = [];
-
+  selectedPeople = [];
+  currentGroup = [];
   questionNumber = 0;
 
   showScreen(selectionScreen);
 
   showNextQuestion();
-
 });
 
 
 // ----------------------------
-// 次の4人を表示
+// 次の質問
 // ----------------------------
 
 function showNextQuestion() {
 
-  // 9人以下になったら終了
   if (candidates.length <= 9) {
-
-    selectedFinalists =
-      [...candidates];
+    selectedFinalists = [
+      ...selectedFinalists,
+      ...candidates
+    ];
 
     showFinalists();
-
     return;
-
   }
 
+  currentGroup = candidates.splice(0, 4);
 
-  // 4人取り出す
-  currentGroup =
-    candidates.splice(0, 4);
-
-
-  // 選択をリセット
   selectedPeople = [];
-
 
   questionNumber++;
 
-
   renderPeople();
-
 }
 
 
@@ -367,55 +332,39 @@ function renderPeople() {
 
   personContainer.innerHTML = "";
 
-
   firstSelectedName.textContent =
     "まだ選択されていません";
 
   secondSelectedName.textContent =
     "まだ選択されていません";
 
-
   progress.textContent =
-    `${questionNumber}回目`;
+    questionNumber + "回目";
 
+  currentGroup.forEach(function(person) {
 
-  currentGroup.forEach((person) => {
-
-    const card =
-      document.createElement("button");
+    const card = document.createElement("button");
 
     card.type = "button";
+    card.className = "person-card";
 
-    card.className =
-      "person-card";
+    const image = document.createElement("img");
+    image.src = person.image;
+    image.alt = person.name;
 
+    const name = document.createElement("div");
+    name.className = "person-name";
+    name.textContent = person.name;
 
-    card.innerHTML = `
-      <img
-        src="${person.image}"
-        alt="${person.name}"
-      >
+    card.appendChild(image);
+    card.appendChild(name);
 
-      <div class="person-name">
-        ${person.name}
-      </div>
-    `;
-
-
-    card.addEventListener("click", () => {
-
-      selectPerson(
-        person,
-        card
-      );
-
+    card.addEventListener("click", function() {
+      selectPerson(person, card);
     });
 
-
     personContainer.appendChild(card);
-
   });
-
 }
 
 
@@ -426,64 +375,55 @@ function renderPeople() {
 function selectPerson(person, card) {
 
   const alreadySelected =
-    selectedPeople.some(
-      (item) =>
-        item.name === person.name
-    );
+    selectedPeople.some(function(item) {
+      return item.name === person.name;
+    });
 
-
-  // すでに選択していたら解除
   if (alreadySelected) {
 
     selectedPeople =
-      selectedPeople.filter(
-        (item) =>
-          item.name !== person.name
-      );
+      selectedPeople.filter(function(item) {
+        return item.name !== person.name;
+      });
 
     card.classList.remove("selected");
 
-  }
+  } else {
 
-  // 新しく選択
-  else {
-
-    // 最大2人
     if (selectedPeople.length >= 2) {
-
       return;
-
     }
 
     selectedPeople.push(person);
 
     card.classList.add("selected");
-
   }
 
-
   updateSelectedNames();
-
 }
 
 
 // ----------------------------
-// 選択中の名前を表示
+// 選択中の名前
 // ----------------------------
 
 function updateSelectedNames() {
 
-  firstSelectedName.textContent =
-    selectedPeople[0]
-      ? selectedPeople[0].name
-      : "まだ選択されていません";
+  if (selectedPeople[0]) {
+    firstSelectedName.textContent =
+      selectedPeople[0].name;
+  } else {
+    firstSelectedName.textContent =
+      "まだ選択されていません";
+  }
 
-
-  secondSelectedName.textContent =
-    selectedPeople[1]
-      ? selectedPeople[1].name
-      : "まだ選択されていません";
-
+  if (selectedPeople[1]) {
+    secondSelectedName.textContent =
+      selectedPeople[1].name;
+  } else {
+    secondSelectedName.textContent =
+      "まだ選択されていません";
+  }
 }
 
 
@@ -491,54 +431,42 @@ function updateSelectedNames() {
 // 次へ
 // ----------------------------
 
-nextButton.addEventListener("click", () => {
+nextButton.addEventListener("click", function() {
 
-  // 選んだ人を残す
   selectedFinalists.push(
     ...selectedPeople
   );
 
-
   showNextQuestion();
-
 });
 
 
 // ----------------------------
-// 最終9人を表示
+// 最終9人
 // ----------------------------
 
 function showFinalists() {
 
-  // 重複を削除
   const unique = [];
 
-  selectedFinalists.forEach((person) => {
+  selectedFinalists.forEach(function(person) {
 
     const exists =
-      unique.some(
-        (item) =>
-          item.name === person.name
-      );
+      unique.some(function(item) {
+        return item.name === person.name;
+      });
 
     if (!exists) {
-
       unique.push(person);
-
     }
-
   });
 
-
-  // 9人を超えないようにする
   selectedFinalists =
     unique.slice(0, 9);
 
-
   finalistsContainer.innerHTML = "";
 
-
-  selectedFinalists.forEach((person) => {
+  selectedFinalists.forEach(function(person) {
 
     const card =
       document.createElement("div");
@@ -546,78 +474,82 @@ function showFinalists() {
     card.className =
       "finalist-card";
 
+    const image =
+      document.createElement("img");
 
-    card.innerHTML = `
-      <img
-        src="${person.image}"
-        alt="${person.name}"
-      >
+    image.src = person.image;
+    image.alt = person.name;
 
-      <div>
-        ${person.name}
-      </div>
-    `;
+    const name =
+      document.createElement("div");
 
+    name.textContent =
+      person.name;
+
+    card.appendChild(image);
+    card.appendChild(name);
 
     finalistsContainer.appendChild(card);
-
   });
 
-
   showScreen(finalistsScreen);
-
 }
 
 
 // ----------------------------
-// 順位を決める
+// 順位を表示
+// ※現在は仮でシャッフル
 // ----------------------------
 
 rankingStartButton.addEventListener(
   "click",
-  () => {
+  function() {
 
     const ranking =
       shuffle(selectedFinalists);
 
-
     rankingContainer.innerHTML = "";
 
+    ranking.forEach(function(person, index) {
 
-    ranking.forEach(
-      (person, index) => {
+      const item =
+        document.createElement("div");
 
-        const item =
-          document.createElement("div");
+      item.className =
+        "ranking-item";
 
-        item.className =
-          "ranking-item";
+      const number =
+        document.createElement("div");
 
+      number.className =
+        "ranking-number";
 
-        item.innerHTML = `
-          <div class="ranking-number">
-            ${index + 1}位
-          </div>
+      number.textContent =
+        (index + 1) + "位";
 
-          <img
-            src="${person.image}"
-            alt="${person.name}"
-          >
+      const image =
+        document.createElement("img");
 
-          <div class="ranking-name">
-            ${person.name}
-          </div>
-        `;
+      image.src = person.image;
+      image.alt = person.name;
 
+      const name =
+        document.createElement("div");
 
-        rankingContainer.appendChild(item);
+      name.className =
+        "ranking-name";
 
-      }
-    );
+      name.textContent =
+        person.name;
 
+      item.appendChild(number);
+      item.appendChild(image);
+      item.appendChild(name);
+
+      rankingContainer.appendChild(item);
+    });
 
     showScreen(rankingScreen);
-
   }
 );
 
@@ -628,72 +560,55 @@ rankingStartButton.addEventListener(
 
 resultButton.addEventListener(
   "click",
-  () => {
+  function() {
 
     const items =
       rankingContainer.querySelectorAll(
         ".ranking-item"
       );
 
-
     const ranking = [];
 
-
-    items.forEach((item) => {
+    items.forEach(function(item) {
 
       const image =
         item.querySelector("img");
 
       const name =
-        item.querySelector(
-          ".ranking-name"
-        );
-
+        item.querySelector(".ranking-name");
 
       ranking.push({
-
         name: name.textContent.trim(),
-
         image: image.src
-
       });
-
     });
-
 
     renderResult(ranking);
 
     showScreen(resultScreen);
-
   }
 );
 
 
 // ----------------------------
-// 3×3結果
+// 最終結果 3×3
 // ----------------------------
 
 function renderResult(ranking) {
 
   resultContainer.innerHTML = "";
 
-
   const order = [
-
     ranking[3],
     ranking[4],
     ranking[5],
-
     ranking[1],
     ranking[0],
     ranking[2],
-
     ranking[6],
     ranking[7],
     ranking[8]
-
   ];
-
 
   const grid =
     document.createElement("div");
@@ -701,75 +616,100 @@ function renderResult(ranking) {
   grid.className =
     "final-3x3-grid";
 
+  order.forEach(function(person, index) {
 
-  order.forEach(
-    (person, index) => {
-
-      if (!person) {
-        return;
-      }
-
-
-      let rank;
-
-
-      if (index === 0) rank = 4;
-      if (index === 1) rank = 5;
-      if (index === 2) rank = 6;
-
-      if (index === 3) rank = 2;
-      if (index === 4) rank = 1;
-      if (index === 5) rank = 3;
-
-      if (index === 6) rank = 7;
-      if (index === 7) rank = 8;
-      if (index === 8) rank = 9;
-
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "final-3x3-item";
-
-
-      item.innerHTML = `
-        <div class="final-rank">
-          ${rank}位
-        </div>
-
-        <img
-          src="${person.image}"
-          alt="${person.name}"
-        >
-
-        <div class="final-name">
-          ${person.name}
-        </div>
-      `;
-
-
-      grid.appendChild(item);
-
+    if (!person) {
+      return;
     }
-  );
 
+    let rank = 0;
+
+    if (index === 0) {
+      rank = 4;
+    }
+
+    if (index === 1) {
+      rank = 5;
+    }
+
+    if (index === 2) {
+      rank = 6;
+    }
+
+    if (index === 3) {
+      rank = 2;
+    }
+
+    if (index === 4) {
+      rank = 1;
+    }
+
+    if (index === 5) {
+      rank = 3;
+    }
+
+    if (index === 6) {
+      rank = 7;
+    }
+
+    if (index === 7) {
+      rank = 8;
+    }
+
+    if (index === 8) {
+      rank = 9;
+    }
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "final-3x3-item";
+
+    const rankText =
+      document.createElement("div");
+
+    rankText.className =
+      "final-rank";
+
+    rankText.textContent =
+      rank + "位";
+
+    const image =
+      document.createElement("img");
+
+    image.src = person.image;
+    image.alt = person.name;
+
+    const name =
+      document.createElement("div");
+
+    name.className =
+      "final-name";
+
+    name.textContent =
+      person.name;
+
+    item.appendChild(rankText);
+    item.appendChild(image);
+    item.appendChild(name);
+
+    grid.appendChild(item);
+  });
 
   resultContainer.appendChild(grid);
-
 }
 
 
 // ----------------------------
-// もう一度
+// もう一度やる
 // ----------------------------
 
 againButton.addEventListener(
   "click",
-  () => {
+  function() {
 
     showScreen(startScreen);
-
   }
 );
 
@@ -780,9 +720,8 @@ againButton.addEventListener(
 
 backButton.addEventListener(
   "click",
-  () => {
+  function() {
 
     showScreen(startScreen);
-
   }
 );
