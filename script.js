@@ -40,7 +40,7 @@ const secondSelectedName =
 // ========================================
 
 const people = [
-{ name: "n.top kanghyon",image: "n.top kanghyun.jpg" },
+ { name: "n.top kanghyon",image: "n.top kanghyun.jpg" },
  { name: "n.top minseo", image: "n.top minseo.jpg" },
  { name: "n.top takuto", image: "n.top takuto.jpg" },
 　{ name: "n.top heewoo", image: "n.top heewoo.jpg" },
@@ -237,32 +237,23 @@ const people = [
 
 ];
 
-
 // ========================================
-// 予選用データ
+// ゲーム用データ
 // ========================================
 
-let activePeople = [];
-let selectedPeople = [];
+let candidates = [];
 let currentGroup = [];
-
-let selectionScores = {};
-let appearanceCounts = {};
-
-let selectionRound = 0;
-
-const MAX_SELECTION_ROUNDS = 15;
-
-
-// ========================================
-// 頂上決戦用
-// ========================================
+let selectedPeople = [];
 
 let finalists = [];
 
+
+// ========================================
+// 頂上決戦
+// ========================================
+
 let battlePairs = [];
 let battleIndex = 0;
-
 let battleWins = {};
 
 
@@ -281,49 +272,57 @@ function showScreen(screen) {
 
 
 // ========================================
-// スタート
+// ゲーム開始
 // ========================================
 
 startButton.addEventListener("click", function() {
 
-  activePeople = people.map(function(person) {
+  // 前回の結果を完全にリセット
+  candidates = people.map(function(person) {
     return {
       name: person.name,
       image: person.image
     };
   });
 
-  selectedPeople = [];
   currentGroup = [];
+  selectedPeople = [];
+  finalists = [];
 
-  selectionScores = {};
-  appearanceCounts = {};
+  battlePairs = [];
+  battleIndex = 0;
+  battleWins = {};
 
-  selectionRound = 0;
-
-  activePeople.forEach(function(person) {
-    selectionScores[person.name] = 0;
-    appearanceCounts[person.name] = 0;
-  });
+  nextButton.style.display = "";
 
   showScreen(selectionScreen);
 
-  startSelectionRound();
+  startEliminationRound();
 
 });
 
 
 // ========================================
-// 4人を選ぶ予選
+// 絞り込み開始
 // ========================================
 
-function startSelectionRound() {
+function startEliminationRound() {
 
-  selectionRound++;
+  // 9人になったら終了
+  if (candidates.length <= 9) {
+
+    finalists = candidates.slice();
+
+    showFinalists();
+
+    return;
+  }
+
+
+  // 候補者の中から4人を出す
+  currentGroup = chooseGroup(candidates);
 
   selectedPeople = [];
-
-  currentGroup = chooseFourPeople();
 
   renderSelectionGroup();
 
@@ -331,58 +330,25 @@ function startSelectionRound() {
 
 
 // ========================================
-// 次に出す4人を決める
+// 4人を選ぶ
 // ========================================
 
-function chooseFourPeople() {
+function chooseGroup(list) {
 
-  const sorted = [...activePeople];
+  const shuffled = list.slice();
 
-  sorted.sort(function(a, b) {
-
-    return (
-      appearanceCounts[a.name] -
-      appearanceCounts[b.name]
-    );
-
-  });
-
-
-  const lowestAppearance =
-    appearanceCounts[sorted[0].name];
-
-
-  const candidates =
-    sorted.filter(function(person) {
-
-      return (
-        appearanceCounts[person.name] <=
-        lowestAppearance + 1
-      );
-
-    });
-
-
-  // 同じくらい登場している人の中から選ぶ
-  candidates.sort(function() {
+  shuffled.sort(function() {
     return Math.random() - 0.5;
   });
 
 
-  const group = candidates.slice(0, 4);
+  return shuffled.slice(0, Math.min(4, shuffled.length));
 
-
-  group.forEach(function(person) {
-    appearanceCounts[person.name]++;
-  });
-
-
-  return group;
 }
 
 
 // ========================================
-// 4人を画面に表示
+// 4人を表示
 // ========================================
 
 function renderSelectionGroup() {
@@ -397,7 +363,9 @@ function renderSelectionGroup() {
 
 
   progress.textContent =
-    "第" + selectionRound + "回";
+    "候補者 " +
+    candidates.length +
+    "人";
 
 
   currentGroup.forEach(function(person) {
@@ -455,14 +423,19 @@ function toggleSelection(person, card) {
     });
 
 
+  // すでに選んでいる場合は解除
   if (index !== -1) {
 
     selectedPeople.splice(index, 1);
 
     card.classList.remove("selected");
 
-  } else {
+  }
 
+  // まだ選んでいない場合
+  else {
+
+    // 最大2人
     if (selectedPeople.length >= 2) {
       return;
     }
@@ -475,6 +448,7 @@ function toggleSelection(person, card) {
 
 
   updateSelectedNames();
+
 }
 
 
@@ -518,58 +492,66 @@ function updateSelectedNames() {
 
 nextButton.addEventListener("click", function() {
 
-  selectedPeople.forEach(function(person) {
+  // 0人選択なら進まない
+  if (selectedPeople.length === 0) {
 
-    selectionScores[person.name]++;
-
-  });
-
-
-  // 15回までは何度も選ぶ
-
-  if (selectionRound < MAX_SELECTION_ROUNDS) {
-
-    startSelectionRound();
+    alert("好きな人を1人以上選んでください。");
 
     return;
 
   }
 
 
-  // 15回終了
-  makeNineFinalists();
+  // 今回表示した4人から
+  // 選ばれなかった人を候補から外す
+
+  const selectedNames =
+    selectedPeople.map(function(person) {
+      return person.name;
+    });
+
+
+  candidates =
+    candidates.filter(function(person) {
+
+      // 今回の4人だった場合
+      if (
+        currentGroup.some(function(groupPerson) {
+          return groupPerson.name === person.name;
+        })
+      ) {
+
+        // 選ばれていれば残す
+        return selectedNames.includes(person.name);
+
+      }
+
+      // 今回表示されていない人はそのまま残す
+      return true;
+
+    });
+
+
+  // 9人以下になったら終了
+  if (candidates.length <= 9) {
+
+    finalists = candidates.slice();
+
+    showFinalists();
+
+    return;
+
+  }
+
+
+  // まだ多いので次の4人へ
+  startEliminationRound();
 
 });
 
 
 // ========================================
-// 9人に絞る
-// ========================================
-
-function makeNineFinalists() {
-
-  const sorted =
-    [...activePeople].sort(function(a, b) {
-
-      return (
-        selectionScores[b.name] -
-        selectionScores[a.name]
-      );
-
-    });
-
-
-  finalists =
-    sorted.slice(0, 9);
-
-
-  showFinalists();
-
-}
-
-
-// ========================================
-// 9人表示
+// 最終9人を表示
 // ========================================
 
 function showFinalists() {
@@ -614,49 +596,49 @@ function showFinalists() {
 
 
 // ========================================
-// 頂上決戦スタート
+// 頂上決戦開始
 // ========================================
 
-rankingStartButton.addEventListener(
-  "click",
-  function() {
+rankingStartButton.addEventListener("click", function() {
 
-    battlePairs = [];
-    battleIndex = 0;
-
-    battleWins = {};
+  battlePairs = [];
+  battleIndex = 0;
+  battleWins = {};
 
 
-    finalists.forEach(function(person) {
+  finalists.forEach(function(person) {
 
-      battleWins[person.name] = 0;
+    battleWins[person.name] = 0;
 
-    });
+  });
 
 
-    // 9人全員の組み合わせを作る
-    for (let i = 0; i < finalists.length; i++) {
+  // 9人全員を1対1で対戦
+  for (
+    let i = 0;
+    i < finalists.length;
+    i++
+  ) {
 
-      for (
-        let j = i + 1;
-        j < finalists.length;
-        j++
-      ) {
+    for (
+      let j = i + 1;
+      j < finalists.length;
+      j++
+    ) {
 
-        battlePairs.push([
-          finalists[i],
-          finalists[j]
-        ]);
-
-      }
+      battlePairs.push([
+        finalists[i],
+        finalists[j]
+      ]);
 
     }
 
-
-    startNextBattle();
-
   }
-);
+
+
+  startNextBattle();
+
+});
 
 
 // ========================================
@@ -670,6 +652,7 @@ function startNextBattle() {
     finishRanking();
 
     return;
+
   }
 
 
@@ -677,7 +660,10 @@ function startNextBattle() {
     battlePairs[battleIndex];
 
 
-  renderBattle(pair[0], pair[1]);
+  renderBattle(
+    pair[0],
+    pair[1]
+  );
 
 }
 
@@ -689,7 +675,6 @@ function startNextBattle() {
 function renderBattle(personA, personB) {
 
   showScreen(selectionScreen);
-
 
   personContainer.innerHTML = "";
 
@@ -708,6 +693,7 @@ function renderBattle(personA, personB) {
     personB.name;
 
 
+  // 次へボタンを隠す
   nextButton.style.display = "none";
 
 
@@ -763,6 +749,7 @@ function createBattleCard(person) {
 
 
   return card;
+
 }
 
 
@@ -790,7 +777,7 @@ function chooseBattleWinner(person) {
 function finishRanking() {
 
   const ranking =
-    [...finalists].sort(function(a, b) {
+    finalists.slice().sort(function(a, b) {
 
       return (
         battleWins[b.name] -
@@ -858,49 +845,46 @@ function finishRanking() {
 // 結果を見る
 // ========================================
 
-resultButton.addEventListener(
-  "click",
-  function() {
+resultButton.addEventListener("click", function() {
 
-    const items =
-      rankingContainer.querySelectorAll(
-        ".ranking-item"
-      );
+  const items =
+    rankingContainer.querySelectorAll(
+      ".ranking-item"
+    );
 
 
-    const ranking = [];
+  const ranking = [];
 
 
-    items.forEach(function(item) {
+  items.forEach(function(item) {
 
-      const image =
-        item.querySelector("img");
+    const image =
+      item.querySelector("img");
 
-      const name =
-        item.querySelector(".ranking-name");
+    const name =
+      item.querySelector(".ranking-name");
 
 
-      ranking.push({
+    ranking.push({
 
-        name: name.textContent.trim(),
+      name: name.textContent.trim(),
 
-        image: image.src
-
-      });
+      image: image.src
 
     });
 
+  });
 
-    renderResult(ranking);
 
-    showScreen(resultScreen);
+  renderResult(ranking);
 
-  }
-);
+  showScreen(resultScreen);
+
+});
 
 
 // ========================================
-// 最終3×3
+// 最終結果 3×3
 // ========================================
 
 function renderResult(ranking) {
@@ -1005,32 +989,26 @@ function renderResult(ranking) {
 
 
 // ========================================
-// もう一度
+// もう一度やる
 // ========================================
 
-againButton.addEventListener(
-  "click",
-  function() {
+againButton.addEventListener("click", function() {
 
-    nextButton.style.display = "";
+  nextButton.style.display = "";
 
-    showScreen(startScreen);
+  showScreen(startScreen);
 
-  }
-);
+});
 
 
 // ========================================
 // 戻る
 // ========================================
 
-backButton.addEventListener(
-  "click",
-  function() {
+backButton.addEventListener("click", function() {
 
-    nextButton.style.display = "";
+  nextButton.style.display = "";
 
-    showScreen(startScreen);
+  showScreen(startScreen);
 
-  }
-);
+});
