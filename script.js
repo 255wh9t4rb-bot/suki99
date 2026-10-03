@@ -1188,40 +1188,75 @@ function renderResult() {
 
   resultContainer.innerHTML = "";
 
+  /*
+    最終順位を表の位置に合わせる
 
-  finalRanking.forEach(
-    (person, index) => {
+    4位 | 5位 | 6位
+    2位 | 1位 | 3位
+    7位 | 8位 | 9位
+  */
 
-      const item =
-        document.createElement("div");
+  const displayOrder = [
+    finalRanking[3], // 4位
+    finalRanking[4], // 5位
+    finalRanking[5], // 6位
 
+    finalRanking[1], // 2位
+    finalRanking[0], // 1位
+    finalRanking[2], // 3位
 
-      item.className =
-        "result-item";
-
-
-      item.innerHTML = `
-
-        <div class="result-rank">
-          ${index + 1}
-        </div>
-
-        <img
-          src="${person.image}"
-          alt="${person.name}"
-        >
-
-        <div class="result-name">
-          ${person.name}
-        </div>
-
-      `;
+    finalRanking[6], // 7位
+    finalRanking[7], // 8位
+    finalRanking[8]  // 9位
+  ];
 
 
-      resultContainer.appendChild(
-        item
-      );
+  const grid =
+    document.createElement("div");
 
+  grid.className =
+    "final-3x3-grid";
+
+
+  displayOrder.forEach(person => {
+
+    const rank =
+      finalRanking.indexOf(person) + 1;
+
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "final-3x3-item";
+
+
+    item.innerHTML = `
+
+      <div class="final-rank">
+        ${rank}位
+      </div>
+
+      <img
+        src="${person.image}"
+        alt="${person.name}"
+      >
+
+      <div class="final-name">
+        ${person.name}
+      </div>
+
+    `;
+
+
+    grid.appendChild(item);
+
+  });
+
+
+  resultContainer.appendChild(grid);
+
+}
     }
   );
 
