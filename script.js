@@ -30,7 +30,7 @@ const people = [
  { name: "ANOHRTS スンチャン", image: "anohrts スンチャン.jpg" },
  { name: "ANOHRTS ダフン", image: "anohrts ダフン.jpg" },
  { name: "ANOHRTS ヒュンジェ", image: "anohrts ヒュンジェ.jpg" },
- { name: "ANOHRTS ギヒョン", image: "anohrts ギヒョン.jpg" },
+ { name: "ANOHRTS ギヒョン", image: "anohtys ギヒョン.jpg" },
  { name: "NXON KDAY", image: "nxon k day.jpg" },
  { name: "NXON K", image: "nxon k.jpg" },
  { name: "NXON GYEOM", image: "nxon ギョム.jpg" },
