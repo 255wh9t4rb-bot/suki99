@@ -219,8 +219,6 @@ const people = [
     { name: "SAEINT SEOGYUM", image: "ST Seogyum.jpg" },
     { name: "SAEINT YOONSANG", image: "ST Yoonsang.jpg" },
     { name: "SAEINT DONGGYU", image: "ST Donggyu.jpg" },
-   
-
 ];
 
 // =========================
@@ -250,7 +248,6 @@ function showScreen(screen) {
   if (screen) {
     screen.classList.add("active");
   }
-}
 
 
 // =========================
