@@ -3,86 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>好きな顔9選</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- =========================
-       スタート画面
-  ========================== -->
-
+  <!-- スタート画面 -->
   <section id="start-screen" class="screen active">
-
     <div class="start-container">
+      <p class="small-title">MY FAVORITE FACES</p>
 
-      <p class="small-title">
-        MY FAVORITE FACES
-      </p>
-
-      <h1>
-        好きな顔9選
-      </h1>
+      <h1>好きな顔9選</h1>
 
       <p class="description">
         あなたの好きな顔を9人選んで<br>
         最後に1位から9位まで決めよう
       </p>
 
-      <button
-        id="start-button"
-        class="main-button"
-      >
+      <button id="start-button" class="main-button">
         スタート
       </button>
-
     </div>
-
   </section>
 
 
-  <!-- =========================
-       4人から選ぶ画面
-  ========================== -->
-
+  <!-- 4人から選ぶ画面 -->
   <section id="selection-screen" class="screen">
 
     <div class="top-area">
-
-      <button
-        id="back-button"
-        class="back-button"
-      >
+      <button id="back-button" class="back-button">
         ← 戻る
       </button>
 
       <p id="progress"></p>
+    </div>
+
+    <h2>好きな顔を選んでね</h2>
+
+    <p class="instruction">
+      4人の中から<br>
+      1位と2位を選んでください
+    </p>
+
+
+    <!-- 現在の選択 -->
+    <div class="selected-area">
+
+      <div class="selected-box first-box">
+        <div class="selected-title">
+          🥇 1位
+        </div>
+
+        <div id="first-selected-name">
+          まだ選択されていません
+        </div>
+      </div>
+
+
+      <div class="selected-box second-box">
+        <div class="selected-title">
+          🥈 2位
+        </div>
+
+        <div id="second-selected-name">
+          まだ選択されていません
+        </div>
+      </div>
 
     </div>
 
 
-    <h2>
-      好きな顔を選んでね
-    </h2>
+    <!-- 4人の写真 -->
+    <div id="person-container" class="person-container"></div>
 
-    <p class="instruction">
-      4人の中から<br>
-      「1位」と「2位」を選んでください
-    </p>
-
-
-    <!-- 4人の画像 -->
-
-    <div
-      id="person-container"
-      class="person-container"
-    ></div>
-
-
-    <!-- 次へボタン -->
 
     <button
       id="next-button"
@@ -95,26 +89,19 @@
   </section>
 
 
-  <!-- =========================
-       最終9人
-  ========================== -->
-
+  <!-- 最終9人 -->
   <section id="finalists-screen" class="screen">
 
-    <h2>
-      好きな顔9人
-    </h2>
+    <h2>好きな顔9人</h2>
 
     <p class="instruction">
       あなたが選んだ9人です
     </p>
 
-
     <div
       id="finalists-container"
       class="finalists-container"
     ></div>
-
 
     <button
       id="ranking-start-button"
@@ -126,26 +113,19 @@
   </section>
 
 
-  <!-- =========================
-       順位決定
-  ========================== -->
-
+  <!-- 順位決め -->
   <section id="ranking-screen" class="screen">
 
-    <h2>
-      順位を決めよう
-    </h2>
+    <h2>順位を決めよう</h2>
 
     <p class="instruction">
       上から好きな順番にしてください
     </p>
 
-
     <div
       id="ranking-container"
       class="ranking-container"
     ></div>
-
 
     <button
       id="result-button"
@@ -157,26 +137,19 @@
   </section>
 
 
-  <!-- =========================
-       結果
-  ========================== -->
-
+  <!-- 結果 -->
   <section id="result-screen" class="screen">
 
     <p class="small-title">
       YOUR FAVORITE 9
     </p>
 
-    <h1>
-      好きな顔9選
-    </h1>
-
+    <h1>好きな顔9選</h1>
 
     <div
       id="result-container"
       class="result-container"
     ></div>
-
 
     <button
       id="again-button"
