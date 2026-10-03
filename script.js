@@ -262,93 +262,57 @@ const resultContainer =
 const progress =
   document.getElementById("progress");
 
-const firstSelectedName =
-  document.getElementById("first-selected-name");
-
-const secondSelectedName =
-  document.getElementById("second-selected-name");
-
 
 /* ==================================================
-   ゲームのデータ
+   ゲームデータ
 ================================================== */
-
 
 /*
   現在の候補者
 */
-
-let currentCandidates = [];
+let candidates = [];
 
 
 /*
   今表示している4人
 */
-
 let currentGroup = [];
 
 
 /*
-  今選んでいる人
-  0〜2人
+  今回選んだ人
 */
-
-let selectedThisQuestion = [];
+let currentSelected = [];
 
 
 /*
-  次の候補者
+  今回のラウンドで使う4人組
 */
-
-let nextCandidates = [];
+let groups = [];
 
 
 /*
-  現在何問目か
+  今何問目か
 */
-
-let currentQuestion = 0;
+let questionIndex = 0;
 
 
 /*
-  そのラウンドで何問あるか
+  選択回数
 */
-
-let totalQuestions = 0;
+let selectionCounts = new Map();
 
 
 /*
   最終9人
 */
-
-let selectedPeople = [];
+let finalNine = [];
 
 
 /*
   最終順位
 */
-
 let finalRanking = [];
-
-
-/* ==================================================
-   画面切り替え
-================================================== */
-
-function showScreen(screen) {
-
-  document
-    .querySelectorAll(".screen")
-    .forEach(element => {
-
-      element.classList.remove("active");
-
-    });
-
-  screen.classList.add("active");
-
-  window.scrollTo(0, 0);
-}
 
 
 /* ==================================================
@@ -371,8 +335,7 @@ function shuffle(array) {
     [
       result[i],
       result[j]
-    ] =
-    [
+    ] = [
       result[j],
       result[i]
     ];
@@ -384,15 +347,52 @@ function shuffle(array) {
 
 
 /* ==================================================
-   4人ずつに分ける
+   画面切り替え
 ================================================== */
 
-function makeGroups(candidates) {
+function showScreen(screen) {
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(screenElement => {
+
+      screenElement.classList.remove("active");
+
+    });
+
+  screen.classList.add("active");
+
+  window.scrollTo(0, 0);
+}
+
+
+/* ==================================================
+   選択回数をリセット
+================================================== */
+
+function resetCounts() {
+
+  selectionCounts = new Map();
+
+  people.forEach(person => {
+
+    selectionCounts.set(person, 0);
+
+  });
+
+}
+
+
+/* ==================================================
+   4人ずつにする
+================================================== */
+
+function makeGroups(list) {
 
   const shuffled =
-    shuffle(candidates);
+    shuffle(list);
 
-  const groups = [];
+  const result = [];
 
 
   for (
@@ -401,40 +401,46 @@ function makeGroups(candidates) {
     i += 4
   ) {
 
-    groups.push(
-      shuffled.slice(i, i + 4)
-    );
+    const group =
+      shuffled.slice(i, i + 4);
+
+
+    /*
+      4人そろっているグループだけ使用
+    */
+
+    if (group.length === 4) {
+
+      result.push(group);
+
+    }
 
   }
 
 
-  return groups;
+  return result;
+
 }
 
 
 /* ==================================================
-   現在の質問を表示
+   質問を表示
 ================================================== */
 
 function renderQuestion() {
 
-  personContainer.innerHTML = "";
+  currentSelected = [];
 
 
-  selectedThisQuestion = [];
+  currentGroup =
+    groups[questionIndex];
 
-
-  /*
-    現在の進み具合
-  */
 
   progress.textContent =
-    `${currentQuestion} / ${totalQuestions}`;
+    `${questionIndex + 1} / ${groups.length}`;
 
 
-  updateSelectedNames();
-
-  updateNextButton();
+  personContainer.innerHTML = "";
 
 
   currentGroup.forEach(person => {
@@ -465,7 +471,10 @@ function renderQuestion() {
       "click",
       () => {
 
-        togglePerson(person);
+        toggleSelection(
+          person,
+          card
+        );
 
       }
     );
@@ -475,6 +484,13 @@ function renderQuestion() {
 
   });
 
+
+  /*
+    0人でも次へ進める
+  */
+
+  nextButton.disabled = false;
+
 }
 
 
@@ -482,62 +498,74 @@ function renderQuestion() {
    人を選択・解除
 ================================================== */
 
-function togglePerson(person) {
+function toggleSelection(
+  person,
+  card
+) {
 
   const index =
-    selectedThisQuestion.indexOf(person);
+    currentSelected.indexOf(person);
 
 
   /*
-    すでに選んでいたら解除
+    すでに選択している
+    ↓
+    選択解除
   */
 
   if (index !== -1) {
 
-    selectedThisQuestion.splice(
+    currentSelected.splice(
       index,
       1
     );
+
+    card.classList.remove(
+      "first-selected"
+    );
+
+    card.classList.remove(
+      "second-selected"
+    );
+
+    updateSelectionBadges();
+
+    return;
 
   }
 
 
   /*
-    選んでいなかったら追加
-
-    最大2人
+    2人選択済みなら
+    これ以上選べない
   */
 
-  else {
+  if (
+    currentSelected.length >= 2
+  ) {
 
-    if (
-      selectedThisQuestion.length >= 2
-    ) {
-
-      return;
-
-    }
-
-
-    selectedThisQuestion.push(person);
+    return;
 
   }
 
 
-  updateCards();
+  /*
+    選択する
+  */
 
-  updateSelectedNames();
+  currentSelected.push(person);
 
-  updateNextButton();
+
+  updateSelectionBadges();
 
 }
 
 
 /* ==================================================
-   写真の選択表示
+   1位・2位の表示
 ================================================== */
 
-function updateCards() {
+function updateSelectionBadges() {
 
   const cards =
     document.querySelectorAll(
@@ -546,12 +574,6 @@ function updateCards() {
 
 
   cards.forEach(card => {
-
-    const name =
-      card.querySelector(
-        ".person-name"
-      ).textContent;
-
 
     card.classList.remove(
       "first-selected"
@@ -562,9 +584,15 @@ function updateCards() {
     );
 
 
+    const name =
+      card.querySelector(
+        ".person-name"
+      ).textContent;
+
+
     if (
-      selectedThisQuestion[0] &&
-      selectedThisQuestion[0].name === name
+      currentSelected[0] &&
+      currentSelected[0].name === name
     ) {
 
       card.classList.add(
@@ -575,8 +603,8 @@ function updateCards() {
 
 
     if (
-      selectedThisQuestion[1] &&
-      selectedThisQuestion[1].name === name
+      currentSelected[1] &&
+      currentSelected[1].name === name
     ) {
 
       card.classList.add(
@@ -591,77 +619,48 @@ function updateCards() {
 
 
 /* ==================================================
-   1位・2位表示
+   今回の選択を記録
 ================================================== */
 
-function updateSelectedNames() {
+function recordSelections() {
+
+  currentSelected.forEach(person => {
+
+    const oldCount =
+      selectionCounts.get(person) || 0;
 
 
-  if (selectedThisQuestion[0]) {
+    selectionCounts.set(
+      person,
+      oldCount + 1
+    );
 
-    firstSelectedName.textContent =
-      selectedThisQuestion[0].name;
-
-  }
-
-  else {
-
-    firstSelectedName.textContent =
-      "まだ選択されていません";
-
-  }
-
-
-  if (selectedThisQuestion[1]) {
-
-    secondSelectedName.textContent =
-      selectedThisQuestion[1].name;
-
-  }
-
-  else {
-
-    secondSelectedName.textContent =
-      "まだ選択されていません";
-
-  }
+  });
 
 }
 
 
 /* ==================================================
-   次へボタン
+   現在の順位を取得
 ================================================== */
 
+function getSortedPeople(list) {
 
-/*
-  今回は0人でも1人でも2人でも
-  次へ進める
-*/
+  return [...list].sort(
+    (a, b) => {
 
-function updateNextButton() {
+      const aCount =
+        selectionCounts.get(a) || 0;
 
-  nextButton.disabled = false;
-
-}
+      const bCount =
+        selectionCounts.get(b) || 0;
 
 
-/* ==================================================
-   現在の選択を次へ送る
-================================================== */
+      /*
+        選ばれた回数が多い順
+      */
 
-function saveCurrentAnswer() {
-
-  selectedThisQuestion.forEach(
-    person => {
-
-      if (
-        !nextCandidates.includes(person)
-      ) {
-
-        nextCandidates.push(person);
-
-      }
+      return bCount - aCount;
 
     }
   );
@@ -670,72 +669,109 @@ function saveCurrentAnswer() {
 
 
 /* ==================================================
-   次のラウンドを作る
+   次のラウンドを開始
 ================================================== */
 
 function startNextRound() {
 
+  /*
+    現在の候補者を
+    選択回数の多い順に並べる
+  */
+
+  const sorted =
+    getSortedPeople(candidates);
+
 
   /*
-    現在の候補者が9人以下になったら
-    9人を確定
+    一度も選ばれていない人
+  */
+
+  const selectedPeople =
+    sorted.filter(
+      person =>
+        (selectionCounts.get(person) || 0) > 0
+    );
+
+
+  /*
+    9人以上選ばれているなら
+    上位9人に絞れる
   */
 
   if (
-    nextCandidates.length <= 9
+    selectedPeople.length <= 9
   ) {
 
     /*
-      9人未満になってしまった場合は、
-      それまでの候補から補充する。
-
-      これによって必ず9人にする。
-    */
-
-    let finalPool =
-      [...nextCandidates];
-
-
-    /*
-      まだ9人に足りない場合、
-      前ラウンドで落ちた人から
-      ランダムではなく順番に補充
+      まだ9人に達していない場合
+      ↓
+      選ばれている人だけを候補にして
+      もう一度比較する
     */
 
     if (
-      finalPool.length < 9
+      selectedPeople.length === 0
     ) {
 
-      const remaining =
-        people.filter(
-          person =>
-            !finalPool.includes(person)
-        );
+      /*
+        全員0回の場合は
+        もう一度全員を比較
+      */
 
-
-      while (
-        finalPool.length < 9 &&
-        remaining.length > 0
-      ) {
-
-        finalPool.push(
-          remaining.shift()
-        );
-
-      }
+      candidates =
+        [...candidates];
 
     }
 
+    else {
 
-    selectedPeople =
-      finalPool.slice(0, 9);
+      candidates =
+        [...selectedPeople];
+
+    }
+
+  }
+
+  else {
+
+    /*
+      選択回数上位の人だけ残す
+
+      9人より少し多めに残して
+      もう一度比較する
+    */
+
+    candidates =
+      selectedPeople.slice(
+        0,
+        Math.max(
+          9,
+          Math.ceil(
+            selectedPeople.length * 0.6
+          )
+        )
+      );
+
+  }
 
 
-    renderFinalists();
+  /*
+    9人になったら終了
+  */
 
-    showScreen(
-      finalistsScreen
-    );
+  if (
+    candidates.length <= 9 &&
+    selectedPeople.length >= 9
+  ) {
+
+    finalNine =
+      getSortedPeople(
+        candidates
+      ).slice(0, 9);
+
+
+    showFinalNine();
 
     return;
 
@@ -743,49 +779,39 @@ function startNextRound() {
 
 
   /*
-    9人より多い場合は、
-    選ばれた人だけで次のラウンド
+    もう一度4人ずつ比較
   */
 
-  currentCandidates =
-    [...nextCandidates];
-
-
-  nextCandidates = [];
-
-
-  currentQuestion = 0;
-
-
-  const groups =
-    makeGroups(currentCandidates);
+  groups =
+    makeGroups(candidates);
 
 
   /*
-    4人未満の最後のグループができたら
-    その人たちを次のラウンドに残す
+    4人未満で余った人がいた場合
+    その人たちは次のラウンドにも残す
   */
 
-  const validGroups = [];
+  const used =
+    groups.flat();
 
 
-  groups.forEach(group => {
+  const leftovers =
+    candidates.filter(
+      person =>
+        !used.includes(person)
+    );
 
-    if (
-      group.length === 4
-    ) {
 
-      validGroups.push(group);
+  /*
+    余った人は次のラウンドの
+    候補として追加
+  */
 
-    }
+  leftovers.forEach(person => {
 
-    else {
+    if (!groups.length) {
 
-      group.forEach(person => {
-
-        nextCandidates.push(person);
-
-      });
+      groups.push([]);
 
     }
 
@@ -793,81 +819,32 @@ function startNextRound() {
 
 
   /*
-    残った人を最初のグループに加える
+    もし4人組が作れなくなったら
   */
 
   if (
-    nextCandidates.length > 0
+    groups.length === 0
   ) {
 
-    if (
-      validGroups.length > 0
-    ) {
-
-      validGroups[
-        validGroups.length - 1
-      ] =
-      [
-        ...validGroups[
-          validGroups.length - 1
-        ],
-        ...nextCandidates
-      ].slice(0, 4);
-
-    }
-
-  }
+    finalNine =
+      getSortedPeople(
+        candidates
+      ).slice(0, 9);
 
 
-  questionGroupsForCurrentRound =
-    validGroups;
-
-
-  totalQuestions =
-    questionGroupsForCurrentRound.length;
-
-
-  if (
-    totalQuestions === 0
-  ) {
-
-    selectedPeople =
-      currentCandidates.slice(0, 9);
-
-
-    renderFinalists();
-
-    showScreen(
-      finalistsScreen
-    );
+    showFinalNine();
 
     return;
 
   }
 
 
-  currentGroup =
-    questionGroupsForCurrentRound[0];
-
-
-  currentQuestion = 1;
-
-
-  showScreen(
-    selectionScreen
-  );
+  questionIndex = 0;
 
 
   renderQuestion();
 
 }
-
-
-/* ==================================================
-   現在のラウンドの質問
-================================================== */
-
-let questionGroupsForCurrentRound = [];
 
 
 /* ==================================================
@@ -877,7 +854,6 @@ let questionGroupsForCurrentRound = [];
 startButton.addEventListener(
   "click",
   () => {
-
 
     if (
       people.length < 4
@@ -893,86 +869,37 @@ startButton.addEventListener(
 
 
     /*
-      最初は全員が候補
+      全員を候補にする
     */
 
-    currentCandidates =
+    candidates =
       [...people];
 
 
-    nextCandidates = [];
+    /*
+      選択回数を0にする
+    */
 
-
-    currentQuestion = 0;
+    resetCounts();
 
 
     /*
-      最初のラウンド
+      最初の4人組
     */
 
-    const groups =
-      makeGroups(
-        currentCandidates
-      );
+    groups =
+      makeGroups(candidates);
 
 
-    questionGroupsForCurrentRound =
-      [];
+    questionIndex = 0;
 
 
-    /*
-      4人組だけ質問にする
-    */
-
-    groups.forEach(group => {
-
-      if (
-        group.length === 4
-      ) {
-
-        questionGroupsForCurrentRound.push(
-          group
-        );
-
-      }
-
-      else {
-
-        /*
-          4人に満たない人は
-          次のラウンドへ残す
-        */
-
-        group.forEach(person => {
-
-          nextCandidates.push(
-            person
-          );
-
-        });
-
-      }
-
-    });
-
-
-    totalQuestions =
-      questionGroupsForCurrentRound.length;
-
-
-    currentGroup =
-      questionGroupsForCurrentRound[0];
-
-
-    currentQuestion = 1;
+    renderQuestion();
 
 
     showScreen(
       selectionScreen
     );
-
-
-    renderQuestion();
 
   }
 );
@@ -986,31 +913,24 @@ nextButton.addEventListener(
   "click",
   () => {
 
-
     /*
-      今回選ばれた人を保存
+      今回選んだ人の回数を+1
     */
 
-    saveCurrentAnswer();
+    recordSelections();
 
 
     /*
-      次の質問へ
+      次の質問
     */
+
+    questionIndex++;
+
 
     if (
-      currentQuestion <
-      totalQuestions
+      questionIndex <
+      groups.length
     ) {
-
-      currentGroup =
-        questionGroupsForCurrentRound[
-          currentQuestion
-        ];
-
-
-      currentQuestion++;
-
 
       renderQuestion();
 
@@ -1020,7 +940,10 @@ nextButton.addEventListener(
 
 
     /*
-      このラウンド終了
+      1ラウンド終了
+
+      選択回数を見て
+      候補者を絞る
     */
 
     startNextRound();
@@ -1030,15 +953,15 @@ nextButton.addEventListener(
 
 
 /* ==================================================
-   最終9人
+   最終9人表示
 ================================================== */
 
-function renderFinalists() {
+function showFinalNine() {
 
   finalistsContainer.innerHTML = "";
 
 
-  selectedPeople.forEach(
+  finalNine.forEach(
     (person, index) => {
 
       const card =
@@ -1049,6 +972,10 @@ function renderFinalists() {
         "finalist-card";
 
 
+      const count =
+        selectionCounts.get(person) || 0;
+
+
       card.innerHTML = `
 
         <img
@@ -1057,8 +984,12 @@ function renderFinalists() {
         >
 
         <p>
-          ${index + 1}. ${person.name}
+          ${person.name}
         </p>
+
+        <small>
+          選択 ${count}回
+        </small>
 
       `;
 
@@ -1070,19 +1001,32 @@ function renderFinalists() {
     }
   );
 
+
+  showScreen(
+    finalistsScreen
+  );
+
 }
 
 
 /* ==================================================
-   順位決め
+   順位を決める
 ================================================== */
 
 rankingStartButton.addEventListener(
   "click",
   () => {
 
+    /*
+      選択回数が多い順
+
+      ランダムではない
+    */
+
     finalRanking =
-      [...selectedPeople];
+      getSortedPeople(
+        finalNine
+      );
 
 
     renderRanking();
@@ -1108,20 +1052,12 @@ function renderRanking() {
   finalRanking.forEach(
     (person, index) => {
 
-
       const item =
         document.createElement("div");
 
 
       item.className =
         "ranking-item";
-
-
-      item.draggable = true;
-
-
-      item.dataset.name =
-        person.name;
 
 
       item.innerHTML = `
@@ -1136,7 +1072,15 @@ function renderRanking() {
         >
 
         <div class="ranking-name">
+
           ${person.name}
+
+          <br>
+
+          <small>
+            選択 ${selectionCounts.get(person) || 0}回
+          </small>
+
         </div>
 
       `;
@@ -1149,149 +1093,16 @@ function renderRanking() {
     }
   );
 
-
-  setupDragAndDrop();
-
 }
 
 
 /* ==================================================
-   ドラッグ＆ドロップ
-================================================== */
-
-function setupDragAndDrop() {
-
-  let dragged = null;
-
-
-  const items =
-    document.querySelectorAll(
-      ".ranking-item"
-    );
-
-
-  items.forEach(item => {
-
-
-    item.addEventListener(
-      "dragstart",
-      () => {
-
-        dragged = item;
-
-      }
-    );
-
-
-    item.addEventListener(
-      "dragover",
-      event => {
-
-        event.preventDefault();
-
-      }
-    );
-
-
-    item.addEventListener(
-      "drop",
-      event => {
-
-        event.preventDefault();
-
-
-        if (
-          dragged === item
-        ) {
-
-          return;
-
-        }
-
-
-        const all =
-          [...rankingContainer.children];
-
-
-        const draggedIndex =
-          all.indexOf(dragged);
-
-
-        const targetIndex =
-          all.indexOf(item);
-
-
-        if (
-          draggedIndex <
-          targetIndex
-        ) {
-
-          item.after(dragged);
-
-        }
-
-        else {
-
-          item.before(dragged);
-
-        }
-
-
-        updateRanking();
-
-      }
-    );
-
-  });
-
-}
-
-
-/* ==================================================
-   順位更新
-================================================== */
-
-function updateRanking() {
-
-  const items =
-    [...rankingContainer.children];
-
-
-  finalRanking =
-    items.map(item => {
-
-      return people.find(
-        person =>
-          person.name ===
-          item.dataset.name
-      );
-
-    });
-
-
-  items.forEach(
-    (item, index) => {
-
-      item.querySelector(
-        ".ranking-number"
-      ).textContent =
-        index + 1;
-
-    }
-  );
-
-}
-
-
-/* ==================================================
-   結果
+   結果を見る
 ================================================== */
 
 resultButton.addEventListener(
   "click",
   () => {
-
-    updateRanking();
 
     renderResult();
 
@@ -1315,7 +1126,6 @@ function renderResult() {
   finalRanking.forEach(
     (person, index) => {
 
-
       const item =
         document.createElement("div");
 
@@ -1336,7 +1146,15 @@ function renderResult() {
         >
 
         <div class="result-name">
+
           ${person.name}
+
+          <br>
+
+          <small>
+            選択 ${selectionCounts.get(person) || 0}回
+          </small>
+
         </div>
 
       `;
