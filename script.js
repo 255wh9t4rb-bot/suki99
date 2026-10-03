@@ -51,6 +51,151 @@ const people = [
      { name: "CHASER　シフン", image: "chaser シフン.jpg" },
      { name: "CHASER　ユンビン", image: "chaser ユンビン.jpg" },
      { name: "CHASER　レン", image: "chaser レン.jpg" },
+   { name: "NBIG RYUMIN", image: "N.BIG RYUMIN.jpeg" },
+   { name: "NBIG SEONGJUN", image: "N.BIG SEONGJUN.jpeg" },
+    { name: "NBIG SIAN", image: "N.BIg SIAN.jpeg" },
+    { name: "NBIG KWON DOEUN", image: "NBIG KWON-DOEUN.jpeg" },
+    { name: "NBIG SEUNGYEON", image: "NBIG SEUNGYEON.jpeg" },
+    { name: "DIAZ HARUKI", image: "DIAZ HARUKI.webp" },
+    { name: "DIAZ K.O", image: " DIAZ K.O.webp" },
+    { name: "DIAZ MINGUN", image: "DIAZ MINGUN.webp" },
+    { name: "DIAZ SINWOO", image: "DIAZ SINWOO.webp" },
+    { name: "DIAZ SOTA", image: "DIAZ SOTA.webp" },
+       { name: "LEVERGENT HABIN", image: "HABIN.avif" },
+    { name: "LEVERGENT KHAIN", image: "KHAIN.avif" }, 
+    { name: "LEVERGENT JIO", image: "JIO.avif" }, 
+    { name: "LEVERGENT R", image: "R.avif" }, 
+    { name: "LEVERGENT RIHYEON", image: "RIHYEON.avif" },
+   { name: "CMDM BYUNGHOON", image: "Byunghoon.jpg" },
+   { name: "CMDM HEEJU", image: "Heeju.jpg" },
+   { name: "CMDM HYUNHAH", image: "Hyunhah.jpg" },
+   { name: "CMDM JUNHYOUNG", image: "Junhyoung.jpg" },
+   { name: "CMDM NOHYUL", image: "Nohyul.jpg" },
+   { name: "DAYCHILD EDEN", image: "DAYCHILD-EDEN1.jpg" },
+   { name: "DAYCHILD INTAE", image: "DAYCHILD-INTAE1.jpg" },
+   { name: "DAYCHILD K", image: "DAYCHILD-K1.jpg" },
+   { name: "DAYCHILD SIWOO", image: "DAYCHILD-SIWOO1.jpg" },
+   { name: "DAYCHILD YEJONG", image: "DAYCHILD-YEJONG1.jpg" },
+   { name: "ASC2NT KARAM", image: "ASC2NT KARAM-3-.jpeg" },
+   { name: "ASC2NT HYOWON", image: "HYOWON-3-900x600.jpeg" },
+   { name: "ASC2NT JAY", image: "JAY-3-900x600.jpeg" },
+   { name: "ASC2NT KYLE", image: "KYLE-3-900x600.jpeg" },
+   { name: "ASC2NT REON", image: "REON-3-900x600.jpeg" },
+   { name: "MYONE DOJUN", image: "MYONE DOJUN.jpg" },
+   { name: "MYONE SHIRO", image: "MYONE SHIRO.jpg" },
+   { name: "MYONE R", image: "MYONE R.jpg" },
+   { name: "MYONE ZENON", image: "MYONE ZENON.jpg" },
+   { name: "EASTSHINE DONGJAE", image: "ES DONGJAE-5-.jpg" },
+    { name: "EASTSHINE HYUN", image: "ES HYUN-3-.jpg" },
+    { name: "EASTSHINE IEL", image: "ES IEL-4.jpg" },
+    { name: "EASTSHINE LUMIN", image: "ES LUMIN-3-.jpg" },
+    { name: "EASTSHINE PHOENIX", image: "ES PHOENIX-1-.webp" },
+   { name: "DROP Cheol Kyu", image: "dp Cheol Kyu.webp" },
+   { name: "DROP Gyu Eon", image: "dp Gyu Eon.webp" },
+   { name: "DROP Jae Wo", image: "dp Jae Won.webp" },
+   { name: "DROP Ju Sung", image: "dp Ju Sung.webp" },
+   { name: "DROP Seung Woo", image: "dp Seung Woo.webp" },
+   { name: "WHYNOT JUNHYEONG", image: "wn JUNHYEONG.jpg" },
+   { name: "WHYNOT TOSEI", image: "wn TOSEI.jpg" },
+   { name: "WHYNOT DOA", image: "wn doa.jpg" },
+   { name: "WHYNOT JEONG", image: "wn jeong-scaled.jpg" },
+   { name: "WHYNOT ROHOON", image: "wn rohoon.jpg" },
+   { name: "WHYNOT DONGYEON", image: "wn rohoon.jpg" },
+   { name: "WHYNOT SIHON", image: "wn sihon.jpg" },
+   { name: "MUL KANGSAN", image: "MUL-KANGSAN4.jpg" },
+   { name: "MUL LUHA", image: "MUL-LUHA4.jpg" },
+   { name: "MUL SEONGHUN", image: "MUL-SEONGHUN4.jpg" },
+   { name: "MUL SHINWOO", image: "MUL-SHINWOO4.jpg" },
+   { name: "MUL WONCHUL", image: "MUL-WONCHUL.jpg" },
+   { name: "MUL YUNSOL", image: "MUL-YUNSOL4.jpg" },
+   { name: "ANTARES HARU", image: "AT HARU.jpeg" },
+   { name: "ANTARES INO", image: "AT INO.jpeg" },
+   { name: "ANTARES JAEHO", image: "AT JAEHO.jpeg" },
+   { name: "ANTARES WOORI", image: "AT WOORI.jpeg" },
+   { name: "ANTARES SEUNGHEE", image: "AT SEUNGHEE.jpeg" },
+   { name: "ANTARES ZINO", image: "AT ZINO.jpeg" },
+    { name: "DREAMCODE SEONGWAN", image: "dc Seongwan.webp" },
+   { name: "DREAMCODE HYUNWOO", image: "dc hyunwoo.webp" },
+   { name: "DREAMCODE JAEHUN", image: "dc jaehun.webp" },
+   { name: "DREAMCODE JIMIN", image: "dc jimin.webp" },
+   { name: "DREAMCODE JONGHOON", image: "dc jonghoon.webp" },
+   { name: "DREAMOFONE JIHAN", image: "Screenshot 2026-10-03 19.02.45.png" },
+   { name: "DREAMOFONE JIWON", image: "Screenshot 2026-10-03 19.04.12.png" },
+   { name: "DREAMOFONE MINCHAN", image: "Screenshot 2026-10-03 19.03.35.png" },
+   { name: "DREAMOFONE SARANG", image: "Screenshot 2026-10-03 19.05.01.png" },
+   { name: "DREAMOFONE HWANHUI", image: "Screenshot 2026-10-03 19.05.54.png" },
+   { name: "VOLTEQ JUNE", image: "VQ JUNE-1.jpg" },
+    { name: "VOLTEQ KASUGA", image: "VQ KASUGA.jpg" },
+    { name: "VOLTEQ LEO", image: " VQ LEO.jpg" },
+   { name: "VOLTEQ TERUTO", image: "VQ TERUTO-1.jpg" },
+   { name: "STC KANGMIN", image: "stc KANGMIN.jpg" },
+   { name: "STC MINSUNG", image: "stc Minsung.jpg" },
+   { name: "STC SIHYEON", image: "stc sihyeon.jpg" },
+   { name: "STC DONGHYEON", image: "STC Donghyeon.jpg" },
+   { name: "STC HYOYA", image: "STC HYOYA.jpg" },
+{ name: "STC HYOYA", image: "STC HYOYA.jpg" },
+   { name: "RE:GUYS D.I", image: "RG D.I.webp" },
+   { name: "RE:GUYS DAEYOUNG", image: "RG Daeyoung.webp" },
+   { name: "RE:GUYS DONGHYUN", image: "RG Donghyun.webp" },
+   { name: "RE:GUYS JINHYEON", image: "RG Jinhyeon.webp" },
+   { name: "RE:GUYS MINKI", image: "RG Minki.webp" },
+   { name: "RE:GUYS SEMIN", image: "RG Semin.jpg" },
+   { name: "RE:GUYS YEONGKI", image: "RG Yeongki.webp" },
+   { name: "ADAP DOWON", image: "AP Dowon3.jpg" },
+   { name: "ADAP HYUNSUNG", image: "AP Hyunsung3.jpg" },
+   { name: "ADAP JAEYOUNG", image: "AP Jaeyoung3.jpg" },
+   { name: "ADAP JONGHO", image: "AP Jongho3.jpg" },
+   { name: "ADAP HYOTAE", image: "AP hyotae3.jpg" },
+   { name: "ADAP JUNSEOK", image: "AP junseok3.jpg" },
+    { name: "TRY THAT A.TOM", image: "A.TOM-TRY-THAT.jpg" },
+   { name: "TRY THAT HYUKJIN", image: "TT HYUKJIN.png" },
+   { name: "TRY THAT HANSEO", image: "HANSEO-TRY-THAT.jpg" },
+   { name: "TRY THAT KION", image: "KION-TRY-THAT-scaled.jpg" },
+   { name: "TRY THAT MINHA", image: "MINHA-TRY-THAT.jpg" },
+   { name: "TRY THAT PIL", image: "PIL-TRY-THAT.jpg" },
+   { name: "SWEET:CH HWI", image: "sc hwi-2.jpg" },
+   { name: "SWEET:CH JIN", image: "sc jin.jpg" },
+   { name: "SWEET:CH RIKUTO", image: "sc rikuto.jpg" },
+   { name: "SWEET:CH SATOSHI", image: "sc satoshi.jpg" },
+   { name: "SWEET:CH TAIKI", image: "sc taiki.jpg" },
+   { name: "SWEET:CH WANGSEOK", image: "sc wangseok-1.jpg" },
+   { name: "DIGNITY LUKE", image: "DG LUKE.jpeg" },
+   { name: "DIGNITY LUO", image: "DG LUO.jpeg" },
+   { name: "DIGNITY MINSEOK", image: "DG MINSEOK.jpeg" },
+   { name: "DIGNITY ON", image: "DG ON.jpeg" },
+   { name: "HIGHWAY YUNHYEONG", image: "HG YUNHYEONG.jpg" },
+   { name: "HIGHWAY DAEHYUN", image: "HG DAEHYUN.jpg" },
+   { name: "HIGHWAY HUA", image: "HG HUA.jpg" },
+   { name: "HIGHWAY JUN", image: "HG JUN.jpg" },
+   { name: "HIGHWAY MINHYUK", image: "HG Minhyuk.jpg" },
+   { name: "HIGHWAY ROOKIE", image: "HG ROOKIE.jpg" },
+   { name: "HIGHWAY SSEN", image: "HG SSEN.jpg" },
+   { name: "GENUS　CHAEHOON", image: "GS CHAEHOON-1.jpg" },
+   { name: "GENUS　CHANYONG", image: "GS CHANYONG-1.jpg" },
+   { name: "GENUS　SEOHA", image: "GS SEOHA-1.jpg" },
+   { name: "GENUS　JAEYOUNG", image: "GS jaeyoung-1.jpg" },
+   { name: "GENUS　YUAN", image: "GS yuan-1.jpg" },
+   { name: "TRY1 MIN", image: "T! min-1.jpg" },
+    { name: "TRY1 HARAM", image: "T1 chaharam.jpg" },
+    { name: "TRY1 JAMES", image: "T1 james.jpg" },
+    { name: "TRY1 JIHWAN", image: "T1 jihwan-1.jpg" },
+    { name: "TRY1 NEO", image: "T1 neo.jpg" },
+    { name: "TRY1 R1KE", image: "T1 r1ke-1.jpg" },
+    { name: "TRY1 TSUKITO", image: "T1 tsukito-1.jpg" },
+   { name: "MY:ST JUNTAE", image: "myst 2-Juntae-.avif" },
+   { name: "MY:ST WONCHEOL", image: "myst 3-Woncheol-.avif" },
+   { name: "MY:ST WOOJIN", image: "myst 4-Woojin-.avif" },
+   { name: "MY:ST KEONWOO", image: "myst 5-Keonwoo-.avif" },
+    { name: "LUMIERE G_ME", image: "LR G_ME.jpg" },
+    { name: "LUMIERE DAON", image: "LR daon-1.jpg" },
+    { name: "LUMIERE SION", image: "LR sion.jpg" },
+    { name: "LUMIERE TEO", image: "LR teo.jpg" },
+   { name: "LUMIERE RUI", image: "LR rui.jpg" },
+   { name: "SAEINT BEOMSOO", image: "ST Beomsoo.jpg" },
+    { name: "SAEINT SEOGYUM", image: "ST Seogyum.jpg" },
+    { name: "SAEINT YOONSANG", image: "ST Yoonsang.jpg" },
+    { name: "SAEINT DONGGYU", image: "ST Donggyu.jpg" },
+   
 
 ];
 
@@ -106,22 +251,25 @@ const personContainer =
   document.getElementById("person-container");
 
 const finalistsContainer =
-  document.getElementById(
-    "finalists-container"
-  );
+  document.getElementById("finalists-container");
 
 const rankingContainer =
-  document.getElementById(
-    "ranking-container"
-  );
+  document.getElementById("ranking-container");
 
 const resultContainer =
-  document.getElementById(
-    "result-container"
-  );
+  document.getElementById("result-container");
 
 const progress =
   document.getElementById("progress");
+
+
+/* 1位・2位の表示場所 */
+
+const firstSelectedName =
+  document.getElementById("first-selected-name");
+
+const secondSelectedName =
+  document.getElementById("second-selected-name");
 
 
 /* ==================================================
@@ -151,9 +299,7 @@ function showScreen(screen) {
     .querySelectorAll(".screen")
     .forEach(element => {
 
-      element.classList.remove(
-        "active"
-      );
+      element.classList.remove("active");
 
     });
 
@@ -178,9 +324,7 @@ function shuffle(array) {
   ) {
 
     const j =
-      Math.floor(
-        Math.random() * (i + 1)
-      );
+      Math.floor(Math.random() * (i + 1));
 
     [
       result[i],
@@ -190,6 +334,7 @@ function shuffle(array) {
       result[j],
       result[i]
     ];
+
   }
 
   return result;
@@ -197,19 +342,14 @@ function shuffle(array) {
 
 
 /* ==================================================
-   4人ずつのグループを作る
+   4人ずつのグループ
 ================================================== */
 
 function createRounds() {
 
-  const shuffled =
-    shuffle(people);
+  const shuffled = shuffle(people);
 
   rounds = [];
-
-  /*
-    4人ずつに分ける
-  */
 
   for (
     let i = 0;
@@ -221,21 +361,15 @@ function createRounds() {
       shuffled.slice(i, i + 4);
 
     /*
-      4人未満のグループは
-      作らない
-
-      その場合は後ろから補充する
+      最後に4人未満になった場合、
+      すでに出ている人から補充
     */
 
     if (group.length < 4) {
 
-      const alreadyUsed =
-        new Set(group);
-
       const candidates =
         shuffled.filter(
-          person =>
-            !alreadyUsed.has(person)
+          person => !group.includes(person)
         );
 
       while (
@@ -243,15 +377,14 @@ function createRounds() {
         candidates.length > 0
       ) {
 
-        group.push(
-          candidates.shift()
-        );
+        group.push(candidates.shift());
 
       }
 
     }
 
     rounds.push(group);
+
   }
 }
 
@@ -272,33 +405,22 @@ function renderRound() {
   personContainer.innerHTML = "";
 
 
-  /*
-    選択をリセット
-  */
-
   firstSelected = null;
 
   secondSelected = null;
 
 
-  /*
-    次へを無効にする
-  */
+  updateSelectedNames();
 
   updateNextButton();
 
-
-  /*
-    4人を表示
-  */
 
   group.forEach(person => {
 
     const card =
       document.createElement("div");
 
-    card.className =
-      "person-card";
+    card.className = "person-card";
 
 
     card.innerHTML = `
@@ -315,10 +437,6 @@ function renderRound() {
     `;
 
 
-    /*
-      画像を押したとき
-    */
-
     card.addEventListener(
       "click",
       () => {
@@ -332,6 +450,7 @@ function renderRound() {
     personContainer.appendChild(card);
 
   });
+
 }
 
 
@@ -341,9 +460,8 @@ function renderRound() {
 
 function selectPerson(person) {
 
-  /*
-    すでに1位なら解除
-  */
+
+  /* 1位を押した場合 */
 
   if (firstSelected === person) {
 
@@ -352,9 +470,7 @@ function selectPerson(person) {
   }
 
 
-  /*
-    すでに2位なら解除
-  */
+  /* 2位を押した場合 */
 
   else if (secondSelected === person) {
 
@@ -363,9 +479,7 @@ function selectPerson(person) {
   }
 
 
-  /*
-    1位が空いている
-  */
+  /* 1位が空いている */
 
   else if (firstSelected === null) {
 
@@ -374,9 +488,7 @@ function selectPerson(person) {
   }
 
 
-  /*
-    2位が空いている
-  */
+  /* 2位が空いている */
 
   else if (secondSelected === null) {
 
@@ -385,12 +497,14 @@ function selectPerson(person) {
   }
 
 
-  /*
-    1位・2位が両方埋まっている
-    → 新しく押した人を2位にする
-  */
+  /* 両方埋まっている場合 */
 
   else {
+
+    /*
+      新しく押した人を
+      2位に変更
+    */
 
     secondSelected = person;
 
@@ -399,12 +513,15 @@ function selectPerson(person) {
 
   updateCards();
 
+  updateSelectedNames();
+
   updateNextButton();
+
 }
 
 
 /* ==================================================
-   カードの表示更新
+   写真の表示更新
 ================================================== */
 
 function updateCards() {
@@ -423,10 +540,6 @@ function updateCards() {
       ).textContent;
 
 
-    /*
-      一旦選択表示を消す
-    */
-
     card.classList.remove(
       "first-selected"
     );
@@ -435,10 +548,6 @@ function updateCards() {
       "second-selected"
     );
 
-
-    /*
-      1位
-    */
 
     if (
       firstSelected &&
@@ -452,10 +561,6 @@ function updateCards() {
     }
 
 
-    /*
-      2位
-    */
-
     if (
       secondSelected &&
       secondSelected.name === name
@@ -468,6 +573,42 @@ function updateCards() {
     }
 
   });
+
+}
+
+
+/* ==================================================
+   1位・2位の名前を表示
+================================================== */
+
+function updateSelectedNames() {
+
+
+  if (firstSelected) {
+
+    firstSelectedName.textContent =
+      firstSelected.name;
+
+  } else {
+
+    firstSelectedName.textContent =
+      "まだ選択されていません";
+
+  }
+
+
+  if (secondSelected) {
+
+    secondSelectedName.textContent =
+      secondSelected.name;
+
+  } else {
+
+    secondSelectedName.textContent =
+      "まだ選択されていません";
+
+  }
+
 }
 
 
@@ -482,6 +623,7 @@ function updateNextButton() {
       firstSelected &&
       secondSelected
     );
+
 }
 
 
@@ -493,10 +635,6 @@ startButton.addEventListener(
   "click",
   () => {
 
-    /*
-      4人未満なら開始できない
-    */
-
     if (people.length < 4) {
 
       alert(
@@ -504,6 +642,7 @@ startButton.addEventListener(
       );
 
       return;
+
     }
 
 
@@ -511,10 +650,6 @@ startButton.addEventListener(
 
     selectedPeople = [];
 
-
-    /*
-      4人ずつ作る
-    */
 
     createRounds();
 
@@ -538,10 +673,6 @@ nextButton.addEventListener(
   "click",
   () => {
 
-    /*
-      1位を追加
-    */
-
     if (
       firstSelected &&
       !selectedPeople.includes(
@@ -555,10 +686,6 @@ nextButton.addEventListener(
 
     }
 
-
-    /*
-      2位を追加
-    */
 
     if (
       secondSelected &&
@@ -574,10 +701,6 @@ nextButton.addEventListener(
     }
 
 
-    /*
-      次のグループ
-    */
-
     currentRound++;
 
 
@@ -590,18 +713,16 @@ nextButton.addEventListener(
 
     }
 
-
     else {
 
       /*
-        ここまでで選ばれた人から
-        最大9人を選ぶ
+        9人より多く選ばれた場合は
+        9人に絞る
       */
 
       selectedPeople =
-        shuffle(
-          selectedPeople
-        ).slice(0, 9);
+        shuffle(selectedPeople)
+        .slice(0, 9);
 
 
       renderFinalists();
@@ -617,7 +738,7 @@ nextButton.addEventListener(
 
 
 /* ==================================================
-   最終9人表示
+   最終9人
 ================================================== */
 
 function renderFinalists() {
@@ -625,37 +746,43 @@ function renderFinalists() {
   finalistsContainer.innerHTML = "";
 
 
-  selectedPeople.forEach(person => {
+  selectedPeople.forEach(
+    person => {
 
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "finalist-card";
+      const card =
+        document.createElement("div");
 
 
-    card.innerHTML = `
-
-      <img
-        src="${person.image}"
-        alt="${person.name}"
-      >
-
-      <p>
-        ${person.name}
-      </p>
-
-    `;
+      card.className =
+        "finalist-card";
 
 
-    finalistsContainer.appendChild(card);
+      card.innerHTML = `
 
-  });
+        <img
+          src="${person.image}"
+          alt="${person.name}"
+        >
+
+        <p>
+          ${person.name}
+        </p>
+
+      `;
+
+
+      finalistsContainer.appendChild(
+        card
+      );
+
+    }
+  );
+
 }
 
 
 /* ==================================================
-   順位決定開始
+   順位開始
 ================================================== */
 
 rankingStartButton.addEventListener(
@@ -731,6 +858,7 @@ function renderRanking() {
 
 
   setupDragAndDrop();
+
 }
 
 
@@ -750,6 +878,7 @@ function setupDragAndDrop() {
 
 
   items.forEach(item => {
+
 
     item.addEventListener(
       "dragstart",
@@ -778,9 +907,7 @@ function setupDragAndDrop() {
         event.preventDefault();
 
 
-        if (
-          dragged === item
-        ) {
+        if (dragged === item) {
 
           return;
 
@@ -820,12 +947,15 @@ function setupDragAndDrop() {
       }
     );
 
-  });
+  }
+
+  );
+
 }
 
 
 /* ==================================================
-   順位を更新
+   順位更新
 ================================================== */
 
 function updateRanking() {
@@ -849,20 +979,19 @@ function updateRanking() {
   items.forEach(
     (item, index) => {
 
-      item
-        .querySelector(
-          ".ranking-number"
-        )
-        .textContent =
+      item.querySelector(
+        ".ranking-number"
+      ).textContent =
         index + 1;
 
     }
   );
+
 }
 
 
 /* ==================================================
-   結果を見る
+   結果
 ================================================== */
 
 resultButton.addEventListener(
@@ -925,6 +1054,7 @@ function renderResult() {
 
     }
   );
+
 }
 
 
@@ -955,7 +1085,7 @@ backButton.addEventListener(
 
 
 /* ==================================================
-   もう一度やる
+   もう一度
 ================================================== */
 
 againButton.addEventListener(
