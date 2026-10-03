@@ -5,26 +5,55 @@
 /*
 const people = [
 
-  
-  {
-    name: "n.top kanghyon",
-    image: "images/n.top kanghyun.jpg"
-  },
-
-  {
-    name: "名前2",
-    image: "images/02.jpg"
-  },
-
-  {
-    name: "名前3",
-    image: "images/03.jpg"
-  },
-
-  {
-    name: "名前4",
-    image: "images/04.jpg"
-  },
+  { name: "n.top kanghyon", image: "n.top kanghyun.jpg" },
+ { name: "n.top minseo", image: "n.top minseo.jpg" },
+ { name: "n.top takuto", image: "n.top takuto.jpg" },
+　{ name: "n.top heewoo", image: "n.top heewoo.jpg" },
+ { name: "n.top hyunwoong", image: "n.top hyunwoong-.jpg" },
+ { name: "n.top chaemin", image: "n.top chaemin.jpg" },
+ { name: "n.top changlin", image: "n.top changlin.jpg" }, 
+ { name: "dxmon TK", image: "dxmon TK.avif" }, 
+ { name: "dxmon hee", image: "dxmon hee.wedp" },
+ { name: "dxmon rex", image: "dxmon rex.avif" },
+ { name: "dxmon セイタ", image: "dxmon セイタ.avif" },
+ { name: "dxmon minjae", image: "dxmon ミンジェ.avif" },
+ { name: "WAKER イジュン", image: "weaker イジュン.jpeg" },
+ { name: "WAKER クォンヒョプ", image: "weaker クォンヒョプ.jpeg" },
+ { name: "WAKER コヒョン", image: "weaker コヒョン.jpeg" },
+ { name: "WAKER セビョル", image: "weaker セビョル.jpeg" },
+ { name: "WAKER セボム", image: "weaker セボム.jpeg" },
+ { name: "WAKER リオ", image: "weaker リオ.jpeg" },
+ { name: "D-ONE イファ", image: "d-one イファ.jpg" },
+ { name: "D-ONE ジェフン", image: "d-one ジェフン.png" },
+ { name: "D-ONE ジュヨン", image: "d-one ジュヨン.jpeg" },
+ { name: "D-ONE セジン", image: "d-one セジン.jpeg" },
+ { name: "D-ONE ハン", image: "d-one ハン.jpeg" },
+ { name: "D-ONE ヒョヌン", image: "d-one ヒョヌン.jpeg" },
+ { name: "ANOHRTS ウヒョン", image: "anohrts ウヒョン.png" },
+ { name: "ANOHRTS スンチャン", image: "anohrts スンチャン.jpg" },
+ { name: "ANOHRTS ダフン", image: "anohrts ダフン.jpg" },
+ { name: "ANOHRTS ヒュンジェ", image: "anohrts ヒュンジェ.jpg" },
+ { name: "ANOHRTS ギヒョン", image: "anohrts ギヒョン.jpg" },
+ { name: "NXON KDAY", image: "nxon k day.jpg" },
+ { name: "NXON K", image: "nxon k.jpg" },
+ { name: "NXON GYEOM", image: "nxon ギョム.jpg" },
+{ name: "NXON DAM", image: "nxon ジム.jpg" },
+{ name: "NXON JOHA", image: "nxon ジョハ.jpg" },
+{ name: "NXON MINJAE", image: "nxon ミンジェ.jpg" },
+{ name: "NXON MINGYU", image: "nxon ミンギュ.jpg" },
+{ name: "NXON ZIKI", image: "nxon ジム.jpg" },
+ { name: "W3WAY　へチョン", image: "w3way へチョン.webp" },
+    { name: "W3WAY アオイ", image: "w3way アオイ.webp" },
+    { name: "W3WAY　ウソク", image: "w3way ウソク.webp" },
+    { name: "W3WAY　シホ", image: "w3way シホ.webp" },
+    { name: "W3WAY　ドンヒョン", image: "w3way ドンヒョン.webp" },
+    { name: "W3WAY　リョウ", image: "w3way リョウ.webp" },
+    { name: "W3WAY　リンタロウ", image: "w3way リンタロウ.webp" },
+     { name: "CHASER　カンビン", image: "chaser カンビン.jpg" },
+     { name: "CHASER　ケイスケ", image: "chaser ケイスケ.jpg" },
+     { name: "CHASER　シフン", image: "chaser シフン.jpg" },
+     { name: "CHASER　ユンビン", image: "chaser ユンビン.jpg" },
+     { name: "CHASER　レン", image: "chaser レン.jpg" },
 
 ];
 
