@@ -10,7 +10,7 @@ const people = [
  { name: "n.top chaemin", image: "n.top chaemin.jpg" },
  { name: "n.top changlin", image: "n.top changlin.jpg" }, 
  { name: "dxmon TK", image: "dxmon TK.avif" }, 
- { name: "dxmon hee", image: "dxmon hee.wedp" },
+ { name: "dxmon hee", image: "dxmon hee.webp" },
  { name: "dxmon rex", image: "dxmon rex.avif" },
  { name: "dxmon セイタ", image: "dxmon セイタ.avif" },
  { name: "dxmon minjae", image: "dxmon ミンジェ.avif" },
