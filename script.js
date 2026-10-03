@@ -262,9 +262,6 @@ const resultContainer =
 const progress =
   document.getElementById("progress");
 
-
-/* 1位・2位の表示場所 */
-
 const firstSelectedName =
   document.getElementById("first-selected-name");
 
@@ -273,18 +270,63 @@ const secondSelectedName =
 
 
 /* ==================================================
-   データ
+   ゲームのデータ
 ================================================== */
 
-let currentRound = 0;
 
-let rounds = [];
+/*
+  現在の候補者
+*/
 
-let firstSelected = null;
+let currentCandidates = [];
 
-let secondSelected = null;
+
+/*
+  今表示している4人
+*/
+
+let currentGroup = [];
+
+
+/*
+  今選んでいる人
+  0〜2人
+*/
+
+let selectedThisQuestion = [];
+
+
+/*
+  次の候補者
+*/
+
+let nextCandidates = [];
+
+
+/*
+  現在何問目か
+*/
+
+let currentQuestion = 0;
+
+
+/*
+  そのラウンドで何問あるか
+*/
+
+let totalQuestions = 0;
+
+
+/*
+  最終9人
+*/
 
 let selectedPeople = [];
+
+
+/*
+  最終順位
+*/
 
 let finalRanking = [];
 
@@ -342,14 +384,16 @@ function shuffle(array) {
 
 
 /* ==================================================
-   4人ずつのグループ
+   4人ずつに分ける
 ================================================== */
 
-function createRounds() {
+function makeGroups(candidates) {
 
-  const shuffled = shuffle(people);
+  const shuffled =
+    shuffle(candidates);
 
-  rounds = [];
+  const groups = [];
+
 
   for (
     let i = 0;
@@ -357,57 +401,35 @@ function createRounds() {
     i += 4
   ) {
 
-    const group =
-      shuffled.slice(i, i + 4);
-
-    /*
-      最後に4人未満になった場合、
-      すでに出ている人から補充
-    */
-
-    if (group.length < 4) {
-
-      const candidates =
-        shuffled.filter(
-          person => !group.includes(person)
-        );
-
-      while (
-        group.length < 4 &&
-        candidates.length > 0
-      ) {
-
-        group.push(candidates.shift());
-
-      }
-
-    }
-
-    rounds.push(group);
+    groups.push(
+      shuffled.slice(i, i + 4)
+    );
 
   }
+
+
+  return groups;
 }
 
 
 /* ==================================================
-   4人を表示
+   現在の質問を表示
 ================================================== */
 
-function renderRound() {
-
-  const group =
-    rounds[currentRound];
-
-  progress.textContent =
-    `${currentRound + 1} / ${rounds.length}`;
-
+function renderQuestion() {
 
   personContainer.innerHTML = "";
 
 
-  firstSelected = null;
+  selectedThisQuestion = [];
 
-  secondSelected = null;
+
+  /*
+    現在の進み具合
+  */
+
+  progress.textContent =
+    `${currentQuestion} / ${totalQuestions}`;
 
 
   updateSelectedNames();
@@ -415,12 +437,14 @@ function renderRound() {
   updateNextButton();
 
 
-  group.forEach(person => {
+  currentGroup.forEach(person => {
 
     const card =
       document.createElement("div");
 
-    card.className = "person-card";
+
+    card.className =
+      "person-card";
 
 
     card.innerHTML = `
@@ -441,7 +465,7 @@ function renderRound() {
       "click",
       () => {
 
-        selectPerson(person);
+        togglePerson(person);
 
       }
     );
@@ -455,58 +479,47 @@ function renderRound() {
 
 
 /* ==================================================
-   人を選択
+   人を選択・解除
 ================================================== */
 
-function selectPerson(person) {
+function togglePerson(person) {
+
+  const index =
+    selectedThisQuestion.indexOf(person);
 
 
-  /* 1位を押した場合 */
+  /*
+    すでに選んでいたら解除
+  */
 
-  if (firstSelected === person) {
+  if (index !== -1) {
 
-    firstSelected = null;
-
-  }
-
-
-  /* 2位を押した場合 */
-
-  else if (secondSelected === person) {
-
-    secondSelected = null;
-
-  }
-
-
-  /* 1位が空いている */
-
-  else if (firstSelected === null) {
-
-    firstSelected = person;
+    selectedThisQuestion.splice(
+      index,
+      1
+    );
 
   }
 
 
-  /* 2位が空いている */
+  /*
+    選んでいなかったら追加
 
-  else if (secondSelected === null) {
-
-    secondSelected = person;
-
-  }
-
-
-  /* 両方埋まっている場合 */
+    最大2人
+  */
 
   else {
 
-    /*
-      新しく押した人を
-      2位に変更
-    */
+    if (
+      selectedThisQuestion.length >= 2
+    ) {
 
-    secondSelected = person;
+      return;
+
+    }
+
+
+    selectedThisQuestion.push(person);
 
   }
 
@@ -521,7 +534,7 @@ function selectPerson(person) {
 
 
 /* ==================================================
-   写真の表示更新
+   写真の選択表示
 ================================================== */
 
 function updateCards() {
@@ -550,8 +563,8 @@ function updateCards() {
 
 
     if (
-      firstSelected &&
-      firstSelected.name === name
+      selectedThisQuestion[0] &&
+      selectedThisQuestion[0].name === name
     ) {
 
       card.classList.add(
@@ -562,8 +575,8 @@ function updateCards() {
 
 
     if (
-      secondSelected &&
-      secondSelected.name === name
+      selectedThisQuestion[1] &&
+      selectedThisQuestion[1].name === name
     ) {
 
       card.classList.add(
@@ -578,18 +591,20 @@ function updateCards() {
 
 
 /* ==================================================
-   1位・2位の名前を表示
+   1位・2位表示
 ================================================== */
 
 function updateSelectedNames() {
 
 
-  if (firstSelected) {
+  if (selectedThisQuestion[0]) {
 
     firstSelectedName.textContent =
-      firstSelected.name;
+      selectedThisQuestion[0].name;
 
-  } else {
+  }
+
+  else {
 
     firstSelectedName.textContent =
       "まだ選択されていません";
@@ -597,12 +612,14 @@ function updateSelectedNames() {
   }
 
 
-  if (secondSelected) {
+  if (selectedThisQuestion[1]) {
 
     secondSelectedName.textContent =
-      secondSelected.name;
+      selectedThisQuestion[1].name;
 
-  } else {
+  }
+
+  else {
 
     secondSelectedName.textContent =
       "まだ選択されていません";
@@ -616,15 +633,241 @@ function updateSelectedNames() {
    次へボタン
 ================================================== */
 
+
+/*
+  今回は0人でも1人でも2人でも
+  次へ進める
+*/
+
 function updateNextButton() {
 
-  nextButton.disabled =
-    !(
-      firstSelected &&
-      secondSelected
-    );
+  nextButton.disabled = false;
 
 }
+
+
+/* ==================================================
+   現在の選択を次へ送る
+================================================== */
+
+function saveCurrentAnswer() {
+
+  selectedThisQuestion.forEach(
+    person => {
+
+      if (
+        !nextCandidates.includes(person)
+      ) {
+
+        nextCandidates.push(person);
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   次のラウンドを作る
+================================================== */
+
+function startNextRound() {
+
+
+  /*
+    現在の候補者が9人以下になったら
+    9人を確定
+  */
+
+  if (
+    nextCandidates.length <= 9
+  ) {
+
+    /*
+      9人未満になってしまった場合は、
+      それまでの候補から補充する。
+
+      これによって必ず9人にする。
+    */
+
+    let finalPool =
+      [...nextCandidates];
+
+
+    /*
+      まだ9人に足りない場合、
+      前ラウンドで落ちた人から
+      ランダムではなく順番に補充
+    */
+
+    if (
+      finalPool.length < 9
+    ) {
+
+      const remaining =
+        people.filter(
+          person =>
+            !finalPool.includes(person)
+        );
+
+
+      while (
+        finalPool.length < 9 &&
+        remaining.length > 0
+      ) {
+
+        finalPool.push(
+          remaining.shift()
+        );
+
+      }
+
+    }
+
+
+    selectedPeople =
+      finalPool.slice(0, 9);
+
+
+    renderFinalists();
+
+    showScreen(
+      finalistsScreen
+    );
+
+    return;
+
+  }
+
+
+  /*
+    9人より多い場合は、
+    選ばれた人だけで次のラウンド
+  */
+
+  currentCandidates =
+    [...nextCandidates];
+
+
+  nextCandidates = [];
+
+
+  currentQuestion = 0;
+
+
+  const groups =
+    makeGroups(currentCandidates);
+
+
+  /*
+    4人未満の最後のグループができたら
+    その人たちを次のラウンドに残す
+  */
+
+  const validGroups = [];
+
+
+  groups.forEach(group => {
+
+    if (
+      group.length === 4
+    ) {
+
+      validGroups.push(group);
+
+    }
+
+    else {
+
+      group.forEach(person => {
+
+        nextCandidates.push(person);
+
+      });
+
+    }
+
+  });
+
+
+  /*
+    残った人を最初のグループに加える
+  */
+
+  if (
+    nextCandidates.length > 0
+  ) {
+
+    if (
+      validGroups.length > 0
+    ) {
+
+      validGroups[
+        validGroups.length - 1
+      ] =
+      [
+        ...validGroups[
+          validGroups.length - 1
+        ],
+        ...nextCandidates
+      ].slice(0, 4);
+
+    }
+
+  }
+
+
+  questionGroupsForCurrentRound =
+    validGroups;
+
+
+  totalQuestions =
+    questionGroupsForCurrentRound.length;
+
+
+  if (
+    totalQuestions === 0
+  ) {
+
+    selectedPeople =
+      currentCandidates.slice(0, 9);
+
+
+    renderFinalists();
+
+    showScreen(
+      finalistsScreen
+    );
+
+    return;
+
+  }
+
+
+  currentGroup =
+    questionGroupsForCurrentRound[0];
+
+
+  currentQuestion = 1;
+
+
+  showScreen(
+    selectionScreen
+  );
+
+
+  renderQuestion();
+
+}
+
+
+/* ==================================================
+   現在のラウンドの質問
+================================================== */
+
+let questionGroupsForCurrentRound = [];
 
 
 /* ==================================================
@@ -635,7 +878,10 @@ startButton.addEventListener(
   "click",
   () => {
 
-    if (people.length < 4) {
+
+    if (
+      people.length < 4
+    ) {
 
       alert(
         "写真を4人以上登録してください。"
@@ -646,12 +892,79 @@ startButton.addEventListener(
     }
 
 
-    currentRound = 0;
+    /*
+      最初は全員が候補
+    */
 
-    selectedPeople = [];
+    currentCandidates =
+      [...people];
 
 
-    createRounds();
+    nextCandidates = [];
+
+
+    currentQuestion = 0;
+
+
+    /*
+      最初のラウンド
+    */
+
+    const groups =
+      makeGroups(
+        currentCandidates
+      );
+
+
+    questionGroupsForCurrentRound =
+      [];
+
+
+    /*
+      4人組だけ質問にする
+    */
+
+    groups.forEach(group => {
+
+      if (
+        group.length === 4
+      ) {
+
+        questionGroupsForCurrentRound.push(
+          group
+        );
+
+      }
+
+      else {
+
+        /*
+          4人に満たない人は
+          次のラウンドへ残す
+        */
+
+        group.forEach(person => {
+
+          nextCandidates.push(
+            person
+          );
+
+        });
+
+      }
+
+    });
+
+
+    totalQuestions =
+      questionGroupsForCurrentRound.length;
+
+
+    currentGroup =
+      questionGroupsForCurrentRound[0];
+
+
+    currentQuestion = 1;
 
 
     showScreen(
@@ -659,7 +972,7 @@ startButton.addEventListener(
     );
 
 
-    renderRound();
+    renderQuestion();
 
   }
 );
@@ -673,65 +986,44 @@ nextButton.addEventListener(
   "click",
   () => {
 
-    if (
-      firstSelected &&
-      !selectedPeople.includes(
-        firstSelected
-      )
-    ) {
 
-      selectedPeople.push(
-        firstSelected
-      );
+    /*
+      今回選ばれた人を保存
+    */
 
-    }
+    saveCurrentAnswer();
 
+
+    /*
+      次の質問へ
+    */
 
     if (
-      secondSelected &&
-      !selectedPeople.includes(
-        secondSelected
-      )
+      currentQuestion <
+      totalQuestions
     ) {
 
-      selectedPeople.push(
-        secondSelected
-      );
+      currentGroup =
+        questionGroupsForCurrentRound[
+          currentQuestion
+        ];
+
+
+      currentQuestion++;
+
+
+      renderQuestion();
+
+      return;
 
     }
 
 
-    currentRound++;
+    /*
+      このラウンド終了
+    */
 
-
-    if (
-      currentRound <
-      rounds.length
-    ) {
-
-      renderRound();
-
-    }
-
-    else {
-
-      /*
-        9人より多く選ばれた場合は
-        9人に絞る
-      */
-
-      selectedPeople =
-        shuffle(selectedPeople)
-        .slice(0, 9);
-
-
-      renderFinalists();
-
-      showScreen(
-        finalistsScreen
-      );
-
-    }
+    startNextRound();
 
   }
 );
@@ -747,7 +1039,7 @@ function renderFinalists() {
 
 
   selectedPeople.forEach(
-    person => {
+    (person, index) => {
 
       const card =
         document.createElement("div");
@@ -765,7 +1057,7 @@ function renderFinalists() {
         >
 
         <p>
-          ${person.name}
+          ${index + 1}. ${person.name}
         </p>
 
       `;
@@ -782,7 +1074,7 @@ function renderFinalists() {
 
 
 /* ==================================================
-   順位開始
+   順位決め
 ================================================== */
 
 rankingStartButton.addEventListener(
@@ -815,6 +1107,7 @@ function renderRanking() {
 
   finalRanking.forEach(
     (person, index) => {
+
 
       const item =
         document.createElement("div");
@@ -907,7 +1200,9 @@ function setupDragAndDrop() {
         event.preventDefault();
 
 
-        if (dragged === item) {
+        if (
+          dragged === item
+        ) {
 
           return;
 
@@ -947,9 +1242,7 @@ function setupDragAndDrop() {
       }
     );
 
-  }
-
-  );
+  });
 
 }
 
@@ -1022,6 +1315,7 @@ function renderResult() {
   finalRanking.forEach(
     (person, index) => {
 
+
       const item =
         document.createElement("div");
 
@@ -1085,7 +1379,7 @@ backButton.addEventListener(
 
 
 /* ==================================================
-   もう一度
+   もう一度やる
 ================================================== */
 
 againButton.addEventListener(
