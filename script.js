@@ -4,7 +4,7 @@
 
 
 // ========================================
-// HTML
+// HTML取得
 // ========================================
 
 const startButton = document.getElementById("start-button");
@@ -40,201 +40,232 @@ const secondSelectedName =
 // ========================================
 
 const people = [
-  { name: "n.top kanghyon",image: "n.top kanghyun.jpg" },
- { name: "n.top minseo", image: "n.top minseo.jpg" },
- { name: "n.top takuto", image: "n.top takuto.jpg" },
-　{ name: "n.top heewoo", image: "n.top heewoo.jpg" },
- { name: "n.top hyunwoong", image: "n.top hyunwoong-.jpg" },
- { name: "n.top chaemin", image: "n.top chaemin.jpg" },
- { name: "n.top changlin", image: "n.top changlin.jpg" }, 
- { name: "dxmon TK", image: "dxmon TK.avif" }, 
- { name: "dxmon hee", image: "dxmon hee.webp" },
- { name: "dxmon rex", image: "dxmon rex.avif" },
- { name: "dxmon セイタ", image: "dxmon セイタ.avif" },
- { name: "dxmon minjae", image: "dxmon ミンジェ.avif" },
- { name: "WAKER イジュン", image: "weaker イジュン.jpeg" },
- { name: "WAKER クォンヒョプ", image: "weaker クォンヒョプ.jpeg" },
- { name: "WAKER コヒョン", image: "weaker コヒョン.jpeg" },
- { name: "WAKER セビョル", image: "weaker セビョル.jpeg" },
- { name: "WAKER セボム", image: "weaker セボム.jpeg" },
- { name: "WAKER リオ", image: "weaker リオ.jpeg" },
- { name: "D-ONE イファ", image: "d-one イファ.jpg" },
- { name: "D-ONE ジェフン", image: "d-one ジェフン.png" },
- { name: "D-ONE ジュヨン", image: "d-one ジュヨン.jpeg" },
- { name: "D-ONE セジン", image: "d-one セジン.jpeg" },
- { name: "D-ONE ハン", image: "d-one ハン.jpeg" },
- { name: "D-ONE ヒョヌン", image: "d-one ヒョヌン.jpeg" },
- { name: "ANOHRTS ウヒョン", image: "anohrts ウヒョン.png" },
- { name: "ANOHRTS スンチャン", image: "anohrts スンチャン.jpg" },
- { name: "ANOHRTS ダフン", image: "anohrts ダフン.jpg" },
- { name: "ANOHRTS ヒュンジェ", image: "anohrts ヒュンジェ.jpg" },
- { name: "ANOHRTS ギヒョン", image: "anohtys ギヒョン.jpg" },
- { name: "NXON KDAY", image: "nxon k day.jpg" },
- { name: "NXON K", image: "nxon k.jpg" },
- { name: "NXON GYEOM", image: "nxon ギョム.jpg" },
-{ name: "NXON DAM", image: "nxon ジム.jpg" },
-{ name: "NXON JOHA", image: "nxon ジョハ.jpg" },
-{ name: "NXON MINJAE", image: "nxon ミンジェ.jpg" },
-{ name: "NXON MINGYU", image: "nxon ミンギュ.jpg" },
-{ name: "NXON ZIKI", image: "nxon ジム.jpg" },
- { name: "W3WAY　へチョン", image: "w3way へチョン.webp" },
-    { name: "W3WAY アオイ", image: "w3way アオイ.webp" },
-    { name: "W3WAY　ウソク", image: "w3way ウソク.webp" },
-    { name: "W3WAY　シホ", image: "w3way シホ.webp" },
-    { name: "W3WAY　ドンヒョン", image: "w3way ドンヒョン.webp" },
-    { name: "W3WAY　リョウ", image: "w3way リョウ.webp" },
-    { name: "W3WAY　リンタロウ", image: "w3way リンタロウ.webp" },
-     { name: "CHASER　カンビン", image: "chaser カンビン.jpg" },
-     { name: "CHASER　ケイスケ", image: "chaser ケイスケ.jpg" },
-     { name: "CHASER　シフン", image: "chaser シフン.jpg" },
-     { name: "CHASER　ユンビン", image: "chaser ユンビン.jpg" },
-     { name: "CHASER　レン", image: "chaser レン.jpg" },
-   { name: "NBIG RYUMIN", image: "N.BIG RYUMIN.jpeg" },
-   { name: "NBIG SEONGJUN", image: "N.BIG SEONGJUN.jpeg" },
-    { name: "NBIG SIAN", image: "N.BIg SIAN.jpeg" },
-    { name: "NBIG KWON DOEUN", image: "NBIG KWON-DOEUN.jpeg" },
-    { name: "NBIG SEUNGYEON", image: "NBIG SEUNGYEON.jpeg" },
-    { name: "DIAZ HARUKI", image: "DIAZ HARUKI.webp" },
-    { name: "DIAZ K.O", image: " DIAZ K.O.webp" },
-    { name: "DIAZ MINGUN", image: "DIAZ MINGUN.webp" },
-    { name: "DIAZ SINWOO", image: "DIAZ SINWOO.webp" },
-    { name: "DIAZ SOTA", image: "DIAZ SOTA.webp" },
-       { name: "LEVERGENT HABIN", image: "HABIN.avif" },
-    { name: "LEVERGENT KHAIN", image: "KHAIN.avif" }, 
-    { name: "LEVERGENT JIO", image: "JIO.avif" }, 
-    { name: "LEVERGENT R", image: "R.avif" }, 
-    { name: "LEVERGENT RIHYEON", image: "RIHYEON.avif" },
-   { name: "CMDM BYUNGHOON", image: "Byunghoon.jpg" },
-   { name: "CMDM HEEJU", image: "Heeju.jpg" },
-   { name: "CMDM HYUNHAH", image: "Hyunhah.jpg" },
-   { name: "CMDM JUNHYOUNG", image: "Junhyoung.jpg" },
-   { name: "CMDM NOHYUL", image: "Nohyul.jpg" },
-   { name: "DAYCHILD EDEN", image: "DAYCHILD-EDEN1.jpg" },
-   { name: "DAYCHILD INTAE", image: "DAYCHILD-INTAE1.jpg" },
-   { name: "DAYCHILD K", image: "DAYCHILD-K1.jpg" },
-   { name: "DAYCHILD SIWOO", image: "DAYCHILD-SIWOO1.jpg" },
-   { name: "DAYCHILD YEJONG", image: "DAYCHILD-YEJONG1.jpg" },
-   { name: "ASC2NT KARAM", image: "ASC2NT KARAM-3-.jpeg" },
-   { name: "ASC2NT HYOWON", image: "HYOWON-3-900x600.jpeg" },
-   { name: "ASC2NT JAY", image: "JAY-3-900x600.jpeg" },
-   { name: "ASC2NT KYLE", image: "KYLE-3-900x600.jpeg" },
-   { name: "ASC2NT REON", image: "REON-3-900x600.jpeg" },
-   { name: "MYONE DOJUN", image: "MYONE DOJUN.jpg" },
-   { name: "MYONE SHIRO", image: "MYONE SHIRO.jpg" },
-   { name: "MYONE R", image: "MYONE R.jpg" },
-   { name: "MYONE ZENON", image: "MYONE ZENON.jpg" },
-   { name: "EASTSHINE DONGJAE", image: "ES DONGJAE-5-.jpg" },
-    { name: "EASTSHINE HYUN", image: "ES HYUN-3-.jpg" },
-    { name: "EASTSHINE IEL", image: "ES IEL-4.jpg" },
-    { name: "EASTSHINE LUMIN", image: "ES LUMIN-3-.jpg" },
-    { name: "EASTSHINE PHOENIX", image: "ES PHOENIX-1-.webp" },
-   { name: "DROP Cheol Kyu", image: "dp Cheol Kyu.webp" },
-   { name: "DROP Gyu Eon", image: "dp Gyu Eon.webp" },
-   { name: "DROP Jae Wo", image: "dp Jae Won.webp" },
-   { name: "DROP Ju Sung", image: "dp Ju Sung.webp" },
-   { name: "DROP Seung Woo", image: "dp Seung Woo.webp" },
-   { name: "WHYNOT JUNHYEONG", image: "wn JUNHYEONG.jpg" },
-   { name: "WHYNOT TOSEI", image: "wn TOSEI.jpg" },
-   { name: "WHYNOT DOA", image: "wn doa.jpg" },
-   { name: "WHYNOT JEONG", image: "wn jeong-scaled.jpg" },
-   { name: "WHYNOT ROHOON", image: "wn rohoon.jpg" },
-   { name: "WHYNOT DONGYEON", image: "wn rohoon.jpg" },
-   { name: "WHYNOT SIHON", image: "wn sihoon.jpg" },
-   { name: "MUL KANGSAN", image: "MUL-KANGSAN4.jpg" },
-   { name: "MUL LUHA", image: "MUL-LUHA4.jpg" },
-   { name: "MUL SEONGHUN", image: "MUL-SEONGHUN4.jpg" },
-   { name: "MUL SHINWOO", image: "MUL-SHINWOO4.jpg" },
-   { name: "MUL WONCHUL", image: "MUL-WONCHUL.jpg" },
-   { name: "MUL YUNSOL", image: "MUL-YUNSOL4.jpg" },
-   { name: "ANTARES HARU", image: "AT HARU.jpeg" },
-   { name: "ANTARES INO", image: "AT INO.jpeg" },
-   { name: "ANTARES JAEHO", image: "AT JAEHO.jpeg" },
-   { name: "ANTARES WOORI", image: "AT WOORI.jpeg" },
-   { name: "ANTARES SEUNGHEE", image: "AT SEUNGHEE.jpeg" },
-   { name: "ANTARES ZINO", image: "AT ZINO.jpeg" },
-    { name: "DREAMCODE SEONGWAN", image: "dc Seongwan.webp" },
-   { name: "DREAMCODE HYUNWOO", image: "dc hyunwoo.webp" },
-   { name: "DREAMCODE JAEHUN", image: "dc jaehun.webp" },
-   { name: "DREAMCODE JIMIN", image: "dc jimin.webp" },
-   { name: "DREAMCODE JONGHOON", image: "dc jonghoon.webp" },
-   { name: "DREAMOFONE JIHAN", image: "Screenshot 2026-10-03 19.02.45.png" },
-   { name: "DREAMOFONE JIWON", image: "Screenshot 2026-10-03 19.04.12.png" },
-   { name: "DREAMOFONE MINCHAN", image: "Screenshot 2026-10-03 19.03.35.png" },
-   { name: "DREAMOFONE SARANG", image: "Screenshot 2026-10-03 19.05.01.png" },
-   { name: "DREAMOFONE HWANHUI", image: "Screenshot 2026-10-03 19.05.54.png" },
-   { name: "VOLTEQ JUNE", image: "VQ JUNE-1.jpg" },
-    { name: "VOLTEQ KASUGA", image: "VQ KASUGA.jpg" },
-    { name: "VOLTEQ LEO", image: " VQ LEO.jpg" },
-   { name: "VOLTEQ TERUTO", image: "VQ TERUTO-1.jpg" },
-   { name: "STC KANGMIN", image: "stc KANGMIN.jpg" },
-   { name: "STC MINSUNG", image: "stc Minsung.jpg" },
-   { name: "STC SIHYEON", image: "stc sihyeon.jpg" },
-   { name: "STC DONGHYEON", image: "STC Donghyeon.jpg" },
-   { name: "STC HYOYA", image: "STC HYOYA.jpg" },
-{ name: "STC HYOYA", image: "STC HYOYA.jpg" },
-   { name: "RE:GUYS D.I", image: "RG D.I.webp" },
-   { name: "RE:GUYS DAEYOUNG", image: "RG Daeyoung.webp" },
-   { name: "RE:GUYS DONGHYUN", image: "RG Donghyun.webp" },
-   { name: "RE:GUYS JINHYEON", image: "RG Jinhyeon.webp" },
-   { name: "RE:GUYS MINKI", image: "RG Minki.webp" },
-   { name: "RE:GUYS SEMIN", image: "RG Semin.jpg" },
-   { name: "RE:GUYS YEONGKI", image: "RG Yeongki.webp" },
-   { name: "ADAP DOWON", image: "AP Dowon3.jpg" },
-   { name: "ADAP HYUNSUNG", image: "AP Hyunsung3.jpg" },
-   { name: "ADAP JAEYOUNG", image: "AP Jaeyoung3.jpg" },
-   { name: "ADAP JONGHO", image: "AP Jongho3.jpg" },
-   { name: "ADAP HYOTAE", image: "AP hyotae3.jpg" },
-   { name: "ADAP JUNSEOK", image: "AP junseok3.jpg" },
-    { name: "TRY THAT A.TOM", image: "A.TOM-TRY-THAT.jpg" },
-   { name: "TRY THAT HYUKJIN", image: "TT HYUKJIN.png" },
-   { name: "TRY THAT HANSEO", image: "HANSEO-TRY-THAT.jpg" },
-   { name: "TRY THAT KION", image: "KION-TRY-THAT-scaled.jpg" },
-   { name: "TRY THAT MINHA", image: "MINHA-TRY-THAT.jpg" },
-   { name: "TRY THAT PIL", image: "PIL-TRY-THAT.jpg" },
-   { name: "SWEET:CH HWI", image: "sc hwi-2.jpg" },
-   { name: "SWEET:CH JIN", image: "sc jin.jpg" },
-   { name: "SWEET:CH RIKUTO", image: "sc rikuto.jpg" },
-   { name: "SWEET:CH SATOSHI", image: "sc satoshi.jpg" },
-   { name: "SWEET:CH TAIKI", image: "sc taiki.jpg" },
-   { name: "SWEET:CH WANGSEOK", image: "sc wangseok-1.jpg" },
-   { name: "DIGNITY LUKE", image: "DG LUKE.jpeg" },
-   { name: "DIGNITY LUO", image: "DG LUO.jpeg" },
-   { name: "DIGNITY MINSEOK", image: "DG MINSEOK.jpeg" },
-   { name: "DIGNITY ON", image: "DG ON.jpeg" },
-   { name: "HIGHWAY YUNHYEONG", image: "HG YUNHYEONG.jpg" },
-   { name: "HIGHWAY DAEHYUN", image: "HG DAEHYUN.jpg" },
-   { name: "HIGHWAY HUA", image: "HG HUA.jpg" },
-   { name: "HIGHWAY JUN", image: "HG JUN.jpg" },
-   { name: "HIGHWAY MINHYUK", image: "HG Minhyuk.jpg" },
-   { name: "HIGHWAY ROOKIE", image: "HG ROOKIE.jpg" },
-   { name: "HIGHWAY SSEN", image: "HG SSEN.jpg" },
-   { name: "GENUS　CHAEHOON", image: "GS CHAEHOON-1.jpg" },
-   { name: "GENUS　CHANYONG", image: "GS CHANYONG-1.jpg" },
-   { name: "GENUS　SEOHA", image: "GS SEOHA-1.jpg" },
-   { name: "GENUS　JAEYOUNG", image: "GS jaeyoung-1.jpg" },
-   { name: "GENUS　YUAN", image: "GS yuan-1.jpg" },
-   { name: "TRY1 MIN", image: "T! min-1.jpg" },
-    { name: "TRY1 HARAM", image: "T1 chaharam.jpg" },
-    { name: "TRY1 JAMES", image: "T1 james.jpg" },
-    { name: "TRY1 JIHWAN", image: "T1 jihwan-1.jpg" },
-    { name: "TRY1 NEO", image: "T1 neo.jpg" },
-    { name: "TRY1 R1KE", image: "T1 r1ke-1.jpg" },
-    { name: "TRY1 TSUKITO", image: "T1 tsukito-1.jpg" },
-   { name: "MY:ST JUNTAE", image: "myst 2-Juntae-.avif" },
-   { name: "MY:ST WONCHEOL", image: "myst 3-Woncheol-.avif" },
-   { name: "MY:ST WOOJIN", image: "myst 4-Woojin-.avif" },
-   { name: "MY:ST KEONWOO", image: "myst 5-Keonwoo-.avif" },
-    { name: "LUMIERE G_ME", image: "LR G_ME.jpg" },
-    { name: "LUMIERE DAON", image: "LR daon-1.jpg" },
-    { name: "LUMIERE SION", image: "LR sion.jpg" },
-    { name: "LUMIERE TEO", image: "LR teo.jpg" },
-   { name: "LUMIERE RUI", image: "LR rui.jpg" },
-   { name: "SAEINT BEOMSOO", image: "ST Beomsoo.jpg" },
-    { name: "SAEINT SEOGYUM", image: "ST Seogyum.jpg" },
-    { name: "SAEINT YOONSANG", image: "ST Yoonsang.jpg" },
-    { name: "SAEINT DONGGYU", image: "ST Donggyu.jpg" },
-   
+  { name: "n.top kanghyon", image: "n.top kanghyun.jpg" },
+  { name: "n.top minseo", image: "n.top minseo.jpg" },
+  { name: "n.top takuto", image: "n.top takuto.jpg" },
+  { name: "n.top heewoo", image: "n.top heewoo.jpg" },
+  { name: "n.top hyunwoong", image: "n.top hyunwoong-.jpg" },
+  { name: "n.top chaemin", image: "n.top chaemin.jpg" },
+  { name: "n.top changlin", image: "n.top changlin.jpg" },
 
+  { name: "dxmon TK", image: "dxmon TK.avif" },
+  { name: "dxmon hee", image: "dxmon hee.webp" },
+  { name: "dxmon rex", image: "dxmon rex.avif" },
+  { name: "dxmon セイタ", image: "dxmon セイタ.avif" },
+  { name: "dxmon minjae", image: "dxmon ミンジェ.avif" },
+
+  { name: "WAKER イジュン", image: "weaker イジュン.jpeg" },
+  { name: "WAKER クォンヒョプ", image: "weaker クォンヒョプ.jpeg" },
+  { name: "WAKER コヒョン", image: "weaker コヒョン.jpeg" },
+  { name: "WAKER セビョル", image: "weaker セ비ョル.jpeg" },
+  { name: "WAKER セボム", image: "weaker 세봄.jpeg" },
+  { name: "WAKER リオ", image: "weaker 리오.jpeg" },
+
+  { name: "D-ONE イファ", image: "d-one イファ.jpg" },
+  { name: "D-ONE ジェフン", image: "d-one ジェフン.png" },
+  { name: "D-ONE ジュヨン", image: "d-one ジュヨン.jpeg" },
+  { name: "D-ONE セジン", image: "d-one セジン.jpeg" },
+  { name: "D-ONE ハン", image: "d-one ハン.jpeg" },
+  { name: "D-ONE ヒョヌン", image: "d-one ヒョヌン.jpeg" },
+
+  { name: "ANOHRTS ウヒョン", image: "anohrts ウヒョン.png" },
+  { name: "ANOHRTS スンチャン", image: "anohrts スンチャン.jpg" },
+  { name: "ANOHRTS ダフン", image: "anohrts ダフン.jpg" },
+  { name: "ANOHRTS ヒュンジェ", image: "anohrts ヒュンジェ.jpg" },
+  { name: "ANOHRTS ギヒョン", image: "anohtys ギヒョン.jpg" },
+
+  { name: "NXON KDAY", image: "nxon k day.jpg" },
+  { name: "NXON K", image: "nxon k.jpg" },
+  { name: "NXON GYEOM", image: "nxon ギョム.jpg" },
+  { name: "NXON DAM", image: "nxon ジム.jpg" },
+  { name: "NXON JOHA", image: "nxon ジョハ.jpg" },
+  { name: "NXON MINJAE", image: "nxon ミンジェ.jpg" },
+  { name: "NXON MINGYU", image: "nxon ミンギュ.jpg" },
+  { name: "NXON ZIKI", image: "nxon ジム.jpg" },
+
+  { name: "W3WAY へチョン", image: "w3way へチョン.webp" },
+  { name: "W3WAY アオイ", image: "w3way アオイ.webp" },
+  { name: "W3WAY ウソク", image: "w3way ウソク.webp" },
+  { name: "W3WAY シホ", image: "w3way シホ.webp" },
+  { name: "W3WAY ドンヒョン", image: "w3way ドンヒョン.webp" },
+  { name: "W3WAY リョウ", image: "w3way リョウ.webp" },
+  { name: "W3WAY リンタロウ", image: "w3way リンタロウ.webp" },
+
+  { name: "CHASER カンビン", image: "chaser カンビン.jpg" },
+  { name: "CHASER ケイスケ", image: "chaser ケイスケ.jpg" },
+  { name: "CHASER シフン", image: "chaser シフン.jpg" },
+  { name: "CHASER ユンビン", image: "chaser ユンビン.jpg" },
+  { name: "CHASER レン", image: "chaser レン.jpg" },
+
+  { name: "NBIG RYUMIN", image: "N.BIG RYUMIN.jpeg" },
+  { name: "NBIG SEONGJUN", image: "N.BIG SEONGJUN.jpeg" },
+  { name: "NBIG SIAN", image: "N.BIg SIAN.jpeg" },
+  { name: "NBIG KWON DOEUN", image: "NBIG KWON-DOEUN.jpeg" },
+  { name: "NBIG SEUNGYEON", image: "NBIG SEUNGYEON.jpeg" },
+
+  { name: "DIAZ HARUKI", image: "DIAZ HARUKI.webp" },
+  { name: "DIAZ K.O", image: " DIAZ K.O.webp" },
+  { name: "DIAZ MINGUN", image: "DIAZ MINGUN.webp" },
+  { name: "DIAZ SINWOO", image: "DIAZ SINWOO.webp" },
+  { name: "DIAZ SOTA", image: "DIAZ SOTA.webp" },
+
+  { name: "LEVERGENT HABIN", image: "HABIN.avif" },
+  { name: "LEVERGENT KHAIN", image: "KHAIN.avif" },
+  { name: "LEVERGENT JIO", image: "JIO.avif" },
+  { name: "LEVERGENT R", image: "R.avif" },
+  { name: "LEVERGENT RIHYEON", image: "RIHYEON.avif" },
+
+  { name: "CMDM BYUNGHOON", image: "Byunghoon.jpg" },
+  { name: "CMDM HEEJU", image: "Heeju.jpg" },
+  { name: "CMDM HYUNHAH", image: "Hyunhah.jpg" },
+  { name: "CMDM JUNHYOUNG", image: "Junhyoung.jpg" },
+  { name: "CMDM NOHYUL", image: "Nohyul.jpg" },
+
+  { name: "DAYCHILD EDEN", image: "DAYCHILD-EDEN1.jpg" },
+  { name: "DAYCHILD INTAE", image: "DAYCHILD-INTAE1.jpg" },
+  { name: "DAYCHILD K", image: "DAYCHILD-K1.jpg" },
+  { name: "DAYCHILD SIWOO", image: "DAYCHILD-SIWOO1.jpg" },
+  { name: "DAYCHILD YEJONG", image: "DAYCHILD-YEJONG1.jpg" },
+
+  { name: "ASC2NT KARAM", image: "ASC2NT KARAM-3-.jpeg" },
+  { name: "ASC2NT HYOWON", image: "HYOWON-3-900x600.jpeg" },
+  { name: "ASC2NT JAY", image: "JAY-3-900x600.jpeg" },
+  { name: "ASC2NT KYLE", image: "KYLE-3-900x600.jpeg" },
+  { name: "ASC2NT REON", image: "REON-3-900x600.jpeg" },
+
+  { name: "MYONE DOJUN", image: "MYONE DOJUN.jpg" },
+  { name: "MYONE SHIRO", image: "MYONE SHIRO.jpg" },
+  { name: "MYONE R", image: "MYONE R.jpg" },
+  { name: "MYONE ZENON", image: "MYONE ZENON.jpg" },
+
+  { name: "EASTSHINE DONGJAE", image: "ES DONGJAE-5-.jpg" },
+  { name: "EASTSHINE HYUN", image: "ES HYUN-3-.jpg" },
+  { name: "EASTSHINE IEL", image: "ES IEL-4.jpg" },
+  { name: "EASTSHINE LUMIN", image: "ES LUMIN-3-.jpg" },
+  { name: "EASTSHINE PHOENIX", image: "ES PHOENIX-1-.webp" },
+
+  { name: "DROP Cheol Kyu", image: "dp Cheol Kyu.webp" },
+  { name: "DROP Gyu Eon", image: "dp Gyu Eon.webp" },
+  { name: "DROP Jae Wo", image: "dp Jae Won.webp" },
+  { name: "DROP Ju Sung", image: "dp Ju Sung.webp" },
+  { name: "DROP Seung Woo", image: "dp Seung Woo.webp" },
+
+  { name: "WHYNOT JUNHYEONG", image: "wn JUNHYEONG.jpg" },
+  { name: "WHYNOT TOSEI", image: "wn TOSEI.jpg" },
+  { name: "WHYNOT DOA", image: "wn doa.jpg" },
+  { name: "WHYNOT JEONG", image: "wn jeong-scaled.jpg" },
+  { name: "WHYNOT ROHOON", image: "wn rohoon.jpg" },
+  { name: "WHYNOT DONGYEON", image: "wn rohoon.jpg" },
+  { name: "WHYNOT SIHON", image: "wn sihoon.jpg" },
+
+  { name: "MUL KANGSAN", image: "MUL-KANGSAN4.jpg" },
+  { name: "MUL LUHA", image: "MUL-LUHA4.jpg" },
+  { name: "MUL SEONGHUN", image: "MUL-SEONGHUN4.jpg" },
+  { name: "MUL SHINWOO", image: "MUL-SHINWOO4.jpg" },
+  { name: "MUL WONCHUL", image: "MUL-WONCHUL.jpg" },
+  { name: "MUL YUNSOL", image: "MUL-YUNSOL4.jpg" },
+
+  { name: "ANTARES HARU", image: "AT HARU.jpeg" },
+  { name: "ANTARES INO", image: "AT INO.jpeg" },
+  { name: "ANTARES JAEHO", image: "AT JAEHO.jpeg" },
+  { name: "ANTARES WOORI", image: "AT WOORI.jpeg" },
+  { name: "ANTARES SEUNGHEE", image: "AT SEUNGHEE.jpeg" },
+  { name: "ANTARES ZINO", image: "AT ZINO.jpeg" },
+
+  { name: "DREAMCODE SEONGWAN", image: "dc Seongwan.webp" },
+  { name: "DREAMCODE HYUNWOO", image: "dc hyunwoo.webp" },
+  { name: "DREAMCODE JAEHUN", image: "dc jaehun.webp" },
+  { name: "DREAMCODE JIMIN", image: "dc jimin.webp" },
+  { name: "DREAMCODE JONGHOON", image: "dc jonghoon.webp" },
+
+  { name: "DREAMOFONE JIHAN", image: "Screenshot 2026-10-03 19.02.45.png" },
+  { name: "DREAMOFONE JIWON", image: "Screenshot 2026-10-03 19.04.12.png" },
+  { name: "DREAMOFONE MINCHAN", image: "Screenshot 2026-10-03 19.03.35.png" },
+  { name: "DREAMOFONE SARANG", image: "Screenshot 2026-10-03 19.05.01.png" },
+  { name: "DREAMOFONE HWANHUI", image: "Screenshot 2026-10-03 19.05.54.png" },
+
+  { name: "VOLTEQ JUNE", image: "VQ JUNE-1.jpg" },
+  { name: "VOLTEQ KASUGA", image: "VQ KASUGA.jpg" },
+  { name: "VOLTEQ LEO", image: " VQ LEO.jpg" },
+  { name: "VOLTEQ TERUTO", image: "VQ TERUTO-1.jpg" },
+
+  { name: "STC KANGMIN", image: "stc KANGMIN.jpg" },
+  { name: "STC MINSUNG", image: "stc Minsung.jpg" },
+  { name: "STC SIHYEON", image: "stc sihyeon.jpg" },
+  { name: "STC DONGHYEON", image: "STC Donghyeon.jpg" },
+  { name: "STC HYOYA", image: "STC HYOYA.jpg" },
+
+  { name: "RE:GUYS D.I", image: "RG D.I.webp" },
+  { name: "RE:GUYS DAEYOUNG", image: "RG Daeyoung.webp" },
+  { name: "RE:GUYS DONGHYUN", image: "RG Donghyun.webp" },
+  { name: "RE:GUYS JINHYEON", image: "RG Jinhyeon.webp" },
+  { name: "RE:GUYS MINKI", image: "RG Minki.webp" },
+  { name: "RE:GUYS SEMIN", image: "RG Semin.jpg" },
+  { name: "RE:GUYS YEONGKI", image: "RG Yeongki.webp" },
+
+  { name: "ADAP DOWON", image: "AP Dowon3.jpg" },
+  { name: "ADAP HYUNSUNG", image: "AP Hyunsung3.jpg" },
+  { name: "ADAP JAEYOUNG", image: "AP Jaeyoung3.jpg" },
+  { name: "ADAP JONGHO", image: "AP Jongho3.jpg" },
+  { name: "ADAP HYOTAE", image: "AP hyotae3.jpg" },
+  { name: "ADAP JUNSEOK", image: "AP junseok3.jpg" },
+
+  { name: "TRY THAT A.TOM", image: "A.TOM-TRY-THAT.jpg" },
+  { name: "TRY THAT HYUKJIN", image: "TT HYUKJIN.png" },
+  { name: "TRY THAT HANSEO", image: "HANSEO-TRY-THAT.jpg" },
+  { name: "TRY THAT KION", image: "KION-TRY-THAT-scaled.jpg" },
+  { name: "TRY THAT MINHA", image: "MINHA-TRY-THAT.jpg" },
+  { name: "TRY THAT PIL", image: "PIL-TRY-THAT.jpg" },
+
+  { name: "SWEET:CH HWI", image: "sc hwi-2.jpg" },
+  { name: "SWEET:CH JIN", image: "sc jin.jpg" },
+  { name: "SWEET:CH RIKUTO", image: "sc rikuto.jpg" },
+  { name: "SWEET:CH SATOSHI", image: "sc satoshi.jpg" },
+  { name: "SWEET:CH TAIKI", image: "sc taiki.jpg" },
+  { name: "SWEET:CH WANGSEOK", image: "sc wangseok-1.jpg" },
+
+  { name: "DIGNITY LUKE", image: "DG LUKE.jpeg" },
+  { name: "DIGNITY LUO", image: "DG LUO.jpeg" },
+  { name: "DIGNITY MINSEOK", image: "DG MINSEOK.jpeg" },
+  { name: "DIGNITY ON", image: "DG ON.jpeg" },
+
+  { name: "HIGHWAY YUNHYEONG", image: "HG YUNHYEONG.jpg" },
+  { name: "HIGHWAY DAEHYUN", image: "HG DAEHYUN.jpg" },
+  { name: "HIGHWAY HUA", image: "HG HUA.jpg" },
+  { name: "HIGHWAY JUN", image: "HG JUN.jpg" },
+  { name: "HIGHWAY MINHYUK", image: "HG Minhyuk.jpg" },
+  { name: "HIGHWAY ROOKIE", image: "HG ROOKIE.jpg" },
+  { name: "HIGHWAY SSEN", image: "HG SSEN.jpg" },
+
+  { name: "GENUS CHAEHOON", image: "GS CHAEHOON-1.jpg" },
+  { name: "GENUS CHANYONG", image: "GS CHANYONG-1.jpg" },
+  { name: "GENUS SEOHA", image: "GS SEOHA-1.jpg" },
+  { name: "GENUS JAEYOUNG", image: "GS jaeyoung-1.jpg" },
+  { name: "GENUS YUAN", image: "GS yuan-1.jpg" },
+
+  { name: "TRY1 MIN", image: "T! min-1.jpg" },
+  { name: "TRY1 HARAM", image: "T1 chaharam.jpg" },
+  { name: "TRY1 JAMES", image: "T1 james.jpg" },
+  { name: "TRY1 JIHWAN", image: "T1 jihwan-1.jpg" },
+  { name: "TRY1 NEO", image: "T1 neo.jpg" },
+  { name: "TRY1 R1KE", image: "T1 r1ke-1.jpg" },
+  { name: "TRY1 TSUKITO", image: "T1 tsukito-1.jpg" },
+
+  { name: "MY:ST JUNTAE", image: "myst 2-Juntae-.avif" },
+  { name: "MY:ST WONCHEOL", image: "myst 3-Woncheol-.avif" },
+  { name: "MY:ST WOOJIN", image: "myst 4-Woojin-.avif" },
+  { name: "MY:ST KEONWOO", image: "myst 5-Keonwoo-.avif" },
+
+  { name: "LUMIERE G_ME", image: "LR G_ME.jpg" },
+  { name: "LUMIERE DAON", image: "LR daon-1.jpg" },
+  { name: "LUMIERE SION", image: "LR sion.jpg" },
+  { name: "LUMIERE TEO", image: "LR teo.jpg" },
+  { name: "LUMIERE RUI", image: "LR rui.jpg" },
+
+  { name: "SAEINT BEOMSOO", image: "ST Beomsoo.jpg" },
+  { name: "SAEINT SEOGYUM", image: "ST Seogyum.jpg" },
+  { name: "SAEINT YOONSANG", image: "ST Yoonsang.jpg" },
+  { name: "SAEINT DONGGYU", image: "ST Donggyu.jpg" }
 ];
 
 
@@ -242,40 +273,14 @@ const people = [
 // ゲーム状態
 // ========================================
 
-// まだ一度も表示していない人
 let remainingPeople = [];
-
-// 一度でも「好き」と選ばれた人
 let selectedPool = [];
-
-// 今表示している4人
 let currentGroup = [];
-
-// 今回選んだ人
 let selectedPeople = [];
-
-// 最終9人
 let finalists = [];
 
-
-// ========================================
-// 現在の段階
-// ========================================
-
-// "first"
-// → 29人を4人ずつ見る段階
-//
-// "second"
-// → 一度選ばれた人だけを4人ずつ比較する段階
-
 let gameStage = "first";
-
 let roundNumber = 0;
-
-
-// ========================================
-// 頂上決戦
-// ========================================
 
 let battlePairs = [];
 let battleIndex = 0;
@@ -297,7 +302,7 @@ function showScreen(screen) {
 
 
 // ========================================
-// 配列をシャッフル
+// シャッフル
 // ========================================
 
 function shuffle(array) {
@@ -306,15 +311,12 @@ function shuffle(array) {
 
   for (let i = copy.length - 1; i > 0; i--) {
 
-    const j =
-      Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(Math.random() * (i + 1));
 
     const temp = copy[i];
 
     copy[i] = copy[j];
-
     copy[j] = temp;
-
   }
 
   return copy;
@@ -327,32 +329,18 @@ function shuffle(array) {
 
 startButton.addEventListener("click", function() {
 
-  // 全部リセット
-  remainingPeople = people.map(function(person) {
-
-    return {
-      name: person.name,
-      image: person.image
-    };
-
-  });
+  remainingPeople = people.slice();
 
   selectedPool = [];
-
   currentGroup = [];
-
   selectedPeople = [];
-
   finalists = [];
 
   gameStage = "first";
-
   roundNumber = 0;
 
   battlePairs = [];
-
   battleIndex = 0;
-
   battleWins = {};
 
   nextButton.style.display = "";
@@ -366,10 +354,16 @@ startButton.addEventListener("click", function() {
 
 // ========================================
 // 第1段階
-// 29人を4人ずつ見る
 // ========================================
 
 function startFirstRound() {
+
+  if (remainingPeople.length === 0) {
+
+    startSecondStage();
+
+    return;
+  }
 
   roundNumber++;
 
@@ -384,7 +378,7 @@ function startFirstRound() {
 
 
 // ========================================
-// 第1段階の表示
+// 選択画面
 // ========================================
 
 function renderSelection() {
@@ -397,19 +391,8 @@ function renderSelection() {
   secondSelectedName.textContent =
     "まだ選択されていません";
 
-
-  if (gameStage === "first") {
-
-    progress.textContent =
-      "第" + roundNumber + "回";
-
-  } else {
-
-    progress.textContent =
-      "最終候補の絞り込み";
-
-  }
-
+  progress.textContent =
+    "第" + roundNumber + "回";
 
   currentGroup.forEach(function(person) {
 
@@ -421,39 +404,28 @@ function renderSelection() {
 
 
 // ========================================
-// 人物カード作成
+// 人物カード
 // ========================================
 
 function createPersonCard(person) {
 
-  const card =
-    document.createElement("button");
+  const card = document.createElement("button");
 
   card.type = "button";
-
   card.className = "person-card";
 
-
-  const image =
-    document.createElement("img");
+  const image = document.createElement("img");
 
   image.src = person.image;
-
   image.alt = person.name;
 
-
-  const name =
-    document.createElement("div");
+  const name = document.createElement("div");
 
   name.className = "person-name";
-
   name.textContent = person.name;
 
-
   card.appendChild(image);
-
   card.appendChild(name);
-
 
   card.addEventListener("click", function() {
 
@@ -461,14 +433,13 @@ function createPersonCard(person) {
 
   });
 
-
   personContainer.appendChild(card);
 
 }
 
 
 // ========================================
-// 選択・選択解除
+// 選択
 // ========================================
 
 function toggleSelection(person, card) {
@@ -481,7 +452,7 @@ function toggleSelection(person, card) {
     });
 
 
-  // すでに選択していた場合
+  // 選択解除
   if (index !== -1) {
 
     selectedPeople.splice(index, 1);
@@ -490,7 +461,7 @@ function toggleSelection(person, card) {
 
   }
 
-  // 新しく選択する場合
+  // 新しく選択
   else {
 
     // 最大2人
@@ -503,7 +474,6 @@ function toggleSelection(person, card) {
     card.classList.add("selected");
 
   }
-
 
   updateSelectedNames();
 
@@ -545,16 +515,17 @@ function updateSelectedNames() {
 
 
 // ========================================
-// 「次へ」
+// 次へ
 // ========================================
 
 nextButton.addEventListener("click", function() {
 
-  // ====================================
-  // 0人でもOK
-  // ====================================
+  // ★ここが重要
+  // 0人でもそのまま進む
+  // alertやreturnはありません
 
-  // 選ばれた人を保存
+
+  // 選ばれた人を候補に追加
   selectedPeople.forEach(function(person) {
 
     const alreadySelected =
@@ -574,88 +545,65 @@ nextButton.addEventListener("click", function() {
   });
 
 
-  // ====================================
-  // 第1段階
-  // ====================================
-
-  if (gameStage === "first") {
-
-    // 今回の4人を
-    // 「まだ見ていない人」から削除
+  // 今回見た4人を
+  // 「まだ見ていない人」から削除
+  currentGroup.forEach(function(person) {
 
     remainingPeople =
-      remainingPeople.filter(function(person) {
+      remainingPeople.filter(function(item) {
 
-        return !currentGroup.some(function(groupPerson) {
-
-          return groupPerson.name === person.name;
-
-        });
+        return item.name !== person.name;
 
       });
 
-
-    // まだ見ていない人が残っている
-    if (remainingPeople.length > 0) {
-
-      startFirstRound();
-
-      return;
-
-    }
+  });
 
 
-    // ==================================
-    // 全員を一度見終わった
-    // ==================================
+  // まだ見ていない人がいる
+  if (remainingPeople.length > 0) {
 
-    // ここに来た時点で
-    // selectedPoolには
-    // 「一度でも選ばれた人」しかいない
-
-
-    // 9人以下ならそのまま最終9人
-    if (selectedPool.length <= 9) {
-
-      finalists =
-        selectedPool.slice();
-
-      showFinalists();
-
-      return;
-
-    }
-
-
-    // 10人以上なら
-    // 選ばれた人だけで再選抜
-
-    gameStage = "second";
-
-    roundNumber = 0;
-
-    startSecondRound();
+    startFirstRound();
 
     return;
 
   }
 
 
-  // ====================================
-  // 第2段階
-  // ====================================
-
-  if (gameStage === "second") {
-
-    continueSecondStage();
-
-  }
+  // 全員見終わった
+  startSecondStage();
 
 });
 
 
 // ========================================
-// 第2段階開始
+// 第2段階
+// 選ばれた人だけで再び絞る
+// ========================================
+
+function startSecondStage() {
+
+  gameStage = "second";
+
+  roundNumber = 0;
+
+  // 9人以下ならそのまま候補にする
+  if (selectedPool.length <= 9) {
+
+    finalists = selectedPool.slice();
+
+    showFinalists();
+
+    return;
+
+  }
+
+  startSecondRound();
+
+}
+
+
+// ========================================
+// 第2段階の4人
 // ========================================
 
 function startSecondRound() {
@@ -664,11 +612,8 @@ function startSecondRound() {
 
   selectedPeople = [];
 
-
-  // selectedPoolから4人を選ぶ
   currentGroup =
     shuffle(selectedPool).slice(0, 4);
-
 
   renderSecondStage();
 
@@ -689,10 +634,8 @@ function renderSecondStage() {
   secondSelectedName.textContent =
     "まだ選択されていません";
 
-
   progress.textContent =
-    "最終候補の絞り込み";
-
+    "最終候補を絞り込み中";
 
   currentGroup.forEach(function(person) {
 
@@ -704,20 +647,16 @@ function renderSecondStage() {
 
 
 // ========================================
-// 第2段階の次へ
+// 第2段階「次へ」
 // ========================================
 
 function continueSecondStage() {
 
-  // ==================================
-  // 今回表示された4人のうち
-  // 選ばれなかった人を削除
-  // ==================================
-
+  // 今回表示された4人だけ処理する
   selectedPool =
     selectedPool.filter(function(person) {
 
-      const wasDisplayed =
+      const displayed =
         currentGroup.some(function(groupPerson) {
 
           return groupPerson.name === person.name;
@@ -725,17 +664,16 @@ function continueSecondStage() {
         });
 
 
-      // 今回表示されていない人は残す
-      if (!wasDisplayed) {
+      // 表示されていない人は残す
+      if (!displayed) {
 
         return true;
 
       }
 
 
-      // 今回表示された人は
-      // 選ばれた人だけ残す
-
+      // 表示された人は
+      // 今回選ばれた人だけ残す
       return selectedPeople.some(function(selected) {
 
         return selected.name === person.name;
@@ -745,14 +683,10 @@ function continueSecondStage() {
     });
 
 
-  // ==================================
-  // 9人以下になったら終了
-  // ==================================
-
+  // 9人以下になった
   if (selectedPool.length <= 9) {
 
-    finalists =
-      selectedPool.slice();
+    finalists = selectedPool.slice();
 
     showFinalists();
 
@@ -761,29 +695,34 @@ function continueSecondStage() {
   }
 
 
-  // ==================================
-  // まだ10人以上なら
-  // また4人出す
-  // ==================================
-
+  // まだ10人以上
   startSecondRound();
 
 }
 
 
 // ========================================
-// 最終9人
+// 第2段階の「次へ」を上書き
+// ========================================
+
+nextButton.addEventListener("click", function() {
+
+  if (gameStage !== "second") {
+    return;
+  }
+
+  continueSecondStage();
+
+});
+
+
+// ========================================
+// 最終9人表示
 // ========================================
 
 function showFinalists() {
 
-  // 念のため最大9人
-  finalists =
-    finalists.slice(0, 9);
-
-
   finalistsContainer.innerHTML = "";
-
 
   finalists.forEach(function(person) {
 
@@ -793,30 +732,23 @@ function showFinalists() {
     card.className =
       "finalist-card";
 
-
     const image =
       document.createElement("img");
 
     image.src = person.image;
-
     image.alt = person.name;
-
 
     const name =
       document.createElement("div");
 
     name.textContent = person.name;
 
-
     card.appendChild(image);
-
     card.appendChild(name);
-
 
     finalistsContainer.appendChild(card);
 
   });
-
 
   showScreen(finalistsScreen);
 
@@ -824,11 +756,12 @@ function showFinalists() {
 
 
 // ========================================
-// 頂上決戦スタート
+// 頂上決戦開始
 // ========================================
 
 rankingStartButton.addEventListener("click", function() {
 
+  // 9人を1対1で比較
   battlePairs = [];
 
   battleIndex = 0;
@@ -843,18 +776,9 @@ rankingStartButton.addEventListener("click", function() {
   });
 
 
-  // 9人全員を1対1で組み合わせる
-  for (
-    let i = 0;
-    i < finalists.length;
-    i++
-  ) {
+  for (let i = 0; i < finalists.length; i++) {
 
-    for (
-      let j = i + 1;
-      j < finalists.length;
-      j++
-    ) {
+    for (let j = i + 1; j < finalists.length; j++) {
 
       battlePairs.push([
         finalists[i],
@@ -889,7 +813,6 @@ function startNextBattle() {
   const pair =
     battlePairs[battleIndex];
 
-
   renderBattle(
     pair[0],
     pair[1]
@@ -899,7 +822,7 @@ function startNextBattle() {
 
 
 // ========================================
-// 頂上決戦画面
+// 頂上決戦表示
 // ========================================
 
 function renderBattle(personA, personB) {
@@ -908,24 +831,19 @@ function renderBattle(personA, personB) {
 
   personContainer.innerHTML = "";
 
-
   progress.textContent =
     "頂上決戦 " +
     (battleIndex + 1) +
     " / " +
     battlePairs.length;
 
-
   firstSelectedName.textContent =
-    personA.name;
+    "どちらか好きな方を選んでね";
 
   secondSelectedName.textContent =
-    personB.name;
+    "";
 
-
-  // 「次へ」は隠す
   nextButton.style.display = "none";
-
 
   createBattleCard(personA);
 
@@ -945,29 +863,26 @@ function createBattleCard(person) {
 
   card.type = "button";
 
-  card.className = "person-card";
-
+  card.className =
+    "person-card";
 
   const image =
     document.createElement("img");
 
   image.src = person.image;
-
   image.alt = person.name;
-
 
   const name =
     document.createElement("div");
 
-  name.className = "person-name";
+  name.className =
+    "person-name";
 
-  name.textContent = person.name;
-
+  name.textContent =
+    person.name;
 
   card.appendChild(image);
-
   card.appendChild(name);
-
 
   personContainer.appendChild(card);
 
@@ -1039,7 +954,6 @@ function finishRanking() {
       document.createElement("img");
 
     image.src = person.image;
-
     image.alt = person.name;
 
 
@@ -1054,11 +968,8 @@ function finishRanking() {
 
 
     item.appendChild(number);
-
     item.appendChild(image);
-
     item.appendChild(name);
-
 
     rankingContainer.appendChild(item);
 
@@ -1080,7 +991,6 @@ resultButton.addEventListener("click", function() {
     rankingContainer.querySelectorAll(
       ".ranking-item"
     );
-
 
   const ranking = [];
 
@@ -1204,11 +1114,8 @@ function renderResult(ranking) {
 
 
     item.appendChild(rankText);
-
     item.appendChild(image);
-
     item.appendChild(name);
-
 
     grid.appendChild(item);
 
