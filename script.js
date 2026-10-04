@@ -57,9 +57,9 @@ const people = [
   { name: "WAKER イジュン", image: "weaker イジュン.jpeg" },
   { name: "WAKER クォンヒョプ", image: "weaker クォンヒョプ.jpeg" },
   { name: "WAKER コヒョン", image: "weaker コヒョン.jpeg" },
-  { name: "WAKER セビョル", image: "weaker セ비ョル.jpeg" },
-  { name: "WAKER セボム", image: "weaker 세봄.jpeg" },
-  { name: "WAKER リオ", image: "weaker 리오.jpeg" },
+  { name: "WAKER セビョル", image: "weaker セビョル.jpeg" },
+  { name: "WAKER セボム", image: "weaker セボム.jpeg" },
+  { name: "WAKER リオ", image: "weaker リオ.jpeg" },
 
   { name: "D-ONE イファ", image: "d-one イファ.jpg" },
   { name: "D-ONE ジェフン", image: "d-one ジェフン.png" },
