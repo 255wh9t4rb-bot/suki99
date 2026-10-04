@@ -4,7 +4,7 @@
 
 
 // ========================================
-// HTML
+// HTML取得
 // ========================================
 
 const startButton = document.getElementById("start-button");
@@ -36,11 +36,11 @@ const secondSelectedName =
 
 
 // ========================================
-// 人物データ
+// 人物
 // ========================================
 
 const people = [
- { name: "n.top kanghyon",image: "n.top kanghyun.jpg" },
+{ name: "n.top kanghyon",image: "n.top kanghyun.jpg" },
  { name: "n.top minseo", image: "n.top minseo.jpg" },
  { name: "n.top takuto", image: "n.top takuto.jpg" },
 　{ name: "n.top heewoo", image: "n.top heewoo.jpg" },
@@ -237,14 +237,24 @@ const people = [
 
 ];
 
+
 // ========================================
-// ゲーム用データ
+// ゲーム状態
 // ========================================
 
-let candidates = [];
+// まだ一度も選ばれていない人
+let unselectedPeople = [];
+
+// 一度以上選ばれた人
+let selectedPool = [];
+
+// 現在表示している4人
 let currentGroup = [];
+
+// 今回の4人から選んだ人
 let selectedPeople = [];
 
+// 最終9人
 let finalists = [];
 
 
@@ -255,6 +265,13 @@ let finalists = [];
 let battlePairs = [];
 let battleIndex = 0;
 let battleWins = {};
+
+
+// ========================================
+// 予選の段階
+// ========================================
+
+let preliminaryRound = 0;
 
 
 // ========================================
@@ -277,14 +294,15 @@ function showScreen(screen) {
 
 startButton.addEventListener("click", function() {
 
-  // 前回の結果を完全にリセット
-  candidates = people.map(function(person) {
+  // 前回のゲームを完全リセット
+  unselectedPeople = people.map(function(person) {
     return {
       name: person.name,
       image: person.image
     };
   });
 
+  selectedPool = [];
   currentGroup = [];
   selectedPeople = [];
   finalists = [];
@@ -293,36 +311,33 @@ startButton.addEventListener("click", function() {
   battleIndex = 0;
   battleWins = {};
 
+  preliminaryRound = 0;
+
   nextButton.style.display = "";
 
   showScreen(selectionScreen);
 
-  startEliminationRound();
+  startInitialRound();
 
 });
 
 
 // ========================================
-// 絞り込み開始
+// 最初の29人から4人ずつ出す
 // ========================================
 
-function startEliminationRound() {
+function startInitialRound() {
 
-  // 9人になったら終了
-  if (candidates.length <= 9) {
-
-    finalists = candidates.slice();
-
-    showFinalists();
-
-    return;
-  }
-
-
-  // 候補者の中から4人を出す
-  currentGroup = chooseGroup(candidates);
+  preliminaryRound++;
 
   selectedPeople = [];
+
+  // まだ一度も選ばれていない人から4人
+  currentGroup =
+    getRandomPeople(
+      unselectedPeople,
+      4
+    );
 
   renderSelectionGroup();
 
@@ -330,25 +345,27 @@ function startEliminationRound() {
 
 
 // ========================================
-// 4人を選ぶ
+// 一度も選ばれていない人から選ぶ
 // ========================================
 
-function chooseGroup(list) {
+function getRandomPeople(list, count) {
 
-  const shuffled = list.slice();
+  const copy = list.slice();
 
-  shuffled.sort(function() {
+  copy.sort(function() {
     return Math.random() - 0.5;
   });
 
-
-  return shuffled.slice(0, Math.min(4, shuffled.length));
+  return copy.slice(
+    0,
+    Math.min(count, copy.length)
+  );
 
 }
 
 
 // ========================================
-// 4人を表示
+// 4人表示
 // ========================================
 
 function renderSelectionGroup() {
@@ -363,9 +380,9 @@ function renderSelectionGroup() {
 
 
   progress.textContent =
-    "候補者 " +
-    candidates.length +
-    "人";
+    "第" +
+    preliminaryRound +
+    "回";
 
 
   currentGroup.forEach(function(person) {
@@ -410,7 +427,7 @@ function renderSelectionGroup() {
 
 
 // ========================================
-// 人を選択
+// 選択・解除
 // ========================================
 
 function toggleSelection(person, card) {
@@ -423,7 +440,7 @@ function toggleSelection(person, card) {
     });
 
 
-  // すでに選んでいる場合は解除
+  // すでに選択している
   if (index !== -1) {
 
     selectedPeople.splice(index, 1);
@@ -432,7 +449,7 @@ function toggleSelection(person, card) {
 
   }
 
-  // まだ選んでいない場合
+  // 新しく選択
   else {
 
     // 最大2人
@@ -492,7 +509,7 @@ function updateSelectedNames() {
 
 nextButton.addEventListener("click", function() {
 
-  // 0人選択なら進まない
+  // 0人なら進めない
   if (selectedPeople.length === 0) {
 
     alert("好きな人を1人以上選んでください。");
@@ -502,40 +519,69 @@ nextButton.addEventListener("click", function() {
   }
 
 
-  // 今回表示した4人から
-  // 選ばれなかった人を候補から外す
+  // ====================================
+  // 今回選ばれた人をselectedPoolへ追加
+  // ====================================
 
-  const selectedNames =
-    selectedPeople.map(function(person) {
-      return person.name;
+  selectedPeople.forEach(function(person) {
+
+    const alreadyExists =
+      selectedPool.some(function(item) {
+
+        return item.name === person.name;
+
+      });
+
+
+    if (!alreadyExists) {
+
+      selectedPool.push(person);
+
+    }
+
+  });
+
+
+  // ====================================
+  // 選ばれた人を「未選択」から削除
+  // ====================================
+
+  unselectedPeople =
+    unselectedPeople.filter(function(person) {
+
+      return !selectedPeople.some(function(selected) {
+
+        return selected.name === person.name;
+
+      });
+
     });
 
 
-  candidates =
-    candidates.filter(function(person) {
+  // ====================================
+  // まだ見ていない人がいる場合
+  // ====================================
 
-      // 今回の4人だった場合
-      if (
-        currentGroup.some(function(groupPerson) {
-          return groupPerson.name === person.name;
-        })
-      ) {
+  if (unselectedPeople.length > 0) {
 
-        // 選ばれていれば残す
-        return selectedNames.includes(person.name);
+    startInitialRound();
 
-      }
+    return;
 
-      // 今回表示されていない人はそのまま残す
-      return true;
-
-    });
+  }
 
 
-  // 9人以下になったら終了
-  if (candidates.length <= 9) {
+  // ====================================
+  // 全員を一度は見終わった
+  // ====================================
 
-    finalists = candidates.slice();
+  // 一度でも選ばれた人だけ
+  // selectedPool に入っている
+
+  if (selectedPool.length <= 9) {
+
+    finalists =
+      selectedPool.slice();
 
     showFinalists();
 
@@ -544,17 +590,220 @@ nextButton.addEventListener("click", function() {
   }
 
 
-  // まだ多いので次の4人へ
-  startEliminationRound();
+  // 10人以上選ばれた
+  // selectedPoolだけで再び絞る
+
+  startSecondStage();
 
 });
 
 
 // ========================================
-// 最終9人を表示
+// 第2段階
+// 選ばれた人だけでさらに絞る
+// ========================================
+
+function startSecondStage() {
+
+  preliminaryRound++;
+
+  selectedPeople = [];
+
+
+  // selectedPoolから4人を出す
+  currentGroup =
+    getRandomPeople(
+      selectedPool,
+      4
+    );
+
+
+  renderSecondStage();
+
+}
+
+
+// ========================================
+// 第2段階表示
+// ========================================
+
+function renderSecondStage() {
+
+  personContainer.innerHTML = "";
+
+  firstSelectedName.textContent =
+    "まだ選択されていません";
+
+  secondSelectedName.textContent =
+    "まだ選択されていません";
+
+
+  progress.textContent =
+    "絞り込み " +
+    preliminaryRound +
+    "回目";
+
+
+  currentGroup.forEach(function(person) {
+
+    const card =
+      document.createElement("button");
+
+    card.type = "button";
+    card.className = "person-card";
+
+
+    const image =
+      document.createElement("img");
+
+    image.src = person.image;
+    image.alt = person.name;
+
+
+    const name =
+      document.createElement("div");
+
+    name.className = "person-name";
+    name.textContent = person.name;
+
+
+    card.appendChild(image);
+    card.appendChild(name);
+
+
+    card.addEventListener("click", function() {
+
+      toggleSelection(person, card);
+
+    });
+
+
+    personContainer.appendChild(card);
+
+  });
+
+}
+
+
+// ========================================
+// 第2段階の「次へ」
+// ========================================
+
+const originalNextButtonFunction =
+  nextButton.onclick;
+
+
+// 既存イベントの代わりに
+// 予選全体を管理するためのフラグ
+
+let secondStageMode = false;
+
+
+// ========================================
+// 第2段階専用の処理
+// ========================================
+
+function continueSecondStage() {
+
+  if (selectedPeople.length === 0) {
+
+    alert("好きな人を1人以上選んでください。");
+
+    return;
+
+  }
+
+
+  // 選ばれなかった人を
+  // selectedPoolから削除
+
+  const selectedNames =
+    selectedPeople.map(function(person) {
+
+      return person.name;
+
+    });
+
+
+  selectedPool =
+    selectedPool.filter(function(person) {
+
+      // 今回の4人ではない人は残す
+      const wasDisplayed =
+        currentGroup.some(function(groupPerson) {
+
+          return groupPerson.name === person.name;
+
+        });
+
+
+      if (!wasDisplayed) {
+        return true;
+      }
+
+
+      // 今回の4人なら
+      // 選ばれた人だけ残す
+      return selectedNames.includes(person.name);
+
+    });
+
+
+  // 9人になったら終了
+  if (selectedPool.length <= 9) {
+
+    finalists =
+      selectedPool.slice();
+
+    showFinalists();
+
+    return;
+
+  }
+
+
+  // まだ10人以上
+  // また4人で比較
+  startSecondStage();
+
+}
+
+
+// ========================================
+// 次へボタンを追加管理
+// ========================================
+
+nextButton.addEventListener("click", function() {
+
+  if (unselectedPeople.length === 0) {
+
+    // 全員を一度見終わった後なら
+    // 第2段階として処理する
+
+    // ただし最初の処理ですでに
+    // selectedPoolが9人以下なら終了している
+
+    if (selectedPool.length > 9) {
+
+      continueSecondStage();
+
+    }
+
+  }
+
+});
+
+
+// ========================================
+// 最終9人表示
 // ========================================
 
 function showFinalists() {
+
+  // 念のため9人を超えないようにする
+  finalists =
+    finalists.slice(0, 9);
+
 
   finalistsContainer.innerHTML = "";
 
@@ -596,7 +845,7 @@ function showFinalists() {
 
 
 // ========================================
-// 頂上決戦開始
+// 頂上決戦
 // ========================================
 
 rankingStartButton.addEventListener("click", function() {
@@ -613,7 +862,7 @@ rankingStartButton.addEventListener("click", function() {
   });
 
 
-  // 9人全員を1対1で対戦
+  // 9人を全員1対1で比較
   for (
     let i = 0;
     i < finalists.length;
@@ -642,7 +891,7 @@ rankingStartButton.addEventListener("click", function() {
 
 
 // ========================================
-// 次の頂上決戦
+// 次の対戦
 // ========================================
 
 function startNextBattle() {
@@ -669,7 +918,7 @@ function startNextBattle() {
 
 
 // ========================================
-// 頂上決戦画面
+// 対戦画面
 // ========================================
 
 function renderBattle(personA, personB) {
@@ -693,7 +942,6 @@ function renderBattle(personA, personB) {
     personB.name;
 
 
-  // 次へボタンを隠す
   nextButton.style.display = "none";
 
 
@@ -754,16 +1002,14 @@ function createBattleCard(person) {
 
 
 // ========================================
-// 頂上決戦の勝者
+// 勝者
 // ========================================
 
 function chooseBattleWinner(person) {
 
   battleWins[person.name]++;
 
-
   battleIndex++;
-
 
   startNextBattle();
 
@@ -884,7 +1130,7 @@ resultButton.addEventListener("click", function() {
 
 
 // ========================================
-// 最終結果 3×3
+// 最終3×3
 // ========================================
 
 function renderResult(ranking) {
@@ -989,7 +1235,7 @@ function renderResult(ranking) {
 
 
 // ========================================
-// もう一度やる
+// もう一度
 // ========================================
 
 againButton.addEventListener("click", function() {
